@@ -38,12 +38,13 @@ export const constantRouterMap = [
     redirect: '/pms/product',
     name: 'pms',
     meta: {title: '商品', icon: 'product'},
-    children: [{
+    children: [
+      {
       path: 'product',
       name: 'product',
       component: () => import('@/views/pms/product/index'),
       meta: {title: '商品列表', icon: 'product-list'}
-    },
+      },
       {
         path: 'addProduct',
         name: 'addProduct',
@@ -299,6 +300,40 @@ export const constantRouterMap = [
         meta: {title: '编辑广告'},
         hidden:true
       }
+    ]
+  },
+  {
+    path:'/ums',
+    component: Layout,
+    redirect: '/ums/member',
+    name: 'ums',
+    meta: {title: '用户', icon: 'user'},
+    children: [
+      {
+        path: 'userManagement',
+        name: 'userManagement',
+        component: () => import('@/views/ums/member/index'),
+        meta: {title: '用户管理', icon: "form"},
+      },
+      {
+        path: 'coachManagement',
+        name: 'coachManagement',
+        component: () => import('@/views/ums/coach/index'),
+        meta: {title: '教练管理', icon: "eye"},
+      },
+      {
+        path: 'supplierManagement',
+        name: 'supplierManagement',
+        component: () => import('@/views/ums/supplier/index'),
+        meta: {title: '供应商管理', icon: "example"},
+      },
+      {
+        path: 'userDetail',
+        name: 'userDetail',
+        component: () => import('@/views/ums/member/userDetail'),
+        meta: {title: '用户详情'},
+        hidden:true
+      },
     ]
   },
   {path: '*', redirect: '/404', hidden: true}

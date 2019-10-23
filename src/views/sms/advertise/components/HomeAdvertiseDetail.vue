@@ -65,14 +65,22 @@
   import SingleUpload from '@/components/Upload/singleUpload'
   import {createHomeAdvertise, getHomeAdvertise, updateHomeAdvertise} from '@/api/homeAdvertise'
   const defaultTypeOptions = [
-    {
-      label: 'PC首页轮播',
-      value: 0
-    },
-    {
-      label: 'APP首页轮播',
-      value: 1
-    }
+      {
+          label: '首页轮播',
+          value: 1
+      },
+      {
+          label: '商场轮播',
+          value: 2
+      },
+      {
+          label: '启动页',
+          value: 3
+      },
+      {
+          label: '引导页',
+          value: 4
+      }
   ];
   const defaultHomeAdvertise = {
     name: null,

@@ -143,20 +143,12 @@
   };
   const defaultStatusOptions=[
     {
-      label: '待处理',
+      label: '禁用',
       value: 0
     },
     {
-      label: '退货中',
+      label: '正常',
       value: 1
-    },
-    {
-      label: '已完成',
-      value: 2
-    },
-    {
-      label: '已拒绝',
-      value: 3
     }
   ];
   export default {

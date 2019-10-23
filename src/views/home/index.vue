@@ -1,33 +1,49 @@
 <template>
   <div class="app-container">
-    <div class="address-layout">
+    <!--<div class="address-layout">
       <el-row :gutter="20">
-        <el-col :span="6">
+        <el-col :span="4">
           <div class="out-border">
-            <div class="layout-title">后台项目</div>
+            <div class="layout-title">当日注册用户数量</div>
             <div class="color-main address-content">
-              <a href="https://github.com/macrozheng/mall">mall</a>
+              <div style="text-align: center">{{registerDayUser}}</div>
             </div>
           </div>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
           <div class="out-border">
-            <div class="layout-title">前端项目</div>
+            <div class="layout-title">昨日访问量</div>
             <div class="color-main address-content">
-              <a href="https://github.com/macrozheng/mall-admin-web">mall-admin-web</a>
+              <div style="text-align: center">{{yesterdayVisitUser}}</div>
             </div>
           </div>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
           <div class="out-border">
-            <div class="layout-title">学习教程</div>
+            <div class="layout-title">累计注册</div>
             <div class="color-main address-content">
-              <a href="https://github.com/macrozheng/mall-learning">mall-learning</a>
+              <div style="text-align: center">{{totalUser}}</div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="out-border">
+            <div class="layout-title">七日留存率</div>
+            <div class="color-main address-content">
+              <div style="text-align: center">{{RetentionRate.seven}}%</div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="out-border">
+            <div class="layout-title">日留存率</div>
+            <div class="color-main address-content">
+              <div style="text-align: center">{{RetentionRate.thirty}}%</div>
             </div>
           </div>
         </el-col>
       </el-row>
-    </div>
+    </div>-->
     <div class="total-layout">
       <el-row :gutter="20">
         <el-col :span="6">
@@ -51,23 +67,17 @@
             <div class="total-value">￥5000.00</div>
           </div>
         </el-col>
-        <!--<el-col :span="6">-->
-          <!--<div class="total-frame">-->
-            <!--<svg-icon icon-class="total-week" class="total-icon">-->
-            <!--</svg-icon>-->
-            <!--<div class="total-title">近7天销售总额</div>-->
-            <!--<div class="total-value">￥50000.00</div>-->
-          <!--</div>-->
-        <!--</el-col>-->
+        <el-col :span="6">
+          <div class="total-frame">
+            <svg-icon icon-class="total-week" class="total-icon">
+            </svg-icon>
+            <div class="total-title">近7天销售总额</div>
+            <div class="total-value">￥50000.00</div>
+          </div>
+        </el-col>
       </el-row>
     </div>
-    <el-card class="mine-layout">
-      <div style="text-align: center">
-        <img width="150px" height="150px" src="http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg">
-      </div>
-      <div style="text-align: center">mall全套学习教程连载中！</div>
-      <div style="text-align: center;margin-top: 5px"><span class="color-main">关注公号</span>，第一时间获取。</div>
-    </el-card>
+
     <div class="un-handle-layout">
       <div class="layout-title">待处理事务</div>
       <div class="un-handle-content">
@@ -159,16 +169,20 @@
             <div class="layout-title">用户总览</div>
             <div style="padding: 40px">
               <el-row>
-                <el-col :span="6" class="color-danger overview-item-value">100</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">200</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">1000</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">5000</el-col>
+                <el-col :span="4" class="color-danger overview-item-value">{{registerDayUser.today}}</el-col>
+                <el-col :span="4" class="color-danger overview-item-value">{{registerDayUser.yesterday}}</el-col>
+                <el-col :span="4" class="color-danger overview-item-value">{{yesterdayVisitUser}}</el-col>
+                <el-col :span="4" class="color-danger overview-item-value">{{totalUser}}</el-col>
+                <el-col :span="4" class="color-danger overview-item-value">{{RetentionRate.seven}}%</el-col>
+                <el-col :span="4" class="color-danger overview-item-value">{{RetentionRate.thirty}}%</el-col>
               </el-row>
               <el-row class="font-medium">
-                <el-col :span="6" class="overview-item-title">今日新增</el-col>
-                <el-col :span="6" class="overview-item-title">昨日新增</el-col>
-                <el-col :span="6" class="overview-item-title">本月新增</el-col>
-                <el-col :span="6" class="overview-item-title">会员总数</el-col>
+                <el-col :span="4" class="overview-item-title">今日新增</el-col>
+                <el-col :span="4" class="overview-item-title">昨日新增</el-col>
+                <el-col :span="4" class="overview-item-title">昨日访问量</el-col>
+                <el-col :span="4" class="overview-item-title">累计注册</el-col>
+                <el-col :span="4" class="overview-item-title">七日留存率</el-col>
+                <el-col :span="4" class="overview-item-title">月留存率</el-col>
               </el-row>
             </div>
           </div>
@@ -249,6 +263,7 @@
   import img_home_order from '@/assets/images/home_order.png';
   import img_home_today_amount from '@/assets/images/home_today_amount.png';
   import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
+  import {countDayRegisterUser, countYesterdayVisitUser, countTotalUser, countRetentionRate} from '@/api/user';
   const DATA_FROM_BACKEND = {
     columns: ['date', 'orderCount','orderAmount'],
     rows: [
@@ -312,12 +327,20 @@
         dataEmpty: false,
         img_home_order,
         img_home_today_amount,
-        img_home_yesterday_amount
+        img_home_yesterday_amount,
+        registerDayUser: {"today": 0, "yesterday": 0},
+        yesterdayVisitUser: 0,
+        totalUser: 0,
+        RetentionRate:{"seven":0, "thirty": 0}
       }
     },
     created(){
       this.initOrderCountDate();
       this.getData();
+      this.getRegisterUser();
+      this.getYesterdayVisitUser();
+      this.getTotalUser();
+      this.getRetentionRate();
     },
     methods:{
       handleDateChange(){
@@ -350,6 +373,29 @@
           this.dataEmpty = false;
           this.loading = false
         }, 1000)
+      },
+      getRegisterUser(){
+          countDayRegisterUser().then(response => {
+              this.registerDayUser = response.result;
+          });
+      },
+      getYesterdayVisitUser(){
+          countYesterdayVisitUser().then(response => {
+              this.yesterdayVisitUser = response.result;
+          });
+      },
+      getTotalUser(){
+          countTotalUser().then(response => {
+              this.totalUser = response.result;
+          });
+      },
+      getRetentionRate(){
+          countRetentionRate(7).then(response => {
+              this.RetentionRate.seven = response.result.seven;
+          });
+          countRetentionRate(30).then(response => {
+              this.RetentionRate.thirty = response.result.thirty;
+          });
       }
     }
   }
@@ -403,6 +449,7 @@
   }
 
   .layout-title {
+    text-align: center;
     color: #606266;
     padding: 15px 20px;
     background: #F2F6FC;
