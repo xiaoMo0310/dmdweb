@@ -104,7 +104,7 @@
     },
     data() {
       return {
-        homeAdvertise: null,
+        homeAdvertise: {},
         rules: {
           name: [
             {required: true, message: '请输入广告名称', trigger: 'blur'},

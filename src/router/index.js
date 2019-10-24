@@ -297,7 +297,7 @@ export const constantRouterMap = [
         path: 'updateAdvertise',
         name: 'updateHomeAdvertise',
         component: () => import('@/views/sms/advertise/update'),
-        meta: {title: '编辑广告'},
+        meta: {title: '图片管理'},
         hidden:true
       }
     ]
