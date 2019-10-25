@@ -336,6 +336,35 @@ export const constantRouterMap = [
       },
     ]
   },
+  {
+    path:'/topic',
+    component: Layout,
+    redirect: '/topic/topic',
+    name: 'topic',
+    meta: {title: '话题管理', icon: 'user'},
+    children: [
+      {
+        path: 'topic',
+        name: 'topicManagement',
+        component: () => import('@/views/topic/topic/index'),
+        meta: {title: '话题管理', icon: "form"},
+      },
+      {
+        path: 'updateTopic',
+        name: 'updateTopicList',
+        component: () => import('@/views/topic/topic/update'),
+        meta: {title: '话题修改'},
+        hidden:true
+      },
+      {
+        path: 'addTopic',
+        name: 'addTopicList',
+        component: () => import('@/views/topic/topic/add'),
+        meta: {title: '话题新增'},
+        hidden:true
+      },
+    ]
+  },
   {path: '*', redirect: '/404', hidden: true}
 ]
 
