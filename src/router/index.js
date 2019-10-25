@@ -37,13 +37,14 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/pms/product',
     name: 'pms',
-    meta: {title: '商品管理', icon: 'product'},
-    children: [{
+    meta: {title: '商品', icon: 'product'},
+    children: [
+      {
       path: 'product',
       name: 'product',
       component: () => import('@/views/pms/product/index'),
       meta: {title: '商品列表', icon: 'product-list'}
-    },
+      },
       {
         path: 'addProduct',
         name: 'addProduct',
@@ -296,9 +297,72 @@ export const constantRouterMap = [
         path: 'updateAdvertise',
         name: 'updateHomeAdvertise',
         component: () => import('@/views/sms/advertise/update'),
-        meta: {title: '编辑广告'},
+        meta: {title: '图片管理'},
         hidden:true
       }
+    ]
+  },
+  {
+    path:'/ums',
+    component: Layout,
+    redirect: '/ums/member',
+    name: 'ums',
+    meta: {title: '用户', icon: 'user'},
+    children: [
+      {
+        path: 'userManagement',
+        name: 'userManagement',
+        component: () => import('@/views/ums/member/index'),
+        meta: {title: '用户管理', icon: "form"},
+      },
+      {
+        path: 'coachManagement',
+        name: 'coachManagement',
+        component: () => import('@/views/ums/coach/index'),
+        meta: {title: '教练管理', icon: "eye"},
+      },
+      {
+        path: 'supplierManagement',
+        name: 'supplierManagement',
+        component: () => import('@/views/ums/supplier/index'),
+        meta: {title: '供应商管理', icon: "example"},
+      },
+      {
+        path: 'userDetail',
+        name: 'userDetail',
+        component: () => import('@/views/ums/member/userDetail'),
+        meta: {title: '用户详情'},
+        hidden:true
+      },
+    ]
+  },
+  {
+    path:'/topic',
+    component: Layout,
+    redirect: '/topic/topic',
+    name: 'topic',
+    meta: {title: '话题管理', icon: 'user'},
+    children: [
+      {
+        path: 'topic',
+        name: 'topicManagement',
+        component: () => import('@/views/topic/topic/index'),
+        meta: {title: '话题管理', icon: "form"},
+      },
+      {
+        path: 'updateTopic',
+        name: 'updateTopicList',
+        component: () => import('@/views/topic/topic/update'),
+        meta: {title: '话题修改'},
+        hidden:true
+      },
+      {
+        path: 'addTopic',
+        name: 'addTopicList',
+        component: () => import('@/views/topic/topic/add'),
+        meta: {title: '话题新增'},
+        hidden:true
+      },
     ]
   },
   {path: '*', redirect: '/404', hidden: true},

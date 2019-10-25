@@ -5,54 +5,17 @@
              ref="homeAdvertiseFrom"
              label-width="150px"
              size="small">
-      <el-form-item label="广告名称：" prop="name">
-        <el-input v-model="homeAdvertise.name" class="input-width"></el-input>
+      <el-form-item label="话题名称：" prop="topicName">
+        <el-input v-model="homeAdvertise.topicName" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="广告位置：">
-        <el-select v-model="homeAdvertise.type">
-          <el-option
-            v-for="type in typeOptions"
-            :key="type.value"
-            :label="type.label"
-            :value="type.value">
-          </el-option>
-        </el-select>
+      <el-form-item label="话题描述：" prop="topicDescribes">
+        <el-input v-model="homeAdvertise.topicDescribes" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="开始时间：" prop="startTime">
-        <el-date-picker
-          type="datetime"
-          placeholder="选择日期"
-          v-model="homeAdvertise.startTime"></el-date-picker>
+      <el-form-item label="操作人：" prop="operationName">
+        <el-input v-model="homeAdvertise.operationName" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="到期时间：" prop="endTime">
-        <el-date-picker
-          type="datetime"
-          placeholder="选择日期"
-          v-model="homeAdvertise.endTime"></el-date-picker>
-      </el-form-item>
-      <el-form-item label="上线/下线：">
-        <el-radio-group v-model="homeAdvertise.status">
-          <el-radio :label="0">下线</el-radio>
-          <el-radio :label="1">上线</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="广告图片：">
-        <single-upload v-model="homeAdvertise.pic"></single-upload>
-      </el-form-item>
-      <el-form-item label="排序：">
-        <el-input v-model="homeAdvertise.sort" class="input-width"></el-input>
-      </el-form-item>
-      <el-form-item label="广告链接：" prop="url">
-        <el-input v-model="homeAdvertise.url" class="input-width"></el-input>
-      </el-form-item>
-      <el-form-item label="广告备注：">
-        <el-input
-          class="input-width"
-          type="textarea"
-          :rows="5"
-          placeholder="请输入内容"
-          v-model="homeAdvertise.note">
-        </el-input>
+      <el-form-item label="展示图片图片：">
+        <single-upload v-model="homeAdvertise.topicPicture"></single-upload>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('homeAdvertiseFrom')">提交</el-button>
@@ -63,38 +26,15 @@
 </template>
 <script>
   import SingleUpload from '@/components/Upload/singleUpload'
-  import {createHomeAdvertise, getHomeAdvertise, updateHomeAdvertise} from '@/api/homeAdvertise'
-  const defaultTypeOptions = [
-      {
-          label: '首页轮播',
-          value: 1
-      },
-      {
-          label: '商场轮播',
-          value: 2
-      },
-      {
-          label: '启动页',
-          value: 3
-      },
-      {
-          label: '引导页',
-          value: 4
-      }
-  ];
+  import {updateTopicList, getTopicById , addTopicList} from '@/api/topicManagement'
   const defaultHomeAdvertise = {
-    name: null,
-    type: 1,
-    pic: null,
-    startTime: null,
-    endTime: null,
-    status: 0,
-    url: null,
-    note: null,
-    sort: 0
+    topicName: null,
+    topicDescribes: null,
+    operationName: null,
+    topicPicture : null
   };
   export default {
-    name: 'HomeAdvertiseDetail',
+    name: 'TopicDetail',
     components:{SingleUpload},
     props: {
       isEdit: {
@@ -123,12 +63,12 @@
             {required: true, message: '请选择广告图片', trigger: 'blur'}
           ]
         },
-        typeOptions: Object.assign({}, defaultTypeOptions)
+
       }
     },
     created(){
       if (this.isEdit) {
-        getHomeAdvertise(this.$route.query.id).then(response => {
+        getTopicById(this.$route.query.id).then(response => {
           this.homeAdvertise = response.data;
         });
       }else{
@@ -145,7 +85,7 @@
               type: 'warning'
             }).then(() => {
               if (this.isEdit) {
-                updateHomeAdvertise(this.$route.query.id, this.homeAdvertise).then(response => {
+                updateTopicList(this.$route.query.id, this.homeAdvertise).then(response => {
                   this.$refs[formName].resetFields();
                   this.$message({
                     message: '修改成功',
@@ -155,7 +95,7 @@
                   this.$router.back();
                 });
               } else {
-                createHomeAdvertise(this.homeAdvertise).then(response => {
+                addTopicList(this.homeAdvertise).then(response => {
                   this.$refs[formName].resetFields();
                   this.homeAdvertise = Object.assign({},defaultHomeAdvertise);
                   this.$message({
@@ -163,6 +103,7 @@
                     type: 'success',
                     duration:1000
                   });
+                  this.$router.back();
                 });
               }
             });
