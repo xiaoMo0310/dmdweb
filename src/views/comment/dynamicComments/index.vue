@@ -65,7 +65,7 @@
         <el-table-column label="评论id" width="120" align="center">
           <template slot-scope="scope">{{scope.row.commentId}}</template>
         </el-table-column>
-        <el-table-column label="评论人昵称" align="center">
+        <el-table-column label="评论人昵称" align="center" width="120">
           <template slot-scope="scope">{{scope.row.commentName}}</template>
         </el-table-column>
         <el-table-column label="评论时间" width="220" align="center">
@@ -76,7 +76,7 @@
         <el-table-column label="评论内容" width="220" align="center">
           <template slot-scope="scope">{{scope.row.content}}</template>
         </el-table-column>
-        <el-table-column label="分类" align="center">
+        <el-table-column label="分类" align="center" width="80">
           <template slot-scope="scope">{{scope.row.type | formatType}}</template>
         </el-table-column>
         <el-table-column label="IP地址" align="center" width="130">
@@ -85,16 +85,16 @@
         <el-table-column label="评论状态" align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
         </el-table-column>
-        <el-table-column label="回复的动态ID" align="center">
+        <el-table-column label="回复的动态ID" align="center" width="70">
           <template slot-scope="scope">{{scope.row.forDynamicId}}</template>
         </el-table-column>
-        <el-table-column label="回复的日志ID" align="center">
+        <el-table-column label="回复的日志ID" align="center" width="70">
           <template slot-scope="scope">{{scope.row.forDiveLogId}}</template>
         </el-table-column>
-        <el-table-column label="用户ID" align="center">
+        <el-table-column label="用户ID" align="center" width="100">
           <template slot-scope="scope">{{scope.row.userId}}</template>
         </el-table-column>
-        <el-table-column label="被回复者ID" align="center">
+        <el-table-column label="被回复者ID" align="center" width="100">
           <template slot-scope="scope">{{scope.row.forUid}}</template>
         </el-table-column>
         <el-table-column label="操作" width="120" align="center">

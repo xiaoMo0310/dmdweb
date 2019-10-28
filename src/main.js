@@ -16,6 +16,10 @@ import store from './store'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+import tinymce from 'tinymce/tinymce'
+import Editor from '@tinymce/tinymce-vue'
+import 'tinymce/themes/mobile/theme.js'
+
 Vue.use(ElementUI, { locale })
 Vue.use(VCharts)
 

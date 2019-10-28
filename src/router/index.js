@@ -410,6 +410,34 @@ export const constantRouterMap = [
       meta: {title: '操作日志', icon: 'operation_log'}
     },]
   },
+  {
+    path:'/integral',
+    component: Layout,
+    redirect: '/integral/integral',
+    name: 'integral',
+    meta: {title: '积分管理', icon: 'jifen'},
+    children: [
+      {
+        path: 'integrationRule',
+        name: 'integrationRule',
+        component: () => import('@/views/integral/integrationRule/index'),
+        meta: {title: '积分规则管理', icon: "guize"},
+      },
+      {
+        path: 'integralRecord',
+        name: 'integralRecord',
+        component: () => import('@/views/integral/integralRecord/index'),
+        meta: {title: '积分明细管理',icon: "mingxi"},
+      },
+      {
+        path: 'updateIntegrationRule',
+        name: 'updateIntegrationRule',
+        component: () => import('@/views/integral/integrationRule/update'),
+        meta: {title: '积分规则编辑'},
+        hidden:true
+      },
+    ]
+  },
   {path: '*', redirect: '/404', hidden: true},
 ]
 

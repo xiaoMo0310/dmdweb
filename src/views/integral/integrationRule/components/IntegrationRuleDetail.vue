@@ -5,24 +5,22 @@
              ref="homeAdvertiseFrom"
              label-width="150px"
              size="small">
-      <el-form-item label="话题名称：" prop="topicName">
-        <el-input v-model="homeAdvertise.topicName" class="input-width"></el-input>
-      </el-form-item>
-      <el-form-item label="话题描述：">
+      <el-form-item label="积分规则说明：">
         <el-input
           class="input-width"
           type="textarea"
           :rows="5"
           placeholder="请输入内容"
-          v-model="homeAdvertise.topicDescribes">
+          v-model="homeAdvertise.ruledescription">
         </el-input>
+      </el-form-item>
+      <el-form-item label="图片示例：">
+        <single-upload v-model="homeAdvertise.picturesample"></single-upload>
       </el-form-item>
       <el-form-item label="操作人：" prop="operationName">
         <el-input v-model="homeAdvertise.operationName" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="展示图片：">
-        <single-upload v-model="homeAdvertise.topicPicture"></single-upload>
-      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="onSubmit('homeAdvertiseFrom')">提交</el-button>
         <el-button v-if="!isEdit" @click="resetForm('homeAdvertiseFrom')">重置</el-button>
@@ -32,12 +30,13 @@
 </template>
 <script>
   import SingleUpload from '@/components/Upload/singleUpload'
-  import {updateTopicList, getTopicById , addTopicList} from '@/api/topicManagement'
+  import {updateIntegralList, findIntegralInfoById } from '@/api/integrationRule'
+
+
   const defaultHomeAdvertise = {
-    topicName: null,
-    topicDescribes: null,
+    ruledescription: null,
+    picturesample: null,
     operationName: null,
-    topicPicture : null
   };
   export default {
     name: 'TopicDetail',
@@ -74,7 +73,7 @@
     },
     created(){
       if (this.isEdit) {
-        getTopicById(this.$route.query.id).then(response => {
+        findIntegralInfoById(this.$route.query.id).then(response => {
           this.homeAdvertise = response.data;
         });
       }else{
@@ -91,21 +90,10 @@
               type: 'warning'
             }).then(() => {
               if (this.isEdit) {
-                updateTopicList(this.$route.query.id, this.homeAdvertise).then(response => {
+                updateIntegralList(this.$route.query.id, this.homeAdvertise).then(response => {
                   this.$refs[formName].resetFields();
                   this.$message({
                     message: '修改成功',
-                    type: 'success',
-                    duration:1000
-                  });
-                  this.$router.back();
-                });
-              } else {
-                addTopicList(this.homeAdvertise).then(response => {
-                  this.$refs[formName].resetFields();
-                  this.homeAdvertise = Object.assign({},defaultHomeAdvertise);
-                  this.$message({
-                    message: '提交成功',
                     type: 'success',
                     duration:1000
                   });
