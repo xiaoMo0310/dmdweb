@@ -9,7 +9,7 @@
         <el-input v-model="homeAdvertise.topicName" class="input-width"></el-input>
       </el-form-item>
       <el-form-item label="话题描述：" prop="topicDescribes">
-        <el-input v-model="homeAdvertise.topicDescribes" class="input-width"></el-input>
+        <el-input type="textarea" :autosize="true" v-model="homeAdvertise.topicDescribes" style="height: 100px;width: 500px"></el-input>
       </el-form-item>
       <el-form-item label="操作人：" prop="operationName">
         <el-input v-model="homeAdvertise.operationName" class="input-width"></el-input>

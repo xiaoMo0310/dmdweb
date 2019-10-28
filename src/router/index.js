@@ -341,13 +341,13 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/topic/topic',
     name: 'topic',
-    meta: {title: '话题管理', icon: 'user'},
+    meta: {title: '话题管理', icon: 'topic'},
     children: [
       {
         path: 'topic',
         name: 'topicManagement',
         component: () => import('@/views/topic/topic/index'),
-        meta: {title: '话题管理', icon: "form"},
+        meta: {title: '话题管理', icon: "topic"},
       },
       {
         path: 'updateTopic',
@@ -362,6 +362,27 @@ export const constantRouterMap = [
         component: () => import('@/views/topic/topic/add'),
         meta: {title: '话题新增'},
         hidden:true
+      },
+    ]
+  },
+  {
+    path:'/comment',
+    component: Layout,
+    redirect: '/comment/comment',
+    name: 'comment',
+    meta: {title: '评论管理', icon: 'comment'},
+    children: [
+      {
+        path: 'dynamicComments',
+        name: 'dynamicComments',
+        component: () => import('@/views/comment/dynamicComments/index'),
+        meta: {title: '动态/日志评论', icon: "dynamic"},
+      },
+      {
+        path: 'buyerComments',
+        name: 'buyerComments',
+        component: () => import('@/views/comment/buyerComments/index'),
+        meta: {title: '买家评论',icon: "maijia"},
       },
     ]
   },
