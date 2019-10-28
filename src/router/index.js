@@ -146,7 +146,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/oms/order',
     name: 'oms',
-    meta: {title: '订单', icon: 'order'},
+    meta: {title: '订单管理', icon: 'order'},
     children: [
       {
         path: 'order',
@@ -200,7 +200,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/sms/coupon',
     name: 'sms',
-    meta: {title: '营销', icon: 'sms'},
+    meta: {title: '营销管理', icon: 'sms'},
     children: [
       {
         path: 'flash',
@@ -386,7 +386,31 @@ export const constantRouterMap = [
       },
     ]
   },
-  {path: '*', redirect: '/404', hidden: true}
+
+  {
+    path: '',
+    component: Layout,
+    redirect: '/admin/permission',
+    name: 'admin',
+    meta: {title: '权限管理', icon: 'authority_management'},
+    children: [{
+      path: 'adminPerson',
+      name: 'adminPerson',
+      component: () => import('@/views/home/index'),
+      meta: {title: '管理员', icon: 'adminPerson'}
+    },{
+      path: 'permission_group',
+      name: 'permission_group',
+      component: () => import('@/views/home/index'),
+      meta: {title: '权限组', icon: 'permission_group'}
+    },{
+      path: 'operation_log',
+      name: 'operation_log',
+      component: () => import('@/views/home/index'),
+      meta: {title: '操作日志', icon: 'operation_log'}
+    },]
+  },
+  {path: '*', redirect: '/404', hidden: true},
 ]
 
 export default new Router({
