@@ -27,6 +27,12 @@ export function countRetentionRate(day) {
     method:'get',
   })
 }
+export function countThirtyRetentionRate(day) {
+  return request({
+    url:'/ums/retentionRate/countThirty/'+ day,
+    method:'get',
+  })
+}
 //查询用户列表信息
 export function selectUserList(data) {
   return request({
@@ -40,6 +46,15 @@ export function freezeUser(param) {
   return request({
     url:'/ums/user/editStatus',
     method:'get',
+    params: param
+  })
+}
+
+//批量冻结用户或者启动用户
+export function batchUpdateUserStatus(param) {
+  return request({
+    url:'/ums/status/batchUpdate',
+    method:'post',
     params: param
   })
 }

@@ -263,7 +263,7 @@
   import img_home_order from '@/assets/images/home_order.png';
   import img_home_today_amount from '@/assets/images/home_today_amount.png';
   import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
-  import {countDayRegisterUser, countYesterdayVisitUser, countTotalUser, countRetentionRate} from '@/api/user';
+  import {countDayRegisterUser, countYesterdayVisitUser, countTotalUser, countRetentionRate, countThirtyRetentionRate} from '@/api/user';
   const DATA_FROM_BACKEND = {
     columns: ['date', 'orderCount','orderAmount'],
     rows: [
@@ -393,7 +393,7 @@
           countRetentionRate(7).then(response => {
               this.RetentionRate.seven = response.result.seven;
           });
-          countRetentionRate(30).then(response => {
+          countThirtyRetentionRate(30).then(response => {
               this.RetentionRate.thirty = response.result.thirty;
           });
       }

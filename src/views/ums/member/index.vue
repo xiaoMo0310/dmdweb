@@ -81,13 +81,17 @@
         <el-table-column label="注册时间" width="200" align="center">
           <template slot-scope="scope">{{scope.row.createTime}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" width="205" align="center">
           <template slot-scope="scope">
             <!--<el-button
               size="mini"
               @click="handleViewUserDetail(scope.$index, scope.row)"
             >详细信息
             </el-button>-->
+            <el-button
+              size="mini"
+              @click="sendMessage(scope.$index, scope.row)">发送消息
+            </el-button>
             <el-button
               size="mini"
               @click="handleFreezeUser(scope.$index, scope.row)"
@@ -103,6 +107,28 @@
         </el-table-column>
       </el-table>
     </div>
+
+    <div class="batch-operate-container">
+      <el-select
+        size="small"
+        v-model="operateType" placeholder="批量操作">
+        <el-option
+          v-for="item in operates"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <el-button
+        style="margin-left: 20px"
+        class="search-button"
+        @click="handleBatchOperate()"
+        type="primary"
+        size="small">
+        确定
+      </el-button>
+    </div>
+
     <div class="pagination-container">
       <el-pagination
         background
@@ -118,7 +144,7 @@
   </div>
 </template>
 <script>
-    import {selectUserList, freezeUser} from '@/api/user'
+    import {selectUserList, freezeUser, batchUpdateUserStatus} from '@/api/user'
     const defaultListQuery = {
         pageNum: 1,
         pageSize: 10,
@@ -137,6 +163,26 @@
                 listLoading: true,
                 list: null,
                 total: null,
+                operates: [
+                    {
+                        label: "冻结",
+                        value: 0
+                    },
+                    {
+                        label: "启用",
+                        value: 1
+                    },
+                    {
+                        label: "发送通知",
+                        value: 2
+                    },
+                    {
+                        label: "全部发送通知",
+                        value: 3
+                    }
+
+                ],
+                operateType: null
             }
         },
         created() {
@@ -160,6 +206,15 @@
                 this.listQuery.pageNum = 1;
                 this.listQuery.pageSize = val;
                 this.getList();
+            },
+            sendMessage(index,row){
+                this.$router.push({path: '/dmd/sendMessage', query: {id: row.id}})
+            },
+            batchSendMessage(ids){
+                this.$router.push({name: 'batchAddMessage', params: {ids: ids}})
+            },
+            sendAllMessage(){
+                this.$router.push({path: '/dmd/addAllMessage'})
             },
             handleCurrentChange(val){
                 this.listQuery.pageNum = val;
@@ -211,6 +266,74 @@
                         });
                     })
                 }
+            },
+            handleBatchOperate() {
+                if(this.operateType==null){
+                    this.$message({
+                        message: '请选择操作类型',
+                        type: 'warning',
+                        duration: 1000
+                    });
+                    return;
+                }
+                if(this.multipleSelection==null||this.multipleSelection.length<1){
+                    if(this.operateType != 3){
+                        this.$message({
+                            message: '请选择要操作的用户',
+                            type: 'warning',
+                            duration: 1000
+                        });
+                        return;
+                    }
+                }
+                if(this.operateType == 3){
+                    this.$confirm(
+                        '是否要进行全部用户通知?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                        this.sendAllMessage();
+                    });
+                }else {
+                    this.$confirm(
+                        '是否要进行该批量操作?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                        let ids=[];
+                        for(let i=0;i<this.multipleSelection.length;i++){
+                            ids.push(this.multipleSelection[i].id);
+                        }
+                        switch (this.operateType) {
+                            case this.operates[0].value:
+                                this.editUserStatus(0,ids);
+                                this.getList();
+                                break;
+                            case this.operates[1].value:
+                                this.editUserStatus(1,ids);
+                                this.getList();
+                                break;
+                            case this.operates[2].value:
+                                this.batchSendMessage(ids);
+                                break;
+                        }
+                    });
+                }
+            },
+            editUserStatus(status, ids){
+                let params = new URLSearchParams();
+                params.append("status", status)
+                params.append("ids",ids);
+                batchUpdateUserStatus(params).then(response=>{
+                    this.$message({
+                        message: '修改成功！',
+                        type: 'success',
+                        duration: 1000
+                    });
+                    this.getList();
+                });
             },
             handleViewUserDetail(index,row){
                 this.$router.push({path:'/ums/userDetail',query:{id:row.id}})

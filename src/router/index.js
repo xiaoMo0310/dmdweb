@@ -172,19 +172,21 @@ export const constantRouterMap = [
         path: 'orderSetting',
         name: 'orderSetting',
         component: () => import('@/views/oms/order/setting'),
-        meta: {title: '订单设置', icon: 'order-setting'}
+        meta: {title: '订单设置', icon: 'order-setting'},
       },
       {
         path: 'returnApply',
         name: 'returnApply',
         component: () => import('@/views/oms/apply/index'),
-        meta: {title: '退货申请处理', icon: 'order-return'}
+        meta: {title: '退货申请处理', icon: 'order-return'},
+        hidden:true
       },
       {
         path: 'returnReason',
         name: 'returnReason',
         component: () => import('@/views/oms/apply/reason'),
-        meta: {title: '退货原因设置', icon: 'order-return-reason'}
+        meta: {title: '退货原因设置', icon: 'order-return-reason'},
+        hidden:true
       },
       {
         path: 'returnApplyDetail',
@@ -203,102 +205,108 @@ export const constantRouterMap = [
     meta: {title: '营销管理', icon: 'sms'},
     children: [
       {
-        path: 'flash',
-        name: 'flash',
-        component: () => import('@/views/sms/flash/index'),
-        meta: {title: '秒杀活动列表', icon: 'sms-flash'}
-      },
-      {
-        path: 'flashSession',
-        name: 'flashSession',
-        component: () => import('@/views/sms/flash/sessionList'),
-        meta: {title: '秒杀时间段列表'},
-        hidden:true
-      },
-      {
-        path: 'selectSession',
-        name: 'selectSession',
-        component: () => import('@/views/sms/flash/selectSessionList'),
-        meta: {title: '秒杀时间段选择'},
-        hidden:true
-      },
-      {
-        path: 'flashProductRelation',
-        name: 'flashProductRelation',
-        component: () => import('@/views/sms/flash/productRelationList'),
-        meta: {title: '秒杀商品列表'},
-        hidden:true
-      },
-      {
-        path: 'coupon',
-        name: 'coupon',
-        component: () => import('@/views/sms/coupon/index'),
-        meta: {title: '优惠券列表', icon: 'sms-coupon'}
-      },
-      {
-        path: 'addCoupon',
-        name: 'addCoupon',
-        component: () => import('@/views/sms/coupon/add'),
-        meta: {title: '添加优惠券'},
-        hidden:true
-      },
-      {
-        path: 'updateCoupon',
-        name: 'updateCoupon',
-        component: () => import('@/views/sms/coupon/update'),
-        meta: {title: '修改优惠券'},
-        hidden:true
-      },
-      {
-        path: 'couponHistory',
-        name: 'couponHistory',
-        component: () => import('@/views/sms/coupon/history'),
-        meta: {title: '优惠券领取详情'},
-        hidden:true
-      },
-      {
-        path: 'brand',
-        name: 'homeBrand',
-        component: () => import('@/views/sms/brand/index'),
-        meta: {title: '品牌推荐', icon: 'product-brand'}
-      },
-      {
-        path: 'new',
-        name: 'homeNew',
-        component: () => import('@/views/sms/new/index'),
-        meta: {title: '新品推荐', icon: 'sms-new'}
-      },
-      {
-        path: 'hot',
-        name: 'homeHot',
-        component: () => import('@/views/sms/hot/index'),
-        meta: {title: '人气推荐', icon: 'sms-hot'}
-      },
-      {
-        path: 'subject',
-        name: 'homeSubject',
-        component: () => import('@/views/sms/subject/index'),
-        meta: {title: '专题推荐', icon: 'sms-subject'}
-      },
-      {
         path: 'advertise',
         name: 'homeAdvertise',
         component: () => import('@/views/sms/advertise/index'),
-        meta: {title: '广告列表', icon: 'sms-ad'}
+        meta: {title: '图片管理', icon: 'sms-ad'},
       },
       {
         path: 'addAdvertise',
         name: 'addHomeAdvertise',
         component: () => import('@/views/sms/advertise/add'),
         meta: {title: '添加广告'},
-        hidden:true
+        hidden: true
       },
       {
         path: 'updateAdvertise',
         name: 'updateHomeAdvertise',
         component: () => import('@/views/sms/advertise/update'),
-        meta: {title: '图片管理'},
-        hidden:true
+        meta: {title: '修改广告'},
+        hidden: true
+      },
+      {
+        path: 'flash',
+        name: 'flash',
+        component: () => import('@/views/sms/flash/index'),
+        meta: {title: '秒杀活动列表', icon: 'sms-flash'},
+        hidden: true
+      },
+      {
+        path: 'flashSession',
+        name: 'flashSession',
+        component: () => import('@/views/sms/flash/sessionList'),
+        meta: {title: '秒杀时间段列表'},
+        hidden: true
+      },
+      {
+        path: 'selectSession',
+        name: 'selectSession',
+        component: () => import('@/views/sms/flash/selectSessionList'),
+        meta: {title: '秒杀时间段选择'},
+        hidden: true
+      },
+      {
+        path: 'flashProductRelation',
+        name: 'flashProductRelation',
+        component: () => import('@/views/sms/flash/productRelationList'),
+        meta: {title: '秒杀商品列表'},
+        hidden: true
+      },
+      {
+        path: 'coupon',
+        name: 'coupon',
+        component: () => import('@/views/sms/coupon/index'),
+        meta: {title: '优惠券列表', icon: 'sms-coupon'},
+        hidden: true
+      },
+      {
+        path: 'addCoupon',
+        name: 'addCoupon',
+        component: () => import('@/views/sms/coupon/add'),
+        meta: {title: '添加优惠券'},
+        hidden: true
+      },
+      {
+        path: 'updateCoupon',
+        name: 'updateCoupon',
+        component: () => import('@/views/sms/coupon/update'),
+        meta: {title: '修改优惠券'},
+        hidden: true
+      },
+      {
+        path: 'couponHistory',
+        name: 'couponHistory',
+        component: () => import('@/views/sms/coupon/history'),
+        meta: {title: '优惠券领取详情'},
+        hidden: true
+      },
+      {
+        path: 'brand',
+        name: 'homeBrand',
+        component: () => import('@/views/sms/brand/index'),
+        meta: {title: '品牌推荐', icon: 'product-brand'},
+        hidden: true
+      },
+      {
+        path: 'new',
+        name: 'homeNew',
+        component: () => import('@/views/sms/new/index'),
+        meta: {title: '新品推荐', icon: 'sms-new'},
+        hidden: true
+      },
+      {
+        path: 'hot',
+        name: 'homeHot',
+        component: () => import('@/views/sms/hot/index'),
+        meta: {title: '人气推荐', icon: 'sms-hot'},
+        hidden: true
+      },
+      {
+        path: 'subject',
+        name: 'homeSubject',
+        component: () => import('@/views/sms/subject/index'),
+        meta: {title: '专题推荐', icon: 'sms-subject'},
+        hidden: true
       }
     ]
   },
@@ -326,14 +334,23 @@ export const constantRouterMap = [
         name: 'supplierManagement',
         component: () => import('@/views/ums/supplier/index'),
         meta: {title: '供应商管理', icon: "example"},
-      },
-      {
-        path: 'userDetail',
-        name: 'userDetail',
-        component: () => import('@/views/ums/member/userDetail'),
-        meta: {title: '用户详情'},
         hidden:true
-      },
+      }
+    ]
+  },
+  {
+    path:'/oms',
+    component: Layout,
+    redirect: '/oms/finance',
+    name: 'finance',
+    meta: {title: '财务', icon: 'user'},
+    children: [
+      {
+        path: 'financialManagement',
+        name: 'financialManagement',
+        component: () => import('@/views/oms/finance/index'),
+        meta: {title: '财务管理', icon: "total-today"}
+      }
     ]
   },
   {
@@ -442,6 +459,42 @@ export const constantRouterMap = [
         component: () => import('@/views/integral/integralGifts/index'),
         meta: {title: '积分好礼管理', icon: "gifts"},
       },
+    ]
+  },
+  {
+    path:'/dmd',
+    component: Layout,
+    redirect: '/dmd/message',
+    name: 'message',
+    meta: {title: '消息中心', icon: 'jifen'},
+    children: [
+      {
+        path: 'integrationRule',
+        name: 'integrationRule',
+        component: () => import('@/views/dmd/message/index'),
+        meta: {title: '消息列表', icon: "guize"},
+      },
+      {
+        path: 'sendMessage',
+        name: 'addMessage',
+        component: () => import('@/views/dmd/message/add'),
+        meta: {title: '发送通知'},
+        hidden: true
+      },
+      {
+        path: 'batchSendMessage',
+        name: 'batchAddMessage',
+        component: () => import('@/views/dmd/message/batchAdd'),
+        meta: {title: '批量发送通知'},
+        hidden: true
+      },
+      {
+        path: 'addAllMessage',
+        name: 'addAllMessage',
+        component: () => import('@/views/dmd/message/addAll'),
+        meta: {title: '全部用户发送通知'},
+        hidden: true
+      }
     ]
   },
   {path: '*', redirect: '/404', hidden: true},
