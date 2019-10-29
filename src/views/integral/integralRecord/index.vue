@@ -84,13 +84,13 @@
         <el-table-column label="操作人员" align="center">
           <template slot-scope="scope">{{scope.row.operateMan}}</template>
         </el-table-column>
-        <el-table-column label="操作备注" align="center">
+        <el-table-column label="操作备注" align="center" width="150">
           <template slot-scope="scope">{{scope.row.operateNote}}</template>
         </el-table-column>
-        <el-table-column label="积分来源" align="center">
+        <el-table-column label="积分来源" align="center" width="100">
           <template slot-scope="scope">{{scope.row.sourceType | formatSourceType}}</template>
         </el-table-column>
-        <el-table-column label="积分动向" align="center">
+        <el-table-column label="积分动向" align="center"  width="150">
           <template slot-scope="scope">{{scope.row.integralTrend}}</template>
         </el-table-column>
         <el-table-column label="用户总积分" align="center">
@@ -142,7 +142,7 @@
         <el-form-item label="操作备注" prop="operateNote">
           <el-input v-model="productAttrCate.operateNote" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="积分动向" prop="integralTrend">
+        <el-form-item label="积分动向" prop="integralTrend" >
           <el-input v-model="productAttrCate.integralTrend" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
