@@ -436,6 +436,12 @@ export const constantRouterMap = [
         meta: {title: '积分规则编辑'},
         hidden:true
       },
+      {
+        path: 'IntegralGifts',
+        name: 'IntegralGifts',
+        component: () => import('@/views/integral/integralGifts/index'),
+        meta: {title: '积分好礼管理', icon: "gifts"},
+      },
     ]
   },
   {path: '*', redirect: '/404', hidden: true},
