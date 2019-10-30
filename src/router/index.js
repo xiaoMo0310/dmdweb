@@ -476,6 +476,27 @@ export const constantRouterMap = [
     ]
   },
   {
+    path:'/social',
+    component: Layout,
+    redirect: '/social/social',
+    name: 'social',
+    meta: {title: '社交管理', icon: 'social'},
+    children: [
+      {
+        path: 'dynamic',
+        name: 'dynamic',
+        component: () => import('@/views/social/dynamic/index'),
+        meta: {title: '用户动态管理', icon: "dongtai"},
+      },
+      {
+        path: 'dynamicLog',
+        name: 'dynamicLog',
+        component: () => import('@/views/social/dynamicLog/index'),
+        meta: {title: '潜水日志管理', icon: "dynamicLog"},
+      },
+    ]
+  },
+  {
     path:'/dmd',
     component: Layout,
     redirect: '/dmd/message',
