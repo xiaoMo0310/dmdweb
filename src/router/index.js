@@ -459,6 +459,20 @@ export const constantRouterMap = [
         component: () => import('@/views/integral/integralGifts/index'),
         meta: {title: '积分好礼管理', icon: "gifts"},
       },
+      {
+        path: 'updateIntegralGifts',
+        name: 'updateIntegralGifts',
+        component: () => import('@/views/integral/integralGifts/update'),
+        meta: {title: '积分好礼修改'},
+        hidden:true
+      },
+      {
+        path: 'addIntegralGifts',
+        name: 'addIntegralGifts',
+        component: () => import('@/views/integral/integralGifts/add'),
+        meta: {title: '积分好礼添加'},
+        hidden:true
+      },
     ]
   },
   {

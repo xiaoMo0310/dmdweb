@@ -5,24 +5,22 @@
              ref="homeAdvertiseFrom"
              label-width="150px"
              size="small">
-      <el-form-item label="话题名称：" prop="topicName">
-        <el-input v-model="homeAdvertise.topicName" class="input-width"></el-input>
+      <el-form-item label="礼品名称：" prop="name">
+        <el-input v-model="homeAdvertise.name" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="话题描述：">
-        <el-input
-          class="input-width"
-          type="textarea"
-          :rows="5"
-          placeholder="请输入内容"
-          v-model="homeAdvertise.topicDescribes">
-        </el-input>
+      <el-form-item label="发布时间：" prop="createTime" v-if="homeAdvertise.createTime === null">
+        <el-input v-if="homeAdvertise.createTime === null" v-model="homeAdvertise.createTime" class="input-width" ></el-input>
       </el-form-item>
-      <el-form-item label="操作人：" prop="operationName">
-        <el-input v-model="homeAdvertise.operationName" class="input-width"></el-input>
+      <el-form-item label="上传礼品图片：">
+        <single-upload v-model="homeAdvertise.picture"></single-upload>
       </el-form-item>
-      <el-form-item label="展示图片：">
-        <single-upload v-model="homeAdvertise.topicPicture"></single-upload>
+      <el-form-item label="上传礼品介绍图片：">
+        <single-upload v-model="homeAdvertise.introduce"></single-upload>
       </el-form-item>
+      <el-form-item label="所需要的兑换积分：" prop="integral">
+        <el-input v-model="homeAdvertise.integral" class="input-width"></el-input>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="onSubmit('homeAdvertiseFrom')">提交</el-button>
         <el-button v-if="!isEdit" @click="resetForm('homeAdvertiseFrom')">重置</el-button>
@@ -32,7 +30,7 @@
 </template>
 <script>
   import SingleUpload from '@/components/Upload/singleUpload'
-  import {updateTopicList, getTopicById , addTopicList} from '@/api/topicManagement'
+  import {updateIntegralGifts, findIntegralGiftsInfoById , addIntegralGifts} from '@/api/integralGifts'
   const defaultHomeAdvertise = {
     topicName: null,
     topicDescribes: null,
@@ -40,7 +38,7 @@
     topicPicture : null
   };
   export default {
-    name: 'TopicDetail',
+    name: 'IntegralGiftsDetail',
     components:{SingleUpload},
     props: {
       isEdit: {
@@ -53,8 +51,8 @@
         homeAdvertise: {},
         rules: {
           name: [
-            {required: true, message: '请输入话题名称', trigger: 'blur'},
-            {min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur'}
+            {required: true, message: '请输入礼品名称', trigger: 'blur'},
+            {min: 1, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur'}
           ],
           url: [
             {required: true, message: '请输入广告链接', trigger: 'blur'}
@@ -74,7 +72,7 @@
     },
     created(){
       if (this.isEdit) {
-        getTopicById(this.$route.query.id).then(response => {
+        findIntegralGiftsInfoById(this.$route.query.id).then(response => {
           this.homeAdvertise = response.data;
         });
       }else{
@@ -91,7 +89,7 @@
               type: 'warning'
             }).then(() => {
               if (this.isEdit) {
-                updateTopicList(this.$route.query.id, this.homeAdvertise).then(response => {
+                updateIntegralGifts(this.$route.query.id, this.homeAdvertise).then(response => {
                   this.$refs[formName].resetFields();
                   this.$message({
                     message: '修改成功',
@@ -101,7 +99,7 @@
                   this.$router.back();
                 });
               } else {
-                addTopicList(this.homeAdvertise).then(response => {
+                addIntegralGifts(this.homeAdvertise).then(response => {
                   this.$refs[formName].resetFields();
                   this.homeAdvertise = Object.assign({},defaultHomeAdvertise);
                   this.$message({
