@@ -41,7 +41,7 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
-      <el-button size="mini" class="btn-add" @click="handleAdd()">添加广告</el-button>
+      <el-button size="mini" class="btn-add" @click="handleAdd()">添加话题</el-button>
     </el-card>
     <div class="table-container">
       <el-table ref="homeAdvertiseTable"
