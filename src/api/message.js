@@ -23,24 +23,24 @@ export function batchSendMessage(params, userType, param2) {
     data: param2
   })
 }
-export function fetchList(params) {
+export function fetchList(data) {
   return request({
     url:'/ums/message/list',
-    method:'get',
-    params:params
+    method:'post',
+    data:data
   })
 }
 export function updateStatus(id,params) {
   return request({
-    url:'/home/advertise/update/status/'+id,
+    url:'/ums/message/update/isCancel/'+id,
     method:'post',
     params:params
   })
 }
-export function deleteHomeAdvertise(data) {
+export function deleteNotice(param) {
   return request({
-    url:'/home/advertise/delete',
+    url:'/ums/message/delete',
     method:'post',
-    data:data
+    params:param
   })
 }
