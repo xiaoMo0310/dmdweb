@@ -385,6 +385,7 @@
     created() {
       this.id = this.list = this.$route.query.id;
       getOrderDetail(this.id).then(response => {
+          console.log(response)
         this.order = response.data;
       });
     },
