@@ -491,8 +491,15 @@ export const constantRouterMap = [
       {
         path: 'dynamicLog',
         name: 'dynamicLog',
-        component: () => import('@/views/social/dynamicLog/index'),
+        component: () => import('@/views/social/diveLog/index'),
         meta: {title: '潜水日志管理', icon: "dynamicLog"},
+      },
+      {
+        path: 'selectAirbottle',
+        name: 'selectAirbottle',
+        component: () => import('@/views/social/diveLog/select'),
+        meta: {title: '用户气瓶消耗量查询'},
+        hidden:true
       },
     ]
   },
