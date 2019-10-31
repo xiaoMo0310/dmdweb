@@ -33,6 +33,58 @@ export const constantRouterMap = [
     }]
   },
   {
+    path:'/ums',
+    component: Layout,
+    redirect: '/ums/member',
+    name: 'ums',
+    meta: {title: '用户', icon: 'user'},
+    children: [
+      {
+        path: 'userManagement',
+        name: 'userManagement',
+        component: () => import('@/views/ums/member/index'),
+        meta: {title: '用户管理', icon: "form"},
+      },
+      {
+        path: 'coachManagement',
+        name: 'coachManagement',
+        component: () => import('@/views/ums/coach/index'),
+        meta: {title: '教练管理', icon: "eye"},
+      },
+      {
+        path: 'supplierManagement',
+        name: 'supplierManagement',
+        component: () => import('@/views/ums/supplier/index'),
+        meta: {title: '供应商管理', icon: "example"},
+        hidden:true
+      }
+    ]
+  },
+
+  {
+    path: '',
+    component: Layout,
+    redirect: '/admin/permission',
+    name: 'admin',
+    meta: {title: '权限管理', icon: 'authority_management'},
+    children: [{
+      path: 'adminPerson',
+      name: 'adminPerson',
+      component: () => import('@/views/home/index'),
+      meta: {title: '管理员', icon: 'adminPerson'}
+    },{
+      path: 'permission_group',
+      name: 'permission_group',
+      component: () => import('@/views/home/index'),
+      meta: {title: '权限组', icon: 'permission_group'}
+    },{
+      path: 'operation_log',
+      name: 'operation_log',
+      component: () => import('@/views/home/index'),
+      meta: {title: '操作日志', icon: 'operation_log'}
+    },]
+  },
+/*  {
     path: '/pms',
     component: Layout,
     redirect: '/pms/product',
@@ -140,7 +192,7 @@ export const constantRouterMap = [
         hidden: true
       }
     ]
-  },
+  },*/
   {
     path: '/oms',
     component: Layout,
@@ -311,34 +363,6 @@ export const constantRouterMap = [
     ]
   },
   {
-    path:'/ums',
-    component: Layout,
-    redirect: '/ums/member',
-    name: 'ums',
-    meta: {title: '用户', icon: 'user'},
-    children: [
-      {
-        path: 'userManagement',
-        name: 'userManagement',
-        component: () => import('@/views/ums/member/index'),
-        meta: {title: '用户管理', icon: "form"},
-      },
-      {
-        path: 'coachManagement',
-        name: 'coachManagement',
-        component: () => import('@/views/ums/coach/index'),
-        meta: {title: '教练管理', icon: "eye"},
-      },
-      {
-        path: 'supplierManagement',
-        name: 'supplierManagement',
-        component: () => import('@/views/ums/supplier/index'),
-        meta: {title: '供应商管理', icon: "example"},
-        hidden:true
-      }
-    ]
-  },
-  {
     path:'/oms',
     component: Layout,
     redirect: '/oms/finance',
@@ -402,30 +426,6 @@ export const constantRouterMap = [
         meta: {title: '买家评论',icon: "maijia"},
       },
     ]
-  },
-
-  {
-    path: '',
-    component: Layout,
-    redirect: '/admin/permission',
-    name: 'admin',
-    meta: {title: '权限管理', icon: 'authority_management'},
-    children: [{
-      path: 'adminPerson',
-      name: 'adminPerson',
-      component: () => import('@/views/home/index'),
-      meta: {title: '管理员', icon: 'adminPerson'}
-    },{
-      path: 'permission_group',
-      name: 'permission_group',
-      component: () => import('@/views/home/index'),
-      meta: {title: '权限组', icon: 'permission_group'}
-    },{
-      path: 'operation_log',
-      name: 'operation_log',
-      component: () => import('@/views/home/index'),
-      meta: {title: '操作日志', icon: 'operation_log'}
-    },]
   },
   {
     path:'/integral',
