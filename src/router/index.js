@@ -407,23 +407,23 @@ export const constantRouterMap = [
   {
     path: '',
     component: Layout,
-    redirect: '/admin/permission',
-    name: 'admin',
+    redirect: '/permission/permission',
+    name: 'permission',
     meta: {title: '权限管理', icon: 'authority_management'},
     children: [{
       path: 'adminPerson',
       name: 'adminPerson',
-      component: () => import('@/views/home/index'),
+      component: () => import('@/views/permission/adminPerson/index'),
       meta: {title: '管理员', icon: 'adminPerson'}
     },{
-      path: 'permission_group',
-      name: 'permission_group',
-      component: () => import('@/views/home/index'),
+      path: 'permissionGroup',
+      name: 'permissionGroup',
+      component: () => import('@/views/permission/permissionGroup/index'),
       meta: {title: '权限组', icon: 'permission_group'}
     },{
-      path: 'operation_log',
-      name: 'operation_log',
-      component: () => import('@/views/home/index'),
+      path: 'operationLog',
+      name: 'operationLog',
+      component: () => import('@/views/permission/operationLog/index'),
       meta: {title: '操作日志', icon: 'operation_log'}
     },]
   },
