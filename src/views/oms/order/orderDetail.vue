@@ -62,16 +62,16 @@
           <el-col :span="4" class="table-cell-title">配送方式</el-col>
           <el-col :span="4" class="table-cell-title">物流单号</el-col>
           <el-col :span="4" class="table-cell-title">自动确认收货时间</el-col>
-          <el-col :span="4" class="table-cell-title">订单可得优币</el-col>
-          <el-col :span="4" class="table-cell-title">订单可得成长值</el-col>
-          <el-col :span="4" class="table-cell-title">活动信息</el-col>
+          <el-col :span="4" class="table-cell-title">订单可得积分</el-col>
+          <!--<el-col :span="4" class="table-cell-title">订单可得成长值</el-col>
+          <el-col :span="4" class="table-cell-title">活动信息</el-col>-->
         </el-row>
         <el-row>
           <el-col :span="4" class="table-cell">{{order.deliveryCompany | formatNull}}</el-col>
           <el-col :span="4" class="table-cell">{{order.deliverySn | formatNull}}</el-col>
           <el-col :span="4" class="table-cell">{{order.autoConfirmDay}}天</el-col>
           <el-col :span="4" class="table-cell">{{order.integration}}</el-col>
-          <el-col :span="4" class="table-cell">{{order.growth}}</el-col>
+          <!--<el-col :span="4" class="table-cell">{{order.growth}}</el-col>
           <el-col :span="4" class="table-cell">
             <el-popover
               placement="top-start"
@@ -81,7 +81,7 @@
               :content="order.promotionInfo">
               <span slot="reference">{{order.promotionInfo | formatLongText}}</span>
             </el-popover>
-          </el-col>
+          </el-col>-->
         </el-row>
       </div>
       <div style="margin-top: 20px">
@@ -385,7 +385,6 @@
     created() {
       this.id = this.list = this.$route.query.id;
       getOrderDetail(this.id).then(response => {
-          console.log(response)
         this.order = response.data;
       });
     },
@@ -424,9 +423,9 @@
       },
       formatOrderType(value) {
         if (value === 1) {
-          return '秒杀订单';
+          return '预约订单';
         } else {
-          return '正常订单';
+          return '普通订单';
         }
       },
       formatAddress(order) {
