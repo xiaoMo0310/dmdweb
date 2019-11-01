@@ -66,22 +66,22 @@
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="用户名" width="180" align="center">
+        <el-table-column label="用户名" align="center">
           <template slot-scope="scope">{{scope.row.username}}</template>
         </el-table-column>
-        <el-table-column label="用户昵称" width="180" align="center">
+        <el-table-column label="用户昵称" align="center">
           <template slot-scope="scope">{{scope.row.nickname}}</template>
         </el-table-column>
-        <el-table-column label="手机号码" width="180" align="center">
+        <el-table-column label="手机号码" align="center">
           <template slot-scope="scope">{{scope.row.phone}}</template>
         </el-table-column>
-        <el-table-column label="身份证号码" width="180" align="center">
+        <el-table-column label="身份证号码" align="center">
           <template slot-scope="scope">{{scope.row.identityCard}}</template>
         </el-table-column>
-        <el-table-column label="注册时间" width="200" align="center">
+        <el-table-column label="注册时间" align="center">
           <template slot-scope="scope">{{scope.row.createTime}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="205" align="center">
+        <el-table-column label="操作" width="300" align="center">
           <template slot-scope="scope">
             <!--<el-button
               size="mini"

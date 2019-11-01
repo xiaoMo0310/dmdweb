@@ -35,7 +35,7 @@ export const constantRouterMap = [
   {
     path:'/ums',
     component: Layout,
-    redirect: '/ums/member',
+    redirect: '#',
     name: 'ums',
     meta: {title: '用户', icon: 'user'},
     children: [
@@ -64,25 +64,39 @@ export const constantRouterMap = [
   {
     path: '',
     component: Layout,
-    redirect: '/admin/permission',
-    name: 'admin',
+    redirect: '#',
+    name: 'permission',
     meta: {title: '权限管理', icon: 'authority_management'},
     children: [{
       path: 'adminPerson',
       name: 'adminPerson',
-      component: () => import('@/views/home/index'),
+      component: () => import('@/views/permission/adminPerson/index'),
       meta: {title: '管理员', icon: 'adminPerson'}
     },{
-      path: 'permission_group',
-      name: 'permission_group',
-      component: () => import('@/views/home/index'),
+      path: 'permissionGroup',
+      name: 'permissionGroup',
+      component: () => import('@/views/permission/permissionGroup/index'),
       meta: {title: '权限组', icon: 'permission_group'}
     },{
-      path: 'operation_log',
-      name: 'operation_log',
-      component: () => import('@/views/home/index'),
+      path: 'operationLog',
+      name: 'operationLog',
+      component: () => import('@/views/permission/operationLog/index'),
       meta: {title: '操作日志', icon: 'operation_log'}
-    },]
+    },
+      {
+        path: 'addUser',
+        name: 'addUser',
+        component: () => import('@/views/permission/adminPerson/addUser'),
+        meta: {title: '添加管理员'},
+        hidden:true
+      },
+      {
+        path: 'permission',
+        name: 'permission',
+        component: () => import('@/views/permission/adminPerson/permission'),
+        meta: {title: '权限操作'},
+        hidden:true
+      }]
   },
 /*  {
     path: '/pms',
@@ -196,7 +210,7 @@ export const constantRouterMap = [
   {
     path: '/oms',
     component: Layout,
-    redirect: '/oms/order',
+    redirect: '#',
     name: 'oms',
     meta: {title: '订单管理', icon: 'order'},
     children: [
@@ -252,7 +266,7 @@ export const constantRouterMap = [
   {
     path:'/sms',
     component: Layout,
-    redirect: '/sms/coupon',
+    redirect: '#',
     name: 'sms',
     meta: {title: '营销管理', icon: 'sms'},
     children: [
@@ -365,7 +379,7 @@ export const constantRouterMap = [
   {
     path:'/oms',
     component: Layout,
-    redirect: '/oms/finance',
+    redirect: '#',
     name: 'finance',
     meta: {title: '财务', icon: 'user'},
     children: [
@@ -380,7 +394,7 @@ export const constantRouterMap = [
   {
     path:'/topic',
     component: Layout,
-    redirect: '/topic/topic',
+    redirect: '#',
     name: 'topic',
     meta: {title: '话题管理', icon: 'topic'},
     children: [
@@ -409,7 +423,7 @@ export const constantRouterMap = [
   {
     path:'/comment',
     component: Layout,
-    redirect: '/comment/comment',
+    redirect: '#',
     name: 'comment',
     meta: {title: '评论管理', icon: 'comment'},
     children: [
@@ -428,33 +442,11 @@ export const constantRouterMap = [
     ]
   },
 
-  {
-    path: '',
-    component: Layout,
-    redirect: '/permission/permission',
-    name: 'permission',
-    meta: {title: '权限管理', icon: 'authority_management'},
-    children: [{
-      path: 'adminPerson',
-      name: 'adminPerson',
-      component: () => import('@/views/permission/adminPerson/index'),
-      meta: {title: '管理员', icon: 'adminPerson'}
-    },{
-      path: 'permissionGroup',
-      name: 'permissionGroup',
-      component: () => import('@/views/permission/permissionGroup/index'),
-      meta: {title: '权限组', icon: 'permission_group'}
-    },{
-      path: 'operationLog',
-      name: 'operationLog',
-      component: () => import('@/views/permission/operationLog/index'),
-      meta: {title: '操作日志', icon: 'operation_log'}
-    },]
-  },
+
   {
     path:'/integral',
     component: Layout,
-    redirect: '/integral/integral',
+    redirect: '#',
     name: 'integral',
     meta: {title: '积分管理', icon: 'jifen'},
     children: [
@@ -502,7 +494,7 @@ export const constantRouterMap = [
   {
     path:'/social',
     component: Layout,
-    redirect: '/social/social',
+    redirect: '#',
     name: 'social',
     meta: {title: '社交管理', icon: 'social'},
     children: [
@@ -530,7 +522,7 @@ export const constantRouterMap = [
   {
     path:'/dmd',
     component: Layout,
-    redirect: '/dmd/message',
+    redirect: '#',
     name: 'message',
     meta: {title: '消息中心', icon: 'jifen'},
     children: [
