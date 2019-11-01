@@ -88,6 +88,9 @@
         <el-table-column label="用户账号" align="center">
           <template slot-scope="scope">{{scope.row.memberUsername}}</template>
         </el-table-column>
+        <el-table-column label="订单类型" align="center">
+          <template slot-scope="scope">{{scope.row.orderType | orderType}}</template>
+        </el-table-column>
         <el-table-column label="订单金额" width="120" align="center">
           <template slot-scope="scope">￥{{scope.row.totalAmount}}</template>
         </el-table-column>
@@ -214,7 +217,7 @@
             value: 0
           },
           {
-            label: '待发货',
+            label: '已支付',
             value: 1
           },
           {
@@ -228,6 +231,10 @@
           {
             label: '已关闭',
             value: 4
+          },
+          {
+            label: '售后',
+            value: 5
           }
         ],
         orderTypeOptions: [
@@ -236,7 +243,7 @@
             value: 0
           },
           {
-            label: '秒杀订单',
+            label: '预约订单',
             value: 1
           }
         ],
@@ -293,7 +300,7 @@
       },
       formatStatus(value) {
         if (value === 1) {
-          return '待发货';
+          return '已支付';
         } else if (value === 2) {
           return '已发货';
         } else if (value === 3) {
@@ -301,11 +308,19 @@
         } else if (value === 4) {
           return '已关闭';
         } else if (value === 5) {
-          return '无效订单';
+          return '售后';
         } else {
           return '待付款';
         }
       },
+      orderType(value){
+          if(value === 0){
+            return "普通订单"
+          }else {
+              return "预约订单"
+          }
+      }
+
     },
     methods: {
       handleResetSearch() {
