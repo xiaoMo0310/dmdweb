@@ -57,7 +57,13 @@ export const constantRouterMap = [
         component: () => import('@/views/ums/supplier/index'),
         meta: {title: '供应商管理', icon: "example"},
         hidden:true
-      }
+      },
+      {
+        path: 'divingCertificate',
+        name: 'divingCertificate',
+        component: () => import('@/views/ums/divingCertificate/index'),
+        meta: {title: '潜水证书申请', icon: "divingCertificate"},
+      },
     ]
   },
 
