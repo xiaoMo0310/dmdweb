@@ -19,7 +19,9 @@ import '@/permission' // permission control
 import tinymce from 'tinymce/tinymce'
 import Editor from '@tinymce/tinymce-vue'
 import 'tinymce/themes/mobile/theme.js'
-
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+Vue.use(preview)
 Vue.use(ElementUI, { locale })
 Vue.use(VCharts)
 
