@@ -15,3 +15,22 @@ export function addAdmin(param) {
     data: param
   })
 }
+
+
+//权限列表
+export function permissionAll(param) {
+  return request({
+    url:'/admin/allPermission',
+    method:'post',
+    data: param
+  })
+}
+//禁用权限
+export function isForbiddenPermission(param) {
+  return request({
+    url:'/admin/isForbiddenPermission',
+    method:'post',
+    data: param
+  })
+}
+

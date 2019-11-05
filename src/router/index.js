@@ -79,10 +79,15 @@ export const constantRouterMap = [
       component: () => import('@/views/permission/adminPerson/index'),
       meta: {title: '管理员', icon: 'adminPerson'}
     },{
-      path: 'permissionGroup',
-      name: 'permissionGroup',
-      component: () => import('@/views/permission/permissionGroup/index'),
-      meta: {title: '权限组', icon: 'permission_group'}
+      path: 'role',
+      name: 'role',
+      component: () => import('@/views/permission/role/index'),
+      meta: {title: '角色管理', icon: 'permission_group'}
+    },{
+      path: 'permissionAll',
+      name: 'permissionAll',
+      component: () => import('@/views/permission/permissionAll/index'),
+      meta: {title: '权限管理', icon: 'permission_group'}
     },{
       path: 'operationLog',
       name: 'operationLog',
@@ -102,6 +107,11 @@ export const constantRouterMap = [
         component: () => import('@/views/permission/adminPerson/permission'),
         meta: {title: '权限操作'},
         hidden:true
+      },{
+        path: 'addPermission',
+        name: 'addPermission',
+        component: () => import('@/views/permission/addPermission/index'),
+        meta: {title: '权限管理', icon: 'permission_group'}
       }]
   },
 /*  {

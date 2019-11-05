@@ -1,60 +1,60 @@
 <template> 
   <div class="app-container">
-
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
-      <span>管理员列表</span>
+      <span>权限列表</span>
       <el-button style="float:right;"
-        size="mini"
-        @click="addUser()">添加用户
+                 size="mini"
+                 @click="addPermission()">添加权限
       </el-button>
     </el-card>
     <div class="table-container">
-      <el-table ref="adminTable"
+      <el-table ref="orderTable"
                 :data="list"
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
-<!--        <el-table-column type="selection" width="60" align="center"></el-table-column>-->
+        <el-table-column type="selection" width="60" align="center"></el-table-column>
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="用户名" align="center">
-          <template slot-scope="scope">{{scope.row.username}}</template>
+        <el-table-column label="父权限id" width="80" align="center">
+          <template slot-scope="scope">{{scope.row.pid}}</template>
         </el-table-column>
-        <el-table-column label="用户昵称" align="center">
-          <template slot-scope="scope">{{scope.row.nickName}}</template>
+        <el-table-column label="名称" align="center">
+          <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
-        <el-table-column label="注册时间" align="center">
-          <template slot-scope="scope">{{scope.row.createTime}}</template>
+        <el-table-column label="权限值" align="center">
+          <template slot-scope="scope">{{scope.row.value}}</template>
         </el-table-column>
-        <el-table-column label="是否启用" align="center">
-          <template slot-scope="scope">{{scope.row.status==1?"启用":"禁用"}}</template>
+        <el-table-column label="图标" align="center">
+          <template slot-scope="scope">{{scope.row.icon}}</template>
         </el-table-column>
-        <el-table-column label="备注" align="center">
-          <template slot-scope="scope">{{scope.row.note}}</template>
+        <el-table-column label="权限类型" align="center">
+          <template slot-scope="scope">{{scope.row.type}}</template>
         </el-table-column>
-
-        <el-table-column label="操作" align="center" style="border-right: 0;">
+        <el-table-column label="前端资源路径" align="center">
+          <template slot-scope="scope">{{scope.row.uri}}</template>
+        </el-table-column>
+        <el-table-column label="启用状态" align="center">
+          <template slot-scope="scope">{{scope.row.status}}</template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
+            <!--<el-button
+              size="mini"
+              @click="handleViewUserDetail(scope.$index, scope.row)"
+            >详细信息
+            </el-button>-->
             <el-button
               size="mini"
-              @click="handleFreezeUser(scope.$index, scope.row)">删除
-            </el-button>
-            <el-button
-              size="mini"
-              @click="handleFreezeUser(scope.$index, scope.row)"
-              v-show="scope.row.status===0">启用
-            </el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleFreezeUser(scope.$index, scope.row)"
+              @click="isForbiddenPermission(scope.row.id,0)"
               v-show="scope.row.status===1">禁用
             </el-button>
             <el-button
               size="mini"
-              @click="permission()">分配角色
+              @click="isForbiddenPermission(scope.row.id,1)"
+              v-show="scope.row.status===0">启用
             </el-button>
           </template>
         </el-table-column>
@@ -75,7 +75,7 @@
   </div>
 </template>
 <script>
-    import {adminList} from '@/api/admin'
+    import {permissionAll,isForbiddenPermission} from '@/api/admin'
 
     const defaultListQuery = {
         pageNum: 1,
@@ -87,7 +87,7 @@
         identityCard: null
     };
     export default {
-        name: "adminList",
+        name: "permissionList",
         components: {},
         data() {
             return {
@@ -119,24 +119,41 @@
                 this.listQuery.pageSize = val;
                 this.getList();
             },
-            addUser() {
-                this.$router.push({name: 'addUser'})
-            },
             handleCurrentChange(val) {
                 this.listQuery.pageNum = val;
                 this.getList();
             },
             getList() {
                 this.listLoading = true;
-                adminList(this.listQuery).then(response => {
+                permissionAll(this.listQuery).then(response => {
                     this.listLoading = false;
-                    this.list=response.data.list;
-                    console.log(response.data.list)
+                    this.list=response.result.list;
+                    this.total = response.result.total;
+                    console.log(response.result);
+                    console.log("这是权限列表")
                 });
 
             },
+            isForbiddenPermission(id,status){
+                let params = new URLSearchParams();
+                params.append("id",id);
+                params.append("status",status);
+                isForbiddenPermission(params).then(response => {
+                    console.log(response.data);
+                    console.log("====================");
+                    this.$message({
+                        message: '操作成功！',
+                        type: 'success',
+                        duration: 1000
+                    });
+                    this.getList();
+                });
+            },
             permission(){
                 this.$router.push({name: 'permission'})
+            },
+            addPermission(){
+                this.$router.push({name: 'addUser'})
             }
         }
     }
