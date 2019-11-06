@@ -126,7 +126,7 @@
             </el-button>
             <el-button size="mini"
                        type="danger "
-                       @click="handUpdate(scope.$index, scope.row)"
+                       @click="handUpdate2(scope.$index, scope.row)"
                        v-show="scope.row.status!=2"
             >不通过审核
             </el-button>
@@ -273,9 +273,9 @@
           ids.push(this.multipleSelection[i].id);
         }
         if(this.operateType===1){
-          this.updateDiveCertificateStatusPass(ids,2);
+          this.updateDiveCertificateStatusPass(ids);
         }if(this.operateType===2){
-          this.updateDiveCertificateStatusPass(ids,1);
+          this.updateDiveCertificateStatusPass2(ids);
         }
         else {
           this.$message({
@@ -342,7 +342,10 @@
       },*/
 
       handUpdate(index, row){
-        this.updateDiveCertificateStatusPass(row.id, row.status);
+        this.updateDiveCertificateStatusPass(row.id);
+      },
+      handUpdate2(index, row){
+        this.updateDiveCertificateStatusPass2(row.id);
       },
       getList() {
         this.listLoading = true;
@@ -374,8 +377,7 @@
         })
       },
 
-      updateDiveCertificateStatusPass(id, status){
-        if(status == 2){
+      updateDiveCertificateStatusPass(id){
           this.$confirm('是否通过审核?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -392,7 +394,8 @@
               this.getList();
             });
           })
-        }if(status == 1){
+      },
+      updateDiveCertificateStatusPass2(id){
           this.$confirm('是否不通过审核', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -409,7 +412,6 @@
               this.getList();
             });
           })
-        }
       },
     }
   }
