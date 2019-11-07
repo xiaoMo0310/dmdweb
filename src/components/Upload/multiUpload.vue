@@ -21,6 +21,7 @@
 </template>
 <script>
   import {policy} from '@/api/oss'
+  import {uploadFileAll} from '@/api/uploadAll'
 
   export default {
     name: 'multiUpload',
