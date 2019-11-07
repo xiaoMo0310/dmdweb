@@ -63,7 +63,11 @@
           <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
         <el-table-column label="礼品图片"  align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.picture"></template>
+          <template slot-scope="scope" >
+            <div v-for="item in getImg(scope.row.picture)">
+              <img style="height: 80px" :src="item">
+            </div>
+          </template>
         </el-table-column>
         <el-table-column label="所需积分"  align="center">
           <template slot-scope="scope">{{scope.row.integral}}</template>
@@ -138,25 +142,36 @@
 
   export default {
     name: 'searchqueryIntegralGifts',
+
     data() {
       return {
+
         listQuery: Object.assign({}, defaultListQuery),
         list: null,
         total: null,
         listLoading: false,
         multipleSelection: [],
+        /*msg :[
+          {
+            picture:null
+          },
+        ],*/
         operates: [
           {
             label: "删除",
             value: 0
           }
         ],
-        operateType: null
+        operateType: null,
+
       }
+
     },
     created() {
       this.getList();
+
     },
+
     filters:{
       formatTime(time){
         if(time==null){
@@ -167,6 +182,7 @@
       },
     },
     methods: {
+
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
       },
@@ -230,6 +246,12 @@
           console.log(response.data.list)
 
         })
+      },
+      getImg(val){
+        if(val!=null){
+          var words = val.split(',');
+          return words;
+        }
       },
       deleteIntegralGiftsById(ids){
         this.$confirm('是否要删除该话题?', '提示', {

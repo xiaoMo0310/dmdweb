@@ -82,7 +82,11 @@
           <template slot-scope="scope">{{scope.row.dynamicAddress}}</template>
         </el-table-column>
         <el-table-column label="动态图片" width="170" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.dynamicPicture"></template>
+          <template slot-scope="scope">
+            <div v-for="item in getImg(scope.row.dynamicPicture)">
+              <img style="height: 80px" :src="item">
+            </div>
+          </template>
         </el-table-column>
         <el-table-column label="点赞数" align="center">
           <template slot-scope="scope">{{scope.row.dynamicPraise}}</template>
@@ -208,6 +212,12 @@
           }
         })
       },*/
+      getImg(val){
+        if(val!=null){
+          var words = val.split(',');
+          return words;
+        }
+      },
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
       },

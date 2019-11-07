@@ -103,7 +103,11 @@
           <template slot-scope="scope">{{scope.row.divingIdea}}</template>
         </el-table-column>
         <el-table-column label="潜水照片" width="120" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.divingPictures"></template>
+          <template slot-scope="scope">
+            <div v-for="item in getImg(scope.row.divingPictures)">
+              <img style="height: 80px" :src="item">
+            </div>
+          </template>
         </el-table-column>
         <el-table-column label="潜水配重" align="center">
           <template slot-scope="scope">{{scope.row.additionalWeight}}</template>
@@ -124,7 +128,11 @@
           <template slot-scope="scope">{{scope.row.visibility}}</template>
         </el-table-column>
         <el-table-column label="动物照片" width="120" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.animalPhotos"></template>
+          <template slot-scope="scope">
+            <div v-for="item2 in getImg2(scope.row.animalPhotos)">
+              <img style="height: 80px" :src="item2">
+            </div>
+          </template>
         </el-table-column>
         <el-table-column label="湿衣品牌" align="center">
           <template slot-scope="scope">{{scope.row.clothingBrand}}</template>
@@ -339,6 +347,18 @@
             type: 'warning',
             duration: 1000
           });
+        }
+      },
+      getImg(val){
+        if(val!=null){
+          var words = val.split(',');
+          return words;
+        }
+      },
+      getImg2(val){
+        if(val!=null){
+          var words = val.split(',');
+          return words;
         }
       },
       handleAdd(){
