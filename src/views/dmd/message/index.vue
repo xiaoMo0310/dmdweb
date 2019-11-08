@@ -111,7 +111,7 @@
             <p>{{scope.row.umsNotice.createdTime | formatTime}}</p>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
                        @click="handleUpdate(scope.$index, scope.row)">通知用户列表

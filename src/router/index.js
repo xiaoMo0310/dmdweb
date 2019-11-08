@@ -115,14 +115,14 @@ export const constantRouterMap = [
         hidden:true
       }]
   },
-/*  {
+  {
     path: '/pms',
     component: Layout,
     redirect: '/pms/product',
     name: 'pms',
     meta: {title: '商品', icon: 'product'},
     children: [
-      {
+      /*{
       path: 'product',
       name: 'product',
       component: () => import('@/views/pms/product/index'),
@@ -221,9 +221,35 @@ export const constantRouterMap = [
         component: () => import('@/views/pms/brand/update'),
         meta: {title: '编辑品牌'},
         hidden: true
+      },*/
+      {
+        path: 'productReview',
+        name: 'productReview',
+        component: () => import('@/views/pms/certificate/index'),
+        meta: {title: '商品审核', icon: 'product-comment'},
+      },
+      {
+        path: 'certificateList',
+        name: 'certificateList',
+        component: () => import('@/views/pms/certificate/index'),
+        meta: {title: '证书列表', icon: 'product-brand'},
+      },
+      {
+        path: 'addCertificate',
+        name: 'addCertificate',
+        component: () => import('@/views/pms/certificate/add'),
+        meta: {title: '添加证书'},
+        hidden: true
+      },
+      {
+        path: 'updateCertificate',
+        name: 'updateCertificate',
+        component: () => import('@/views/pms/certificate/update'),
+        meta: {title: '修改证书'},
+        hidden: true
       }
     ]
-  },*/
+  },
   {
     path: '/oms',
     component: Layout,
@@ -398,13 +424,26 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '#',
     name: 'finance',
-    meta: {title: '财务', icon: 'user'},
+    meta: {title: '财务管理', icon: 'total-today'},
     children: [
+      {
+        path: 'auditTransferManagement',
+        name: 'auditTransferManagement',
+        component: () => import('@/views/oms/finance/index'),
+        meta: {title: '收支明细', icon: "total-today"}
+      },
       {
         path: 'financialManagement',
         name: 'financialManagement',
-        component: () => import('@/views/oms/finance/index'),
-        meta: {title: '财务管理', icon: "total-today"}
+        component: () => import('@/views/oms/finance/review'),
+        meta: {title: '分账管理', icon: "total-today"}
+      },
+      {
+        path: 'reviewDetail',
+        name: 'reviewDetail',
+        component: () => import('@/views/oms/finance/reviewDetail'),
+        meta: {title: '分账详情', icon: "total-today"},
+        hidden:true
       }
     ]
   },
