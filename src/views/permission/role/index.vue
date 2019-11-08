@@ -1,4 +1,4 @@
-<template> 
+<template xmlns:v-bind="http://www.w3.org/1999/xhtml"> 
   <div class="app-container">
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
@@ -19,13 +19,13 @@
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="角色名称" align="center">
-          <template slot-scope="scope">{{scope.row.username}}</template>
+          <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
         <el-table-column label="角色描述" align="center">
-          <template slot-scope="scope">{{scope.row.nickname}}</template>
+          <template slot-scope="scope">{{scope.row.description}}</template>
         </el-table-column>
         <el-table-column label="是否启用" align="center">
-          <template slot-scope="scope">{{scope.row.phone}}</template>
+          <template slot-scope="scope">{{scope.row.status}}</template>
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -46,12 +46,12 @@
             <el-button
               size="mini"
               type="danger"
-              @click="handleFreezeUser(scope.$index, scope.row)"
-              v-show="scope.row.status===1">分配权限
+              @click="allocation(scope.row.id)">分配权限
             </el-button>
           </template>
         </el-table-column>
       </el-table>
+
     </div>
     <div class="pagination-container">
       <el-pagination
@@ -65,18 +65,28 @@
         :total="total">
       </el-pagination>
     </div>
+    <el-card class="form-container" shadow="never" v-show="allocationStatus" style="position: absolute;top: 150px;background-color: white;z-index: 99999;">
+      <div>
+        <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择权限</div>
+        <div v-for="item in items"  v-bind:key="item.message" style="float: left;width: 150px;margin-bottom: 15px;">
+          <el-checkbox v-model="item.check" style="margin-left: 10px;width: 140px;"  border>{{item.name}}</el-checkbox>
+        </div>
+      </div>
+      <div>
+        <el-button style="margin-left: 226px;" @click="submitPermission()">确认</el-button>
+        <el-button @click="closePermission()">返回</el-button>
+      </div>
+
+    </el-card>
   </div>
+
 </template>
 <script>
-    import {selectUserList, freezeUser, batchUpdateUserStatus} from '@/api/user'
+    import {permissionAll,roleList,addPermissionForRole} from '@/api/admin'
     const defaultListQuery = {
         pageNum: 1,
         pageSize: 10,
-        username:null,
-        nickName:null,
-        phone:null,
-        createTime: null,
-        identityCard:null
+        roleId:0
     };
     export default {
         name: "userList",
@@ -87,6 +97,11 @@
                 listLoading: true,
                 list: null,
                 total: null,
+                roleIdForPermission:null,
+                items: [
+                ],
+                roleItems:[],
+                allocationStatus:false,
                 operates: [
                     {
                         label: "冻结",
@@ -146,122 +161,47 @@
             },
             getList() {
                 this.listLoading = true;
-                selectUserList(this.listQuery).then(response => {
+                roleList(this.listQuery).then(response => {
+                    console.log("这是角色类别========================");
                     this.listLoading = false;
                     this.list = response.result.list;
                     this.total = response.result.total;
                 });
             },
-            freezeUser(id, status){
-                if(status == 1){
-                    this.$confirm('是否要进行该冻结操作?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        let params = new URLSearchParams();
-                        params.append("status", 0)
-                        params.append("id",id);
-                        freezeUser(params).then(response=>{
-                            this.$message({
-                                message: '冻结成功！',
-                                type: 'success',
-                                duration: 1000
-                            });
-                            this.getList();
-                        });
-                    })
-                }else {
-                    this.$confirm('是否要进行该启用操作?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        let params = new URLSearchParams();
-                        params.append("status", 1)
-                        params.append("id",id);
-                        freezeUser(params).then(response=>{
-                            this.$message({
-                                message: '启用成功！',
-                                type: 'success',
-                                duration: 1000
-                            });
-                            this.getList();
-                        });
-                    })
-                }
-            },
-            handleBatchOperate() {
-                if(this.operateType==null){
-                    this.$message({
-                        message: '请选择操作类型',
-                        type: 'warning',
-                        duration: 1000
-                    });
-                    return;
-                }
-                if(this.multipleSelection==null||this.multipleSelection.length<1){
-                    if(this.operateType != 3){
-                        this.$message({
-                            message: '请选择要操作的用户',
-                            type: 'warning',
-                            duration: 1000
-                        });
-                        return;
-                    }
-                }
-                if(this.operateType == 3){
-                    this.$confirm(
-                        '是否要进行全部用户通知?', '提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            type: 'warning'
-                        }).then(() => {
-                        this.sendAllMessage();
-                    });
-                }else {
-                    this.$confirm(
-                        '是否要进行该批量操作?', '提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            type: 'warning'
-                        }).then(() => {
-                        let ids=[];
-                        for(let i=0;i<this.multipleSelection.length;i++){
-                            ids.push(this.multipleSelection[i].id);
-                        }
-                        switch (this.operateType) {
-                            case this.operates[0].value:
-                                this.editUserStatus(0,ids);
-                                this.getList();
-                                break;
-                            case this.operates[1].value:
-                                this.editUserStatus(1,ids);
-                                this.getList();
-                                break;
-                            case this.operates[2].value:
-                                this.batchSendMessage(ids);
-                                break;
-                        }
-                    });
-                }
-            },
-            editUserStatus(status, ids){
-                let params = new URLSearchParams();
-                params.append("status", status)
-                params.append("ids",ids);
-                batchUpdateUserStatus(params).then(response=>{
-                    this.$message({
-                        message: '修改成功！',
-                        type: 'success',
-                        duration: 1000
-                    });
-                    this.getList();
+            getListForPermission(roleId){
+                let query =this.listQuery;
+                query.pageSize=50;
+                query.roleId=roleId;
+                permissionAll(this.listQuery).then(response => {
+                    this.items=response.result.list;
                 });
             },
-            handleViewUserDetail(index,row){
-                this.$router.push({path:'/ums/userDetail',query:{id:row.id}})
+            allocation(roleId){
+                this.allocationStatus=true;
+                this.getListForPermission(roleId);
+                this.roleIdForPermission=roleId;
             },
+            submitPermission(){
+                let permissionRelations=[];
+                let items=this.items;
+                for(var i=0;i<items.length;i++){
+                    if(items[i].check){
+                        let permissionRelation={roleId:this.roleIdForPermission,permissionId:items[i].id};
+                        permissionRelations.push(permissionRelation);
+                    }
+                }
+                console.log(permissionRelations);
+                addPermissionForRole(JSON.stringify(permissionRelations)).then(response => {
+                    console.log("这是角色类别========================");
+                    this.listLoading = false;
+                    this.list = response.result.list;
+                    this.total = response.result.total;
+                });
+            },
+            closePermission(){
+                this.allocationStatus=false;
+            }
+
         }
     }
 </script>

@@ -34,3 +34,32 @@ export function isForbiddenPermission(param) {
   })
 }
 
+//添加权限
+export function addPermission(param) {
+  return request({
+    url:'/admin/addPermission',
+    method:'post',
+    data: param
+  })
+}
+//查询角色拥有的权限
+// export function roleForPermission(param) {
+//   return request({
+//     url:'/admin/roleForPermission',
+//     method:'get',
+//     data: param
+//   })
+// }
+export function roleList(param) {
+  return request({
+    url:'/admin/roleList',
+    method:'post',
+    data: param
+  })
+}export function addPermissionForRole(param) {
+  return request({
+    url:'/admin/addPermissionForRole',
+    method:'post',
+    data: param
+  })
+}

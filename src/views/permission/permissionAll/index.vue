@@ -153,7 +153,7 @@
                 this.$router.push({name: 'permission'})
             },
             addPermission(){
-                this.$router.push({name: 'addUser'})
+                this.$router.push({name: 'addPermission'})
             }
         }
     }

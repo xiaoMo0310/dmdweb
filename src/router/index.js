@@ -107,6 +107,12 @@ export const constantRouterMap = [
         component: () => import('@/views/permission/adminPerson/permission'),
         meta: {title: '权限操作'},
         hidden:true
+      },{
+        path: 'addPermission',
+        name: 'addPermission',
+        component: () => import('@/views/permission/permissionAll/addPermission'),
+        meta: {title: '添加权限', icon: 'permission_group'},
+        hidden:true
       }]
   },
 /*  {

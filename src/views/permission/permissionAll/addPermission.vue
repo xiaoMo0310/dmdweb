@@ -1,37 +1,46 @@
 <template> 
   <el-card class="form-container" shadow="never">
-    <el-form :model="admin"
+    <el-form :model="permission"
              :rules="rules"
-             ref="adminFrom"
+             ref="permissionFrom"
              label-width="150px"
              size="small">
-      <el-form-item label="用户名：" prop="username">
-        <el-input v-model="admin.username" class="input-width"></el-input>
+      <el-form-item label="父权限id：">
+        <el-input v-model="permission.pid" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="密码：" prop="password">
-        <el-input v-model="admin.password" class="input-width"></el-input>
+      <el-form-item label="权限名：">
+        <el-input v-model="permission.name" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱：">
-        <el-input v-model="admin.email" class="input-width"></el-input>
+      <el-form-item label="权限值：">
+        <el-input v-model="permission.value" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="昵称：">
-        <el-input v-model="admin.nickName" class="input-width"></el-input>
+      <el-form-item label="图标：">
+        <el-input v-model="permission.icon" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="备注：">
-        <el-input v-model="admin.note" class="input-width"></el-input>
+      <el-form-item label="权限类型：">
+        <el-input v-model="permission.type" class="input-width"></el-input>
       </el-form-item>
-        <el-button type="primary" @click="onSubmit('adminFrom')">提交</el-button>
-        <el-button v-if="!isEdit" @click="resetForm('adminFrom')">重置</el-button>
-        <el-button type="primary" @click="goBack()">返回</el-button>
+      <el-form-item label="路径：">
+        <el-input v-model="permission.uri" class="input-width"></el-input>
+      </el-form-item>
+      <el-form-item label="是否启用：">
+        <el-input v-model="permission.status" class="input-width"></el-input>
+      </el-form-item>
+      <el-form-item label="排序：">
+        <el-input v-model="permission.sort" class="input-width"></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="onSubmit('permissionFrom')">提交</el-button>
+      <el-button v-if="!isEdit" @click="resetForm('permissionFrom')">重置</el-button>
+      <el-button type="primary" @click="goBack()">返回</el-button>
       </el-form-item>
     </el-form>
   </el-card>
 </template>
 <script>
-    import { addAdmin } from '@/api/admin';
+    import { addPermission } from '@/api/admin';
 
     export default {
-        name: 'addAdmin',
+        name: 'addPermission',
         components:{},
         props: {
             isEdit: {
@@ -42,13 +51,16 @@
         },
         data() {
             return {
-                admin: {
-                    username: null,
-                    password: null,
+                permission: {
+                    pid: null,
+                    name: null,
+                    value: null,
                     icon: null,
-                    email: null,
-                    nickName: null,
-                    note: null
+                    type: null,
+                    uri: null,
+                    status:null,
+                    createTime: null,
+                    sort: null
                 },
                 rules: {
                     username: [
@@ -67,7 +79,7 @@
         },
         methods: {
             onSubmit(formName) {
-                console.log(JSON.stringify(this.admin));
+                console.log(JSON.stringify(this.permission));
                 console.log("这是用户信息");
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
@@ -76,16 +88,16 @@
                             cancelButtonText: '取消',
                             type: 'warning'
                         }).then(() => {
-                            addAdmin(this.admin).then(response => {
+                            addPermission(this.permission).then(response => {
                                 if (response.data!=null){
-                                  console.log(response.data);
-                                  console.log("=============================");
-                                  this.$message({
-                                      message: '提交成功',
-                                      type: 'success',
-                                      duration:1000
-                                  });
-                                  this.$router.back();
+                                    console.log(response.data);
+                                    console.log("=============================");
+                                    this.$message({
+                                        message: '提交成功',
+                                        type: 'success',
+                                        duration:1000
+                                    });
+                                    this.$router.back();
                                 }else{
                                     this.$message({
                                         message: '用户名重复',
@@ -108,7 +120,7 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
-                this.admin = {
+                this.permission = {
                     username: null,
                     password: null,
                     email: null,
