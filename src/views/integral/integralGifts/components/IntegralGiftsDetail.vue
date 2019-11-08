@@ -30,6 +30,7 @@
 </template>
 <script>
   import SingleUpload from '@/components/Upload/singleUpload'
+  import MultiUpload from '@/components/Upload/multiUpload'
   import {updateIntegralGifts, findIntegralGiftsInfoById , addIntegralGifts} from '@/api/integralGifts'
   const defaultHomeAdvertise = {
     topicName: null,
@@ -39,7 +40,7 @@
   };
   export default {
     name: 'IntegralGiftsDetail',
-    components:{SingleUpload},
+    components:{SingleUpload,MultiUpload},
     props: {
       isEdit: {
         type: Boolean,

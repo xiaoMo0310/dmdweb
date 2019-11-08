@@ -98,7 +98,11 @@
           <template slot-scope="scope">{{scope.row.productAttribute}}</template>
         </el-table-column>
         <el-table-column label="展示图片" width="120" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pics"></template>
+          <template slot-scope="scope">
+            <div  v-for="item in getImg(scope.row.pics)">
+              <img style="height: 80px" :src="item">
+            </div>
+          </template>
         </el-table-column>
         <el-table-column label="评论内容" width="220" align="center">
           <template slot-scope="scope">{{scope.row.content}}</template>
@@ -246,6 +250,12 @@
           console.log(response.data.list)
 
         })
+      },
+      getImg(val){
+          if(val!=null){
+            var words = val.split(',');
+            return words;
+          }
       },
       deleteBuyerComments(ids){
         this.$confirm('是否要删除该评论?', '提示', {
