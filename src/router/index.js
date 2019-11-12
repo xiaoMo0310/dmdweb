@@ -93,27 +93,31 @@ export const constantRouterMap = [
       name: 'operationLog',
       component: () => import('@/views/permission/operationLog/index'),
       meta: {title: '操作日志', icon: 'operation_log'}
-    },
-      {
-        path: 'addUser',
-        name: 'addUser',
-        component: () => import('@/views/permission/adminPerson/addUser'),
-        meta: {title: '添加管理员'},
-        hidden:true
-      },
-      {
-        path: 'permission',
-        name: 'permission',
-        component: () => import('@/views/permission/adminPerson/permission'),
-        meta: {title: '权限操作'},
-        hidden:true
-      },{
-        path: 'addPermission',
-        name: 'addPermission',
-        component: () => import('@/views/permission/permissionAll/addPermission'),
-        meta: {title: '添加权限', icon: 'permission_group'},
-        hidden:true
-      }]
+    },{
+      path: 'addUser',
+      name: 'addUser',
+      component: () => import('@/views/permission/adminPerson/addUser'),
+      meta: {title: '添加管理员'},
+      hidden:true
+    }, {
+      path: 'permission',
+      name: 'permission',
+      component: () => import('@/views/permission/adminPerson/permission'),
+      meta: {title: '权限操作'},
+      hidden:true
+    },{
+      path: 'addPermission',
+      name: 'addPermission',
+      component: () => import('@/views/permission/permissionAll/addPermission'),
+      meta: {title: '添加权限', icon: 'permission_group'},
+      hidden:true
+    },{
+      path: 'addRole',
+      name: 'addRole',
+      component: () => import('@/views/permission/role/addRole'),
+      meta: {title: '添加角色', icon: 'permission_group'},
+      hidden:true
+    }]
   },
   {
     path: '/pms',

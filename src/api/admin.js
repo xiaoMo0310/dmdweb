@@ -56,9 +56,53 @@ export function roleList(param) {
     method:'post',
     data: param
   })
-}export function addPermissionForRole(param) {
+}
+export function addPermissionForRole(param) {
   return request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
     url:'/admin/addPermissionForRole',
+    method:'post',
+    data: param
+  })
+}
+export function isEnableRole(param) {
+  return request({
+    url:'/admin/isEnableRole',
+    method:'post',
+    data: param
+  })
+}
+
+export function addRole(param) {
+  return request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url:'/admin/addRole',
+    method:'post',
+    data: param
+  })
+}
+
+export function deleteRoles(param) {
+  return request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url:'/admin/deleteRoles',
+    method:'post',
+    data: param
+  })
+}
+
+export function modifyRole(param) {
+  return request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url:'/admin/modifyRole',
     method:'post',
     data: param
   })

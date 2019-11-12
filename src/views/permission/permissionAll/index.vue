@@ -54,7 +54,7 @@
             <el-button
               size="mini"
               @click="isForbiddenPermission(scope.row.id,1)"
-              v-show="scope.row.status===0">启用
+              v-show="scope.row.status===0" style="margin-left: 0;">启用
             </el-button>
           </template>
         </el-table-column>

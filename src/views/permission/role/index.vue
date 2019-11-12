@@ -5,7 +5,12 @@
       <span>角色列表</span>
       <el-button style="float:right;"
                  size="mini"
-                 @click="addUser()">添加角色
+                 @click="addRole()">添加角色
+      </el-button>
+      <el-button
+        style="float:right;margin-right: 20px;"
+        size="mini"
+        @click="deleteRoles(-1,1)">批量删除
       </el-button>
     </el-card>
     <div class="table-container">
@@ -25,7 +30,7 @@
           <template slot-scope="scope">{{scope.row.description}}</template>
         </el-table-column>
         <el-table-column label="是否启用" align="center">
-          <template slot-scope="scope">{{scope.row.status}}</template>
+          <template slot-scope="scope">{{scope.row.status==0?"禁用":"启用"}}</template>
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -36,12 +41,21 @@
             </el-button>-->
             <el-button
               size="mini"
-              @click="sendMessage(scope.$index, scope.row)">禁用
+              @click="isEnable(scope.row.id,0,scope.$index)"
+              v-show="scope.row.status===1">禁用
             </el-button>
             <el-button
               size="mini"
-              @click="handleFreezeUser(scope.$index, scope.row)"
-              v-show="scope.row.status===0">启用
+              @click="isEnable(scope.row.id,1,scope.$index)"
+              v-show="scope.row.status===0" style="margin-left: 0;">启用
+            </el-button>
+            <el-button
+              size="mini"
+              @click="deleteRoles(scope.row.id,0)">删除
+            </el-button>
+            <el-button
+              size="mini"
+              @click="modifyRole(scope.row)">修改
             </el-button>
             <el-button
               size="mini"
@@ -82,7 +96,8 @@
 
 </template>
 <script>
-    import {permissionAll,roleList,addPermissionForRole} from '@/api/admin'
+    import {permissionAll,roleList,addPermissionForRole,deleteRoles} from '@/api/admin'
+    import {isEnableRole} from "../../../api/admin";
     const defaultListQuery = {
         pageNum: 1,
         pageSize: 10,
@@ -102,72 +117,43 @@
                 ],
                 roleItems:[],
                 allocationStatus:false,
-                operates: [
-                    {
-                        label: "冻结",
-                        value: 0
-                    },
-                    {
-                        label: "启用",
-                        value: 1
-                    },
-                    {
-                        label: "发送通知",
-                        value: 2
-                    },
-                    {
-                        label: "全部发送通知",
-                        value: 3
-                    }
-
-                ],
-                operateType: null
+                operateType: null,
+                multipleSelection:[]
             }
         },
         created() {
             this.getList();
         },
         methods: {
-            handleResetSearch() {
-                this.listQuery = Object.assign({}, defaultListQuery);
-            },
-            handleSearchList() {
-                this.listQuery.pageNum = 1;
-                this.getList();
-            },
+            // handleResetSearch() {
+            //     this.listQuery = Object.assign({}, defaultListQuery);
+            // },
+            // handleSearchList() {
+            //     this.listQuery.pageNum = 1;
+            //     this.getList();
+            // },
             handleSelectionChange(val){
                 this.multipleSelection = val;
-            },
-            handleFreezeUser(index, row){
-                this.freezeUser(row.id, row.status);
             },
             handleSizeChange(val){
                 this.listQuery.pageNum = 1;
                 this.listQuery.pageSize = val;
                 this.getList();
             },
-            sendMessage(index,row){
-                this.$router.push({path: '/dmd/sendMessage', query: {id: row.id}})
-            },
-            batchSendMessage(ids){
-                this.$router.push({name: 'batchAddMessage', params: {ids: ids}})
-            },
-            sendAllMessage(){
-                this.$router.push({path: '/dmd/addAllMessage'})
-            },
             handleCurrentChange(val){
                 this.listQuery.pageNum = val;
                 this.getList();
             },
+            //角色列表
             getList() {
                 this.listLoading = true;
                 roleList(this.listQuery).then(response => {
-                    console.log("这是角色类别========================");
                     this.listLoading = false;
                     this.list = response.result.list;
                     this.total = response.result.total;
                 });
             },
+            //获取角色拥有的权限
             getListForPermission(roleId){
                 let query =this.listQuery;
                 query.pageSize=50;
@@ -176,11 +162,13 @@
                     this.items=response.result.list;
                 });
             },
+            //分配权限点击事件
             allocation(roleId){
                 this.allocationStatus=true;
                 this.getListForPermission(roleId);
                 this.roleIdForPermission=roleId;
             },
+            //分配权限提交
             submitPermission(){
                 let permissionRelations=[];
                 let items=this.items;
@@ -190,16 +178,76 @@
                         permissionRelations.push(permissionRelation);
                     }
                 }
-                console.log(permissionRelations);
                 addPermissionForRole(JSON.stringify(permissionRelations)).then(response => {
-                    console.log("这是角色类别========================");
                     this.listLoading = false;
                     this.list = response.result.list;
                     this.total = response.result.total;
+                    this.closePermission();
+                    this.getList();
                 });
             },
+            //关闭分配权限对话框
             closePermission(){
                 this.allocationStatus=false;
+            },
+            //启用禁用方法
+            isEnable(id,status,index){
+                let param = new URLSearchParams();
+                param.append('id', id);
+                param.append('status', status);
+                isEnableRole(param).then(response => {
+                    console.log(id,status,index);
+                    console.log(response.result);
+                    console.log("=============返回结果");
+                    if (response.result!==-1){
+                        this.list[index].status=response.result;
+                    }
+                });
+
+            },
+            //添加角色
+            addRole(){
+                //this.$router.push({path: '/dmd/sendMessage', query: {id: row.id}})
+                this.$router.push({name: 'addRole'});
+            },
+            //修改角色信息
+            modifyRole(umsRole){
+                console.log(umsRole);
+                this.$router.push({name: 'addRole',query:{umsRole:umsRole,type:"modify"}});
+            },
+            //删除角色
+            deleteRoles(id,type){
+                let ids=[];
+                if (type===0){
+                    ids.push(id)
+                }else{
+                    let multipleSelection=this.multipleSelection;
+                    for(let i=0;i<multipleSelection.length;i++){
+                        ids.push(multipleSelection[i].id);
+                    }
+                }
+                this.$confirm('是否提交数据', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deleteRoles(ids).then(response => {
+                        if (response.result>0){
+                            this.$message({
+                                message: '删除成功',
+                                type: 'success',
+                                duration:1000
+                            });
+                            this.getList()
+                        }else{
+                            this.$message({
+                                message: '删除失败',
+                                type: 'fail',
+                                duration:1000
+                            });
+                        }
+                    });
+                });
             }
 
         }
