@@ -61,9 +61,4 @@ export function updateOrderNote(params) {
     params:params
   })
 }
-export function findOrderByOrderNo(data) {
-  return request({
-    url:'/order/findByOrderSn/' + data,
-    method:'get'
-  })
-}
+

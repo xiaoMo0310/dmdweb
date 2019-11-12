@@ -160,10 +160,7 @@
                 this.getList();
             },
             handleReviewDetail(index, row){
-                this.$router.push({path:'/oms/reviewDetail',query:{row:row}})
-            },
-            handUpdate(index,row){
-                this.$router.push({path: '/integral/updateIntegrationRule', query: {row: row}})
+                this.$router.push({path:'/oms/reviewDetail',query:{id:row.id}})
             },
             getList() {
                 this.listLoading = true;

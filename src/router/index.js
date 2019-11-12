@@ -225,7 +225,7 @@ export const constantRouterMap = [
       {
         path: 'productReview',
         name: 'productReview',
-        component: () => import('@/views/pms/certificate/index'),
+        component: () => import('@/views/pms/courseProduct/index'),
         meta: {title: '商品审核', icon: 'product-comment'},
       },
       {
@@ -247,6 +247,13 @@ export const constantRouterMap = [
         component: () => import('@/views/pms/certificate/update'),
         meta: {title: '修改证书'},
         hidden: true
+      },
+      {
+        path: 'courseProductDetail',
+        name: 'courseProductDetail',
+        component: () => import('@/views/pms/courseProduct/productDetail'),
+        meta: {title: '潜水学证商品详情', icon: "total-today"},
+        hidden:true
       }
     ]
   },

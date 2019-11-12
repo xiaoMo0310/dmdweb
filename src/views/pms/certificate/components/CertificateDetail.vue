@@ -24,6 +24,9 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="证书图片：">
+        <single-upload v-model="certificate.pic"></single-upload>
+      </el-form-item>
       <el-form-item label="启动/禁用：">
         <el-radio-group v-model="certificate.status">
           <el-radio :label="1">启动</el-radio>
@@ -47,6 +50,7 @@
   </el-card>
 </template>
 <script>
+  import SingleUpload from '@/components/Upload/singleUpload'
   import {saveOrUpdate} from '@/api/certificate'
   const defaultTypeOptions = [
       {
@@ -109,6 +113,7 @@
   };
   export default {
     name: 'CertificateDetail',
+    components:{SingleUpload},
     props: {
       isEdit: {
         type: Boolean,

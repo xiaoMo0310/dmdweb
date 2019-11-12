@@ -30,6 +30,9 @@
         <el-table-column label="简介" align="center">
           <template slot-scope="scope">{{scope.row.introduction}}</template>
         </el-table-column>
+        <el-table-column label="广告图片" width="120" align="center">
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pic"></template>
+        </el-table-column>
         <el-table-column label="启动/禁用" width="120" align="center">
           <template slot-scope="scope">
             <el-switch
