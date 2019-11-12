@@ -8,7 +8,7 @@
       <el-form-item label="标题：" prop="name">
         <el-input v-model="message.title" class="input-width" placeholder="请输入消息标题"></el-input>
       </el-form-item>
-      <el-form-item label="内容：">
+      <el-form-item label="内容：" prop="title">
         <el-input
           class="input-width"
           type="textarea"
@@ -42,9 +42,11 @@
       return {
         message: {},
         rules: {
+          name: [{required: true, message: '请输入标题', trigger: 'blur'},],
           title: [
-            {required: true, message: '请输入广告名称', trigger: 'blur'},
-            {min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur'}
+            {required: true, message: '请输入要通知的内容', trigger: 'blur'},
+            {required: true, message: '请输入要通知的内容', trigger: 'blur'},
+            {required: true, min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur'}
           ]
         }
       }

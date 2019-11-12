@@ -21,3 +21,10 @@ export function udpateFashionableStatus(data) {
   })
 }
 
+export function findOrderAndFashionableById(data) {
+  return request({
+    url:'/oms/OrderAndFashionable/findById/' + data,
+    method:'get'
+  })
+}
+

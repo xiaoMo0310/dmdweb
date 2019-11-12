@@ -84,7 +84,7 @@
       :visible.sync="dialogVisible"
       width="30%" >
 
-      <el-form ref="productAttrCatForm":model="payMessage" :rules="rules" label-width="100px">
+      <el-form ref="productAttrCatForm":model="payMessage" label-width="100px">
         <el-form-item label="支付单号:" prop="name">
           <template>{{payMessage.payNo}}</template>
         </el-form-item>
@@ -117,7 +117,7 @@
   </div>
 </template>
 <script>
-    import {findOrderByOrderNo} from '@/api/order';
+    import {findOrderAndFashionableById} from '@/api/finance';
     import {udpateFashionableStatus} from '@/api/finance';
     import {formatDate} from '@/utils/date';
 
@@ -135,9 +135,9 @@
             }
         },
         created() {
-            this.reviewMessage = this.$route.query.row;
-            findOrderByOrderNo(this.reviewMessage.orderNo).then(response => {
-                this.order = response.result;
+            findOrderAndFashionableById(this.$route.query.id).then(response => {
+                this.reviewMessage = response.result.fashionable
+                this.order = response.result.order;
             });
         },
         filters: {
