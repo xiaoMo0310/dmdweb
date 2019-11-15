@@ -72,6 +72,9 @@
         <el-table-column label="所需积分"  align="center">
           <template slot-scope="scope">{{scope.row.integral}}</template>
         </el-table-column>
+        <el-table-column label="库存量"  align="center">
+          <template slot-scope="scope">{{scope.row.inventory}}</template>
+        </el-table-column>
         <el-table-column label="介绍图片"  align="center">
           <template slot-scope="scope"><img style="height: 80px" :src="scope.row.introduce"></template>
         </el-table-column>
