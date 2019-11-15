@@ -41,7 +41,17 @@
               placeholder="请选择时间">
             </el-date-picker>
           </el-form-item>
+          <el-form-item label="上下架查询：">
+            <el-select v-model="listQuery.status" placeholder="全部" clearable class="input-width">
+              <el-option v-for="item in typeOptions"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
         </el-form>
+
       </div>
     </el-card>
     <el-card class="operate-container" shadow="never">
@@ -72,9 +82,6 @@
         <el-table-column label="所需积分"  align="center">
           <template slot-scope="scope">{{scope.row.integral}}</template>
         </el-table-column>
-        <el-table-column label="库存量"  align="center">
-          <template slot-scope="scope">{{scope.row.inventory}}</template>
-        </el-table-column>
         <el-table-column label="介绍图片"  align="center">
           <template slot-scope="scope"><img style="height: 80px" :src="scope.row.introduce"></template>
         </el-table-column>
@@ -84,15 +91,32 @@
             修改时间:{{scope.row.updateTime | formatTime}}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="120" align="center">
+        <el-table-column label="状态"  align="center">
+          <template slot-scope="scope">{{scope.row.status | formatStatusType}}</template>
+        </el-table-column>
+        <el-table-column label="操作" width="300" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       type="text"
                        @click="handUpdate(scope.$index, scope.row)">编辑
             </el-button>
             <el-button size="mini"
-                       type="text"
+                       type="danger"
                        @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
+            <el-button size="mini"
+                       @click="handSelect(scope.$index, scope.row)"
+            >查看礼品库存规格
+            </el-button>
+            <el-button size="mini"
+                       @click="handUpdateStatus(scope.$index, scope.row)"
+                       v-show="scope.row.status===1"
+            >上架
+            </el-button>
+            <el-button size="mini"
+                       type="danger "
+                       @click="handUpdateStatus2(scope.$index, scope.row)"
+                       v-show="scope.row.status===0"
+            >下架
             </el-button>
           </template>
         </el-table-column>
@@ -133,7 +157,7 @@
   </div>
 </template>
 <script>
-  import {queryIntegralGifts , deleteIntegralGiftsById } from '@/api/integralGifts';
+  import {queryIntegralGifts , deleteIntegralGiftsById , updateIntegralGiftsNoPass ,updateIntegralGiftsPass } from '@/api/integralGifts';
   import {formatDate} from '@/utils/date';
   const defaultListQuery = {
     pageNum: 1,
@@ -142,12 +166,22 @@
     stratTime:null,
     endTime:null
   };
-
+  const defaultTypeOptions=[
+    {
+      label: '上架',
+      value: 0
+    },
+    {
+      label: '下架',
+      value: 1
+    },
+  ];
   export default {
     name: 'searchqueryIntegralGifts',
 
     data() {
       return {
+        typeOptions:Object.assign({},defaultTypeOptions),
 
         listQuery: Object.assign({}, defaultListQuery),
         list: null,
@@ -163,6 +197,14 @@
           {
             label: "删除",
             value: 0
+          },
+          {
+            label: "上架",
+            value: 1
+          },
+          {
+            label: "下架",
+            value: 2
           }
         ],
         operateType: null,
@@ -183,9 +225,60 @@
         let date = new Date(time);
         return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
       },
+      formatStatusType(status){
+        if(status===0){
+          return "已上架";
+        }if(status===1){
+          return '已下架';
+        }
+      },
     },
     methods: {
-
+      handUpdateStatus(index, row){
+        this.updateDiveCertificateStatusPass(row.id);
+      },
+      updateDiveCertificateStatusPass(id){
+        this.$confirm('是否上架?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let params = new URLSearchParams();
+          params.append("ids",id);
+          updateIntegralGiftsPass(params).then(response=>{
+            this.$message({
+              message: '上架成功！',
+              type: 'success',
+              duration: 1000
+            });
+            this.getList();
+          });
+        })
+      },
+      handUpdateStatus2(index, row){
+        this.updateDiveCertificateStatusPass2(row.id);
+      },
+      updateDiveCertificateStatusPass2(id){
+        this.$confirm('是否下架?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let params = new URLSearchParams();
+          params.append("ids",id);
+          updateIntegralGiftsNoPass(params).then(response=>{
+            this.$message({
+              message: '下架成功！',
+              type: 'success',
+              duration: 1000
+            });
+            this.getList();
+          });
+        })
+      },
+      handSelect(index,row){
+        this.$router.push({path: '/integral/selectSpe', query: {id: row.id}})
+      },
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
       },
@@ -224,7 +317,16 @@
         if(this.operateType===0){
           //删除
           this.deleteIntegralGiftsById(ids);
-        }else {
+        }
+        if(this.operateType===2){
+          //删除
+          this.updateDiveCertificateStatusPass2(ids);
+        }
+        if(this.operateType===1){
+          //删除
+          this.updateDiveCertificateStatusPass(ids);
+        }
+        else {
           this.$message({
             message: '请选择批量操作类型',
             type: 'warning',

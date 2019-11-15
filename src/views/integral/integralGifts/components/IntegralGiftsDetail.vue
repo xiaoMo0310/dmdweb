@@ -20,9 +20,6 @@
       <el-form-item label="所需要的兑换积分：" prop="integral">
         <el-input v-model="homeAdvertise.integral" class="input-width"></el-input>
       </el-form-item>
-      <el-form-item label="库存量：" prop="integral">
-        <el-input v-model="homeAdvertise.inventory" class="input-width"></el-input>
-      </el-form-item>
 
       <el-form-item>
         <el-button type="primary" @click="onSubmit('homeAdvertiseFrom')">提交</el-button>

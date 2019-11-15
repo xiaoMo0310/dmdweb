@@ -552,6 +552,13 @@ export const constantRouterMap = [
         meta: {title: '积分好礼添加'},
         hidden:true
       },
+      {
+        path: 'selectSpe',
+        name: 'selectSpe',
+        component: () => import('@/views/integral/integralGifts/select'),
+        meta: {title: '用户气瓶消耗量查询'},
+        hidden:true
+      },
     ]
   },
   {

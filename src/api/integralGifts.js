@@ -33,3 +33,17 @@ export function addIntegralGifts(data) {
     data:data
   })
 }
+export function updateIntegralGiftsPass(data) {
+  return request({
+    url:'/integral/updateIntegralGiftsPass',
+    method:'post',
+    data:data
+  })
+}
+export function updateIntegralGiftsNoPass(data) {
+  return request({
+    url:'/integral/updateIntegralGiftsNoPass',
+    method:'post',
+    data:data
+  })
+}
