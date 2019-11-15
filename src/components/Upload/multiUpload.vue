@@ -66,7 +66,7 @@
         this.$emit('input', value)
       },
       handleRemove(file, fileList) {
-        this.emitInput(fileList);
+        this.emitInput(fileList)  ;
       },
       handlePreview(file) {
         this.dialogVisible = true;

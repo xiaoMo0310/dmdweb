@@ -122,7 +122,7 @@ export const constantRouterMap = [
     name: 'pms',
     meta: {title: '商品', icon: 'product'},
     children: [
-      /*{
+      {
       path: 'product',
       name: 'product',
       component: () => import('@/views/pms/product/index'),
@@ -221,7 +221,7 @@ export const constantRouterMap = [
         component: () => import('@/views/pms/brand/update'),
         meta: {title: '编辑品牌'},
         hidden: true
-      },*/
+      },
       {
         path: 'productReview',
         name: 'productReview',
