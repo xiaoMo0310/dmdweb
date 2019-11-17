@@ -7,7 +7,7 @@
         <el-button
           style="float:right"
           type="primary"
-          @click="handleSearchList()"
+          @click="getList()"
           size="small">
           查询搜索
         </el-button>
@@ -20,35 +20,24 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="用户名：">
-            <el-input v-model="listQuery.username" class="input-width" placeholder="用户名"></el-input>
-          </el-form-item>
-          <el-form-item label="用户昵称：">
-            <el-input v-model="listQuery.nickName" class="input-width" placeholder="用户昵称"></el-input>
-          </el-form-item>
-          <el-form-item label="手机号：">
-            <el-input v-model="listQuery.phone" class="input-width" placeholder="手机号"></el-input>
-          </el-form-item>
-          <el-form-item label="注册时间：">
+          <el-form-item label="开始时间：">
             <el-date-picker
-              class="input-width"
-              v-model="listQuery.createTime"
-              value-format="yyyy-MM-dd"
-              type="date"
+              v-model="listQuery.startTime"
+              type="datetime"
+              format="yyyy-MM-dd HH:mm"
+              value-format="yyyy-MM-dd HH:mm"
               placeholder="请选择时间">
             </el-date-picker>
           </el-form-item>
-
-          <!--<el-form-item label="用户类型：">
-            <el-select v-model="listQuery.orderType" class="input-width" placeholder="全部" clearable>
-              <el-option v-for="item in orderTypeOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>-->
-
+          <el-form-item label="结束时间：">
+            <el-date-picker
+              v-model="listQuery.endTime"
+              type="datetime"
+              format="yyyy-MM-dd HH:mm"
+              value-format="yyyy-MM-dd HH:mm"
+              placeholder="请选择时间">
+            </el-date-picker>
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
@@ -60,75 +49,28 @@
       <el-table ref="orderTable"
                 :data="list"
                 style="width: 100%;"
-                @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="用户名" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.username}}</template>
+        <el-table-column label="操作用户" align="center">
+          <template slot-scope="scope">{{scope.row.loginUser}}</template>
         </el-table-column>
-        <el-table-column label="用户昵称" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.nickname}}</template>
+        <el-table-column label="终端ip" align="center">
+          <template slot-scope="scope">{{scope.row.ip}}</template>
         </el-table-column>
-        <el-table-column label="手机号码" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.phone}}</template>
+        <el-table-column label="接口" align="center">
+          <template slot-scope="scope">{{scope.row.url}}</template>
         </el-table-column>
-        <el-table-column label="身份证号码" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.identityCard}}</template>
+        <el-table-column label="所做操作" width="180" align="center">
+          <template slot-scope="scope">{{scope.row.operation}}</template>
         </el-table-column>
-        <el-table-column label="注册时间" width="200" align="center">
+        <el-table-column label="所做操作" width="180" align="center">
           <template slot-scope="scope">{{scope.row.createTime}}</template>
-        </el-table-column>
-        <el-table-column label="操作" width="205" align="center">
-          <template slot-scope="scope">
-            <!--<el-button
-              size="mini"
-              @click="handleViewUserDetail(scope.$index, scope.row)"
-            >详细信息
-            </el-button>-->
-            <el-button
-              size="mini"
-              @click="sendMessage(scope.$index, scope.row)">发送消息
-            </el-button>
-            <el-button
-              size="mini"
-              @click="handleFreezeUser(scope.$index, scope.row)"
-              v-show="scope.row.status===0">启用用户
-            </el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleFreezeUser(scope.$index, scope.row)"
-              v-show="scope.row.status===1">冻结用户
-            </el-button>
-          </template>
         </el-table-column>
       </el-table>
     </div>
-
-    <div class="batch-operate-container">
-      <el-select
-        size="small"
-        v-model="operateType" placeholder="批量操作">
-        <el-option
-          v-for="item in operates"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <el-button
-        style="margin-left: 20px"
-        class="search-button"
-        @click="handleBatchOperate()"
-        type="primary"
-        size="small">
-        确定
-      </el-button>
-    </div>
-
     <div class="pagination-container">
       <el-pagination
         background
@@ -144,18 +86,20 @@
   </div>
 </template>
 <script>
-    import {selectUserList, freezeUser, batchUpdateUserStatus} from '@/api/user'
+    import {getOperationLog} from '@/api/admin'
     const defaultListQuery = {
         pageNum: 1,
         pageSize: 10,
-        username:null,
-        nickName:null,
-        phone:null,
+        loginUser:null,
+        ip:null,
+        url:null,
         createTime: null,
-        identityCard:null
+        operation:null,
+        startTime:null,
+        endTime:null
     };
     export default {
-        name: "userList",
+        name: "operationLog",
         components:{},
         data() {
             return {
@@ -163,26 +107,6 @@
                 listLoading: true,
                 list: null,
                 total: null,
-                operates: [
-                    {
-                        label: "冻结",
-                        value: 0
-                    },
-                    {
-                        label: "启用",
-                        value: 1
-                    },
-                    {
-                        label: "发送通知",
-                        value: 2
-                    },
-                    {
-                        label: "全部发送通知",
-                        value: 3
-                    }
-
-                ],
-                operateType: null
             }
         },
         created() {
@@ -196,148 +120,51 @@
                 this.listQuery.pageNum = 1;
                 this.getList();
             },
-            handleSelectionChange(val){
-                this.multipleSelection = val;
-            },
-            handleFreezeUser(index, row){
-                this.freezeUser(row.id, row.status);
-            },
+            //此方法是监听页面pageSize变化事件
             handleSizeChange(val){
                 this.listQuery.pageNum = 1;
                 this.listQuery.pageSize = val;
                 this.getList();
             },
-            sendMessage(index,row){
-                this.$router.push({path: '/dmd/sendMessage', query: {id: row.id}})
-            },
-            batchSendMessage(ids){
-                this.$router.push({name: 'batchAddMessage', params: {ids: ids}})
-            },
-            sendAllMessage(){
-                this.$router.push({path: '/dmd/addAllMessage'})
-            },
+
+            //     this.$router.push({path: '/dmd/sendMessage', query: {id: row.id}})
+            //     this.$router.push({name: 'batchAddMessage', params: {ids: ids}})
+            //监听页面页数变化事件
             handleCurrentChange(val){
                 this.listQuery.pageNum = val;
                 this.getList();
             },
+            //获取数据
             getList() {
                 this.listLoading = true;
-                selectUserList(this.listQuery).then(response => {
+                getOperationLog(this.listQuery).then(response => {
                     this.listLoading = false;
                     this.list = response.result.list;
                     this.total = response.result.total;
+                    this.listLoading = false;
                 });
             },
-            freezeUser(id, status){
-                if(status == 1){
-                    this.$confirm('是否要进行该冻结操作?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        let params = new URLSearchParams();
-                        params.append("status", 0)
-                        params.append("id",id);
-                        freezeUser(params).then(response=>{
-                            this.$message({
-                                message: '冻结成功！',
-                                type: 'success',
-                                duration: 1000
-                            });
-                            this.getList();
-                        });
-                    })
-                }else {
-                    this.$confirm('是否要进行该启用操作?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        let params = new URLSearchParams();
-                        params.append("status", 1)
-                        params.append("id",id);
-                        freezeUser(params).then(response=>{
-                            this.$message({
-                                message: '启用成功！',
-                                type: 'success',
-                                duration: 1000
-                            });
-                            this.getList();
-                        });
-                    })
-                }
-            },
-            handleBatchOperate() {
-                if(this.operateType==null){
-                    this.$message({
-                        message: '请选择操作类型',
-                        type: 'warning',
-                        duration: 1000
-                    });
-                    return;
-                }
-                if(this.multipleSelection==null||this.multipleSelection.length<1){
-                    if(this.operateType != 3){
-                        this.$message({
-                            message: '请选择要操作的用户',
-                            type: 'warning',
-                            duration: 1000
-                        });
-                        return;
-                    }
-                }
-                if(this.operateType == 3){
-                    this.$confirm(
-                        '是否要进行全部用户通知?', '提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            type: 'warning'
-                        }).then(() => {
-                        this.sendAllMessage();
-                    });
-                }else {
-                    this.$confirm(
-                        '是否要进行该批量操作?', '提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            type: 'warning'
-                        }).then(() => {
-                        let ids=[];
-                        for(let i=0;i<this.multipleSelection.length;i++){
-                            ids.push(this.multipleSelection[i].id);
-                        }
-                        switch (this.operateType) {
-                            case this.operates[0].value:
-                                this.editUserStatus(0,ids);
-                                this.getList();
-                                break;
-                            case this.operates[1].value:
-                                this.editUserStatus(1,ids);
-                                this.getList();
-                                break;
-                            case this.operates[2].value:
-                                this.batchSendMessage(ids);
-                                break;
-                        }
-                    });
-                }
-            },
-            editUserStatus(status, ids){
-                let params = new URLSearchParams();
-                params.append("status", status)
-                params.append("ids",ids);
-                batchUpdateUserStatus(params).then(response=>{
-                    this.$message({
-                        message: '修改成功！',
-                        type: 'success',
-                        duration: 1000
-                    });
-                    this.getList();
-                });
-            },
-            handleViewUserDetail(index,row){
-                this.$router.push({path:'/ums/userDetail',query:{id:row.id}})
-            },
+            // freezeUser(id, status){
+                // if(status == 1){
+                //     this.$confirm('是否要进行该冻结操作?', '提示', {
+                //         confirmButtonText: '确定',
+                //         cancelButtonText: '取消',
+                //         type: 'warning'
+                //     }).then(() => {
+                //         let params = new URLSearchParams();
+                //         params.append("status", 0)
+                //         params.append("id",id);
+                //         freezeUser(params).then(response=>{
+                //             this.$message({
+                //                 message: '冻结成功！',
+                //                 type: 'success',
+                //                 duration: 1000
+                //             });
+                //             this.getList();
+                //         });
+                //     })
+
+
         }
     }
 </script>

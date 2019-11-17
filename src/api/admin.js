@@ -50,15 +50,27 @@ export function addPermission(param) {
 //     data: param
 //   })
 // }
+//角色列表
 export function roleList(param) {
   return request({
     url:'/admin/roleList',
     method:'post',
     data: param
   })
-}export function addPermissionForRole(param) {
+}
+//添加权限和角色的对应关系
+export function addPermissionForRole(param) {
   return request({
     url:'/admin/addPermissionForRole',
+    method:'post',
+    data: param
+  })
+}
+
+//操作记录列表
+export function getOperationLog(param) {
+  return request({
+    url:'/umsOperationLog/getOperationLog',
     method:'post',
     data: param
   })

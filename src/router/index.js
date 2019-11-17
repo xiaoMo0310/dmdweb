@@ -19,12 +19,13 @@ import Layout from '../views/layout/Layout'
   }
  **/
 export const constantRouterMap = [
-  {path: '/login', component: () => import('@/views/login/index'), hidden: true},
-  {path: '/404', component: () => import('@/views/404'), hidden: true},
+  {path: '/login', meta:{role:"TEST"},component: () => import('@/views/login/index'), hidden: true},
+  {path: '/404', meta:{role:"TEST"},component: () => import('@/views/404'), hidden: true},
   {
     path: '',
     component: Layout,
     redirect: '/home',
+    meta:{role:"TEST"},
     children: [{
       path: 'home',
       name: 'home',
@@ -37,13 +38,13 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '#',
     name: 'ums',
-    meta: {title: '用户', icon: 'user'},
+    meta: {title: '用户', icon: 'user',role:"TEST"},
     children: [
       {
         path: 'userManagement',
         name: 'userManagement',
         component: () => import('@/views/ums/member/index'),
-        meta: {title: '用户管理', icon: "form"},
+        meta: {title: '用户管理', icon: "form",role:"TEST"},
       },
       {
         path: 'coachManagement',
