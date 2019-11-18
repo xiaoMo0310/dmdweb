@@ -35,7 +35,7 @@
           <template slot-scope="scope">{{scope.row.note}}</template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" style="border-right: 0;">
+        <el-table-column label="操作" width="300" align="center" style="border-right: 0;">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -54,11 +54,12 @@
             </el-button>
             <el-button
               size="mini"
-              @click="permission()">分配角色
+              @click="allocationRole(scope.row.id)">分配角色
             </el-button>
           </template>
         </el-table-column>
       </el-table>
+
     </div>
     <div class="pagination-container">
       <el-pagination
@@ -72,10 +73,23 @@
         :total="total">
       </el-pagination>
     </div>
+    <el-card class="form-container" shadow="never" v-show="allocationRoleStatus" style="position: absolute;top: 150px;background-color: white;z-index: 99999;">
+      <div>
+        <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择权限</div>
+        <div v-for="item in items"  v-bind:key="item.message" style="float: left;width: 150px;margin-bottom: 15px;">
+          <el-checkbox v-model="item.check" style="margin-left: 10px;width: 140px;"  border>{{item.name}}</el-checkbox>
+        </div>
+      </div>
+      <div>
+        <el-button style="margin-left: 226px;" @click="submitPermission()">确认</el-button>
+        <el-button @click="closePermission()">返回</el-button>
+      </div>
+
+    </el-card>
   </div>
 </template>
 <script>
-    import {adminList} from '@/api/admin'
+    import {adminList,roleList} from '@/api/admin'
 
     const defaultListQuery = {
         pageNum: 1,
@@ -84,7 +98,8 @@
         nickName: null,
         phone: null,
         createTime: null,
-        identityCard: null
+        identityCard: null,
+        adminId:0
     };
     export default {
         name: "adminList",
@@ -95,6 +110,9 @@
                 listLoading: true,
                 list: null,
                 total: null,
+                allocationRoleStatus:false,
+                userIdForRole:null,
+                items:[]
             }
         },
         created() {
@@ -137,7 +155,28 @@
             },
             permission(){
                 this.$router.push({name: 'permission'})
-            }
+            },
+            //分配角色点击事件
+            allocationRole(adminId){
+                this.allocationRoleStatus=true;
+                this.getListForRole(adminId);
+                this.userIdForRole=adminId;
+            },
+            //关闭分配权限对话框allocationRoleStatus
+            closePermission(){
+                this.allocationRoleStatus=false;
+            },
+            //获取用户拥有的角色
+            getListForRole(adminId){
+                let query =this.listQuery;
+                query.pageSize=50;
+                query.adminId=adminId;
+                roleList(this.listQuery).then(response => {
+                    console.log(response.result.list)
+                    console.log("========================")
+                    this.items=response.result.list;
+                });
+            },
         }
     }
 </script>

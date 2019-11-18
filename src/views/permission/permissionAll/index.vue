@@ -15,29 +15,20 @@
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
-        <el-table-column label="编号" width="80" align="center">
-          <template slot-scope="scope">{{scope.row.id}}</template>
-        </el-table-column>
-        <el-table-column label="父权限id" width="80" align="center">
-          <template slot-scope="scope">{{scope.row.pid}}</template>
-        </el-table-column>
         <el-table-column label="名称" align="center">
           <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
         <el-table-column label="权限值" align="center">
           <template slot-scope="scope">{{scope.row.value}}</template>
         </el-table-column>
-        <el-table-column label="图标" align="center">
-          <template slot-scope="scope">{{scope.row.icon}}</template>
-        </el-table-column>
         <el-table-column label="权限类型" align="center">
-          <template slot-scope="scope">{{scope.row.type}}</template>
+          <template slot-scope="scope">{{scope.row.type==0?"目录":scope.row.type==1?"菜单":"按钮"}}</template>
         </el-table-column>
         <el-table-column label="前端资源路径" align="center">
           <template slot-scope="scope">{{scope.row.uri}}</template>
         </el-table-column>
         <el-table-column label="启用状态" align="center">
-          <template slot-scope="scope">{{scope.row.status}}</template>
+          <template slot-scope="scope">{{scope.row.status==0?"禁用":"启用"}}</template>
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
