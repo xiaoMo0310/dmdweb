@@ -27,6 +27,17 @@
             {{scope.row.specStock}}
           </template>
         </el-table-column>
+        <el-table-column label="操作" width="250" align="center">
+          <template slot-scope="scope">
+            <el-button size="mini"
+                       @click="handUpdate(scope.$index, scope.row)">编辑
+            </el-button>
+            <el-button size="mini"
+                       type="danger"
+                       @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
 
@@ -53,7 +64,7 @@
   </div>
 </template>
 <script>
-  import {queryIntegralGiftsSpeById,addGiftsSpe} from '@/api/giftsSpe';
+  import {queryIntegralGiftsSpeById,addGiftsSpe,deleteIntegralGiftsSpeById} from '@/api/giftsSpe';
   import {formatDate} from '@/utils/date';
   const defaultListQuery = {
     id: null,
@@ -84,7 +95,29 @@
     },
 
     methods: {
-
+      handUpdate(index,row){
+        this.$router.push({path: '/integral/updateIntegralGiftsSpe', query: {id: row.id}})
+      },
+      handleDelete(index,row){
+        this.deleteIntegralGiftsSpeById(row.id);
+      },
+      deleteIntegralGiftsSpeById(ids){
+        this.$confirm('是否要删除该规格?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let params=new URLSearchParams();
+          params.append("ids",ids);
+          deleteIntegralGiftsSpeById(params).then(response=>{
+            this.getList();
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+          });
+        })
+      },
       handleUpdate(index, row) {
         this.dialogVisible = true;
         this.dialogTitle = "请选择添加规格";

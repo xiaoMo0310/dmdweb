@@ -571,6 +571,13 @@ export const constantRouterMap = [
         meta: {title: '规格与库存添加'},
         hidden:true
       },
+      {
+        path: 'updateIntegralGiftsSpe',
+        name: 'updateIntegralGiftsSpe',
+        component: () => import('@/views/integral/integralGifts/updateSpe'),
+        meta: {title: '礼品规格修改'},
+        hidden:true
+      },
     ]
   },
   {

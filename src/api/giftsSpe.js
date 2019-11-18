@@ -13,3 +13,23 @@ export function addGiftsSpe(giftId,data) {
     data:data
   })
 }
+export function updateIntegralGiftsSpe(id,data) {
+  return request({
+    url:'/integral/updateIntegralGiftsSpe/?id='+id,
+    method:'post',
+    data:data
+  })
+}
+export function findIntegralGiftsSpeInfoById(id) {
+  return request({
+    url:'/integral/findIntegralGiftsSpeInfoById/?id='+id,
+    method:'get',
+  })
+}
+export function deleteIntegralGiftsSpeById(data) {
+  return request({
+    url:'/integral/deleteIntegralGiftsSpeById',
+    method:'post',
+    data:data
+  })
+}
