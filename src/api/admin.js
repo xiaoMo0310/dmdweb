@@ -50,6 +50,7 @@ export function addPermission(param) {
 //     data: param
 //   })
 // }
+//角色列表
 export function roleList(param) {
   return request({
     url:'/admin/roleList',
@@ -57,6 +58,8 @@ export function roleList(param) {
     data: param
   })
 }
+
+//添加权限和角色的对应关系
 export function addPermissionForRole(param) {
   return request({
     headers: {
@@ -103,6 +106,15 @@ export function modifyRole(param) {
       'Content-Type': 'application/json'
     },
     url:'/admin/modifyRole',
+    method:'post',
+    data: param
+  })
+}
+
+//操作记录列表
+export function getOperationLog(param) {
+  return request({
+    url:'/umsOperationLog/getOperationLog',
     method:'post',
     data: param
   })
