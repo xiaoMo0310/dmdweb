@@ -556,7 +556,14 @@ export const constantRouterMap = [
         path: 'selectSpe',
         name: 'selectSpe',
         component: () => import('@/views/integral/integralGifts/select'),
-        meta: {title: '用户气瓶消耗量查询'},
+        meta: {title: '规格与库存查询'},
+        hidden:true
+      },
+      {
+        path: 'addSpe',
+        name: 'addSpe',
+        component: () => import('@/views/integral/integralGifts/addSpe'),
+        meta: {title: '规格与库存添加'},
         hidden:true
       },
     ]

@@ -94,7 +94,7 @@
         <el-table-column label="状态"  align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatusType}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="300" align="center">
+        <el-table-column label="操作" width="400" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
                        @click="handUpdate(scope.$index, scope.row)">编辑
@@ -102,10 +102,6 @@
             <el-button size="mini"
                        type="danger"
                        @click="handleDelete(scope.$index, scope.row)">删除
-            </el-button>
-            <el-button size="mini"
-                       @click="handSelect(scope.$index, scope.row)"
-            >查看礼品库存规格
             </el-button>
             <el-button size="mini"
                        @click="handUpdateStatus(scope.$index, scope.row)"
@@ -117,6 +113,10 @@
                        @click="handUpdateStatus2(scope.$index, scope.row)"
                        v-show="scope.row.status===0"
             >下架
+            </el-button>
+            <el-button size="mini"
+                       @click="handSelect(scope.$index, scope.row)"
+            >查看添加礼品库存规格
             </el-button>
           </template>
         </el-table-column>
@@ -278,6 +278,9 @@
       },
       handSelect(index,row){
         this.$router.push({path: '/integral/selectSpe', query: {id: row.id}})
+      },
+      handAddSpe(index,row){
+        this.$router.push({path: '/integral/addSpe', query: {id: row.id}})
       },
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
