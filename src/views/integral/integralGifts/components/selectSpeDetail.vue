@@ -147,8 +147,8 @@
           if (valid) {
             let data = new URLSearchParams();
             data.append("giftId",this.productAttrCate.giftId);
-            data.append("size",this.productAttrCate.size);
-            data.append("color",this.productAttrCate.color);
+            data.append("size",this.productAttrCate.size == undefined?"":this.productAttrCate.size);
+            data.append("color",this.productAttrCate.color == undefined?"":this.productAttrCate.color);
             data.append("specStock",this.productAttrCate.specStock);
             console.log(this.dialogTitle)
             console.log("=============================================")
