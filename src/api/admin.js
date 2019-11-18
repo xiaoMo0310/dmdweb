@@ -50,15 +50,71 @@ export function addPermission(param) {
 //     data: param
 //   })
 // }
+//角色列表
 export function roleList(param) {
   return request({
     url:'/admin/roleList',
     method:'post',
     data: param
   })
-}export function addPermissionForRole(param) {
+}
+
+//添加权限和角色的对应关系
+export function addPermissionForRole(param) {
   return request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
     url:'/admin/addPermissionForRole',
+    method:'post',
+    data: param
+  })
+}
+export function isEnableRole(param) {
+  return request({
+    url:'/admin/isEnableRole',
+    method:'post',
+    data: param
+  })
+}
+
+export function addRole(param) {
+  return request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url:'/admin/addRole',
+    method:'post',
+    data: param
+  })
+}
+
+export function deleteRoles(param) {
+  return request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url:'/admin/deleteRoles',
+    method:'post',
+    data: param
+  })
+}
+
+export function modifyRole(param) {
+  return request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url:'/admin/modifyRole',
+    method:'post',
+    data: param
+  })
+}
+
+//操作记录列表
+export function getOperationLog(param) {
+  return request({
+    url:'/umsOperationLog/getOperationLog',
     method:'post',
     data: param
   })

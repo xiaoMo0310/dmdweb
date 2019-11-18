@@ -19,12 +19,13 @@ import Layout from '../views/layout/Layout'
   }
  **/
 export const constantRouterMap = [
-  {path: '/login', component: () => import('@/views/login/index'), hidden: true},
-  {path: '/404', component: () => import('@/views/404'), hidden: true},
+  {path: '/login', meta:{role:"TEST"},component: () => import('@/views/login/index'), hidden: true},
+  {path: '/404', meta:{role:"TEST"},component: () => import('@/views/404'), hidden: true},
   {
     path: '',
     component: Layout,
     redirect: '/home',
+    meta:{role:"TEST"},
     children: [{
       path: 'home',
       name: 'home',
@@ -37,13 +38,13 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '#',
     name: 'ums',
-    meta: {title: '用户', icon: 'user'},
+    meta: {title: '用户', icon: 'user',role:"TEST"},
     children: [
       {
         path: 'userManagement',
         name: 'userManagement',
         component: () => import('@/views/ums/member/index'),
-        meta: {title: '用户管理', icon: "form"},
+        meta: {title: '用户管理', icon: "form",role:"TEST"},
       },
       {
         path: 'coachManagement',
@@ -93,27 +94,31 @@ export const constantRouterMap = [
       name: 'operationLog',
       component: () => import('@/views/permission/operationLog/index'),
       meta: {title: '操作日志', icon: 'operation_log'}
-    },
-      {
-        path: 'addUser',
-        name: 'addUser',
-        component: () => import('@/views/permission/adminPerson/addUser'),
-        meta: {title: '添加管理员'},
-        hidden:true
-      },
-      {
-        path: 'permission',
-        name: 'permission',
-        component: () => import('@/views/permission/adminPerson/permission'),
-        meta: {title: '权限操作'},
-        hidden:true
-      },{
-        path: 'addPermission',
-        name: 'addPermission',
-        component: () => import('@/views/permission/permissionAll/addPermission'),
-        meta: {title: '添加权限', icon: 'permission_group'},
-        hidden:true
-      }]
+    },{
+      path: 'addUser',
+      name: 'addUser',
+      component: () => import('@/views/permission/adminPerson/addUser'),
+      meta: {title: '添加管理员'},
+      hidden:true
+    }, {
+      path: 'permission',
+      name: 'permission',
+      component: () => import('@/views/permission/adminPerson/permission'),
+      meta: {title: '权限操作'},
+      hidden:true
+    },{
+      path: 'addPermission',
+      name: 'addPermission',
+      component: () => import('@/views/permission/permissionAll/addPermission'),
+      meta: {title: '添加权限', icon: 'permission_group'},
+      hidden:true
+    },{
+      path: 'addRole',
+      name: 'addRole',
+      component: () => import('@/views/permission/role/addRole'),
+      meta: {title: '添加角色', icon: 'permission_group'},
+      hidden:true
+    }]
   },
   {
     path: '/pms',
