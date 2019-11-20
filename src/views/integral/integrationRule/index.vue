@@ -16,7 +16,7 @@
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="规则说明" align="center">
-          <template slot-scope="scope">{{scope.row.ruledescription}}</template>
+          <div slot-scope="scope" v-html="scope.row.ruledescription">{{scope.row.ruledescription}}</div>
         </el-table-column>
         <el-table-column label="图片示例" width="350" align="center">
           <template slot-scope="scope"><img style="height: 250px" :src="scope.row.picturesample"></template>
