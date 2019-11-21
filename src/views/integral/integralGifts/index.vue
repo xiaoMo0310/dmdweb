@@ -362,7 +362,7 @@
         }
       },
       deleteIntegralGiftsById(ids){
-        this.$confirm('是否要删除该话题?', '提示', {
+        this.$confirm('是否要删除该礼品?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
