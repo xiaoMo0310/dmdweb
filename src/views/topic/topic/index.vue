@@ -66,7 +66,7 @@
           <template slot-scope="scope">{{scope.row.operationName}}</template>
         </el-table-column>
         <el-table-column label="展示图片" width="120" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.topicPicture"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.topicPicture" v-image-preview></template>
         </el-table-column>
         <el-table-column label="时间" width="220" align="center">
           <template slot-scope="scope">

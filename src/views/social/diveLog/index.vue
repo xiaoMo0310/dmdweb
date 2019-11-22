@@ -105,7 +105,7 @@
         <el-table-column label="潜水照片" width="120" align="center">
           <template slot-scope="scope">
             <div v-for="item in getImg(scope.row.divingPictures)">
-              <img style="height: 80px" :src="item">
+              <img style="height: 80px" :src="item" v-image-preview>
             </div>
           </template>
         </el-table-column>
