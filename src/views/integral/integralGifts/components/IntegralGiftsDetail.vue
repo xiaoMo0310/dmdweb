@@ -17,7 +17,7 @@
 
       <el-form-item label="上传礼品图片：">
       <div>
-        <el-input v-model="homeAdvertise.picture" class="input-width" v-if="homeAdvertise.picture === null"></el-input>
+        <el-input v-model="homeAdvertise.picture" class="input-width" ></el-input>
 
         <el-upload
           :multiple="multiple"
@@ -108,6 +108,7 @@
     created(){
       if (this.isEdit) {
         findIntegralGiftsInfoById(this.$route.query.id).then(response => {
+          this.homeAdvertise = response.data;
           let urlStr = response.data.picture.split(","); //logo地址
           urlStr.forEach(item => {
             let obj = new Object();
