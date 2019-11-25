@@ -76,7 +76,7 @@
           <el-col :span="12" class="table-cellB">{{courseProductMessage.purchaseNotes | formatNull}}</el-col>
           <el-col :span="12" class="table-cellB">
             <div v-if="contentArrangement != null" v-for="(item, i) in contentArrangement" :key="i">
-              <span style="text-align: left" v-if="contentArrangement != null" v-for="(value, key) in item" :key="key"> {{key}}:&nbsp;&nbsp;&nbsp;{{value}}</span>
+              <span style="text-align: left" v-if="contentArrangement != null" > {{item.date}}: {{item.message}}</span>
             </div>
             <div v-if="contentArrangement === null" >
               <span style="text-align: left" v-if="contentArrangement === null">{{contentArrangement | formatNull}}</span>

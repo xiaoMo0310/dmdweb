@@ -9,7 +9,7 @@
         <div style="text-align: center">
           <svg-icon icon-class="login-mall" style="width: 56px;height: 56px;color: #409EFF"></svg-icon>
         </div>
-        <h2 class="login-title color-main">一起玩啊</h2>
+        <h2 class="login-title color-main">eDive</h2>
         <el-form-item prop="username">
           <el-input name="username"
                     type="text"
@@ -37,12 +37,12 @@
           </el-input>
         </el-form-item>
         <el-form-item style="margin-bottom: 60px;text-align: center">
-          <el-button style="width: 45%" type="primary" :loading="loading" @click.native.prevent="handleLogin">
+          <el-button style="width: 100%" type="primary" :loading="loading" @click.native.prevent="handleLogin">
             登录
           </el-button>
-          <el-button style="width: 45%" type="primary" @click.native.prevent="handleTry">
+          <!--<el-button style="width: 45%" type="primary" @click.native.prevent="handleTry">
             获取体验账号
-          </el-button>
+          </el-button>-->
         </el-form-item>
       </el-form>
     </el-card>
@@ -107,7 +107,7 @@
       this.loginForm.username = getCookie("username");
       this.loginForm.password = getCookie("password");
       if(this.loginForm.username === undefined||this.loginForm.username==null||this.loginForm.username===''){
-        this.loginForm.username = 'admin';
+        this.loginForm.username = '';
       }
       if(this.loginForm.password === undefined||this.loginForm.password==null){
         this.loginForm.password = '';
