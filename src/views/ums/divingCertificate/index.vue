@@ -71,43 +71,43 @@
           <template slot-scope="scope">{{scope.row.userId}}</template>
         </el-table-column>
         <el-table-column label="OWD证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.owd" preview="0"  ></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.owd"  v-image-preview></template>
         </el-table-column>
         <el-table-column label="AOWD证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.aowd"  preview="1"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.aowd"  v-image-preview></template>
         </el-table-column>
         <el-table-column label="EFA证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.efa"  preview="2"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.efa"  v-image-preview></template>
         </el-table-column>
         <el-table-column label="RD证书" width="140"align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.rd"   preview="3"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.rd"   v-image-preview></template>
         </el-table-column>
         <el-table-column label="SC证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.sc"   preview="4"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.sc"   v-image-preview></template>
         </el-table-column>
         <el-table-column label="SC证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.sc"   preview="5"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.sc"   v-image-preview></template>
         </el-table-column>
         <el-table-column label="MSD证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.msd"   preview="6"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.msd"   v-image-preview></template>
         </el-table-column>
         <el-table-column label="DM证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.dm"   preview="7"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.dm"   v-image-preview></template>
         </el-table-column>
         <el-table-column label="OWSI" width="140"align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.owsi"   preview="8"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.owsi"   v-image-preview></template>
         </el-table-column>
         <el-table-column label="MSDT证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.msdt"   preview="9"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.msdt"   v-image-preview></template>
         </el-table-column>
         <el-table-column label="IDCSI证书"width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.idcsi"   preview="10"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.idcsi"   v-image-preview></template>
         </el-table-column>
         <el-table-column label="MI证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.mi"   preview="11"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.mi"   v-image-preview></template>
         </el-table-column>
         <el-table-column label="CD证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.cd"   preview="12"></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.cd"   v-image-preview></template>
         </el-table-column>
         <el-table-column label="申请时间" width="220" align="center">
           <template slot-scope="scope">
