@@ -70,6 +70,7 @@ export function addPermissionForRole(param) {
     data: param
   })
 }
+//是否禁用角色
 export function isEnableRole(param) {
   return request({
     url:'/admin/isEnableRole',
@@ -77,7 +78,7 @@ export function isEnableRole(param) {
     data: param
   })
 }
-
+//添加角色
 export function addRole(param) {
   return request({
     headers: {
@@ -88,7 +89,7 @@ export function addRole(param) {
     data: param
   })
 }
-
+//删除角色
 export function deleteRoles(param) {
   return request({
     headers: {
@@ -99,7 +100,7 @@ export function deleteRoles(param) {
     data: param
   })
 }
-
+//修改角色
 export function modifyRole(param) {
   return request({
     headers: {
@@ -115,6 +116,39 @@ export function modifyRole(param) {
 export function getOperationLog(param) {
   return request({
     url:'/umsOperationLog/getOperationLog',
+    method:'post',
+    data: param
+  })
+}
+
+//给用户分配角色
+export function addRolesForAdmin(param) {
+  return request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url:'/admin/addRolesForAdmin',
+    method:'post',
+    data: param
+  })
+}
+//删除用户信息
+export function deleteUser(param) {
+  console.log(param);
+  console.log("===========kaikan");
+  return request({
+    url:'/admin/deleteUser',
+    method:'post',
+    data: param
+  })
+}
+//更新用户信息
+export function updateAdminInfo(param) {
+  return request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url:'/admin/updateAdminInfo',
     method:'post',
     data: param
   })

@@ -25,6 +25,9 @@
         <el-table-column label="用户昵称" align="center">
           <template slot-scope="scope">{{scope.row.nickName}}</template>
         </el-table-column>
+        <el-table-column label="邮箱" align="center">
+          <template slot-scope="scope">{{scope.row.email}}</template>
+        </el-table-column>
         <el-table-column label="注册时间" align="center">
           <template slot-scope="scope">{{scope.row.createTime}}</template>
         </el-table-column>
@@ -35,21 +38,25 @@
           <template slot-scope="scope">{{scope.row.note}}</template>
         </el-table-column>
 
-        <el-table-column label="操作" width="300" align="center" style="border-right: 0;">
+        <el-table-column label="操作" width="400" align="center" style="border-right: 0;">
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="handleFreezeUser(scope.$index, scope.row)">删除
+              @click="openUpdateInfo(scope.row)">修改
             </el-button>
             <el-button
               size="mini"
-              @click="handleFreezeUser(scope.$index, scope.row)"
+              @click="deleteUserById(scope.row.id)">删除
+            </el-button>
+            <el-button
+              size="mini"
+              @click="updateInfo(scope.row,1)"
               v-show="scope.row.status===0">启用
             </el-button>
             <el-button
               size="mini"
               type="danger"
-              @click="handleFreezeUser(scope.$index, scope.row)"
+              @click="updateInfo(scope.row,0)"
               v-show="scope.row.status===1">禁用
             </el-button>
             <el-button
@@ -75,21 +82,47 @@
     </div>
     <el-card class="form-container" shadow="never" v-show="allocationRoleStatus" style="position: absolute;top: 150px;background-color: white;z-index: 99999;">
       <div>
-        <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择权限</div>
+        <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择角色</div>
         <div v-for="item in items"  v-bind:key="item.message" style="float: left;width: 150px;margin-bottom: 15px;">
-          <el-checkbox v-model="item.check" style="margin-left: 10px;width: 140px;"  border>{{item.name}}</el-checkbox>
+          <el-checkbox v-model="item.beCheck" style="margin-left: 10px;width: 140px;"  border>{{item.name}}</el-checkbox>
         </div>
       </div>
       <div>
-        <el-button style="margin-left: 226px;" @click="submitPermission()">确认</el-button>
+        <el-button style="margin-left: 226px;" @click="submitAdminForRole">确认</el-button>
         <el-button @click="closePermission()">返回</el-button>
       </div>
+    </el-card>
 
+    <!--修改页面-->
+    <el-card class="form-container" shadow="never" v-show="updateAdminStatus" style="position: absolute;top: 150px;background-color: white;z-index: 99999;">
+      <el-form :model="userInfo"
+               label-width="150px"
+               size="small">
+        <el-form-item label="用户名：">
+          <el-input v-model="userInfo.username" class="input-width" style="width: 100%;"></el-input>
+        </el-form-item>
+        <el-form-item label="密码：">
+          <el-input v-model="userInfo.password" class="input-width" style="width: 100%;"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱：">
+          <el-input v-model="userInfo.email" class="input-width" style="width: 100%;"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称：">
+          <el-input v-model="userInfo.nickName" class="input-width" style="width: 100%;"></el-input>
+        </el-form-item>
+        <el-form-item label="备注：">
+          <el-input v-model="userInfo.note" class="input-width" style="width: 100%;"></el-input>
+        </el-form-item>
+        <el-button style="margin-left: 30%;" type="primary" @click="updateInfo(null,null)">提交</el-button>
+        <el-button @click="resetForm()">重置</el-button>
+        <el-button type="primary" @click="closeUpdate()">返回</el-button>
+        </el-form-item>
+      </el-form>
     </el-card>
   </div>
 </template>
 <script>
-    import {adminList,roleList} from '@/api/admin'
+    import {adminList,roleList,addRolesForAdmin,deleteUser,updateAdminInfo} from '@/api/admin'
 
     const defaultListQuery = {
         pageNum: 1,
@@ -111,8 +144,10 @@
                 list: null,
                 total: null,
                 allocationRoleStatus:false,
+                updateAdminStatus:false,
                 userIdForRole:null,
-                items:[]
+                items:[],
+                userInfo:{username:null,password:null,email:null,nickName:null,note:null}
             }
         },
         created() {
@@ -129,8 +164,31 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-            handleFreezeUser(index, row) {
-                this.freezeUser(row.id, row.status);
+            updateInfo(row,status) {
+                this.listLoading = true;
+                if(row==null){
+                    row=this.userInfo;
+                }
+                if(status!=null){
+                  row.status=status;
+                }
+                updateAdminInfo(JSON.stringify(row)).then(response =>{
+                    if (response.code===200){
+                        console.log(response.result.message);
+                        this.getList();
+                        this.$message({
+                            type: 'success',
+                            message: '操作成功!'
+                        });
+                        this.closeUpdate();
+                    }else {
+                        this.$message({
+                            type: 'fail',
+                            message: '操作失败!'
+                        });
+                    }
+                    this.listLoading = false;
+                })
             },
             handleSizeChange(val) {
                 this.listQuery.pageNum = 1;
@@ -162,11 +220,11 @@
                 this.getListForRole(adminId);
                 this.userIdForRole=adminId;
             },
-            //关闭分配权限对话框allocationRoleStatus
+            //关闭分配角色对话框allocationRoleStatus
             closePermission(){
                 this.allocationRoleStatus=false;
             },
-            //获取用户拥有的角色
+            //获取所有角色信息和用户拥有的角色
             getListForRole(adminId){
                 let query =this.listQuery;
                 query.pageSize=50;
@@ -177,6 +235,65 @@
                     this.items=response.result.list;
                 });
             },
+            //给用户添加角色
+            submitAdminForRole(){
+                let adminRoleRelation=[];
+                let items=this.items;
+                for(var i=0;i<items.length;i++){
+                    if(items[i].beCheck){
+                        let permissionRelation={adminId:this.userIdForRole,roleId:items[i].id};
+                        adminRoleRelation.push(permissionRelation);
+                    }
+                }
+                if(adminRoleRelation.length===0){
+                    adminRoleRelation.push({adminId:this.userIdForRole,roleId:null})
+                }
+                addRolesForAdmin(JSON.stringify(adminRoleRelation)).then(response => {
+                    this.listLoading = false;
+                    this.total = response.result.total;
+                    this.closePermission();
+                    this.getList();
+                });
+            },
+            //打开修改信息的卡片
+            openUpdateInfo(row){
+                this.userInfo=row;
+                console.log(this.userInfo);
+                console.log("==============================");
+                this.updateAdminStatus=true;
+            },
+            closeUpdate(){
+                this.updateAdminStatus=false;
+            },
+            resetForm(){
+                this.userInfo={username:null,password:null,email:null,nickName:null,note:null}
+            },
+            deleteUserById(id){
+                let params = new URLSearchParams();
+                params.append("id",id);
+                this.$confirm('使用要进行添加操作?', '提示', {
+                    confirmButtonText: '确定删除吗？',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(()=>{
+                    deleteUser(params).then(response=>{
+                        if (response.code===200){
+                            this.$message({
+                                type: 'success',
+                                message: '操作成功!'
+                            });
+                            this.getList()
+                        }else{
+                            this.$message({
+                                type: 'fail',
+                                message: '操作失败!'
+                            });
+                        }
+                    });
+                });
+
+
+            }
         }
     }
 </script>

@@ -38,7 +38,6 @@
 </template>
 <script>
     import { addPermission } from '@/api/admin';
-
     export default {
         name: 'addPermission',
         components:{},
