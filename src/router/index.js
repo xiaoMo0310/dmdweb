@@ -642,6 +642,27 @@ export const constantRouterMap = [
       }
     ]
   },
+  {
+    path:'/statistics',
+    component: Layout,
+    redirect: '#',
+    name: 'statistics',
+    meta: {title: '分析统计', icon: 'statistics'},
+    children: [
+      {
+        path: 'orderStatistics',
+        name: 'orderStatistics',
+        component: () => import('@/views/statistics/orderStatistics/index'),
+        meta: {title: '订单明细信息', icon: "min"},
+      },
+      {
+        path: 'salesReport',
+        name: 'salesReport',
+        component: () => import('@/views/statistics/salesReport/index'),
+        meta: {title: '销售报表统计', icon: "salesRepor"},
+      },
+    ]
+  },
   {path: '*', redirect: '/404', hidden: true},
 ]
 

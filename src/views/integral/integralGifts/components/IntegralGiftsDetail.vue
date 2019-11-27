@@ -17,7 +17,7 @@
 
       <el-form-item label="上传礼品图片：">
       <div>
-        <el-input v-model="homeAdvertise.picture" class="input-width" ></el-input>
+        <el-input v-model="homeAdvertise.picture" class="input-width" v-if="homeAdvertise.picture === null"></el-input>
 
         <el-upload
           :multiple="multiple"
