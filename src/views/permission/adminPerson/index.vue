@@ -28,9 +28,9 @@
         <el-table-column label="邮箱" align="center">
           <template slot-scope="scope">{{scope.row.email}}</template>
         </el-table-column>
-        <el-table-column label="注册时间" align="center">
-          <template slot-scope="scope">{{scope.row.createTime}}</template>
-        </el-table-column>
+<!--        <el-table-column label="注册时间" align="center">-->
+<!--          <template slot-scope="scope">{{scope.row.createTime}}</template>-->
+<!--        </el-table-column>-->
         <el-table-column label="是否启用" align="center">
           <template slot-scope="scope">{{scope.row.status==1?"启用":"禁用"}}</template>
         </el-table-column>

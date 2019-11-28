@@ -32,7 +32,7 @@
         <el-table-column label="是否启用" align="center">
           <template slot-scope="scope">{{scope.row.status==0?"禁用":"启用"}}</template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" width="400" align="center">
           <template slot-scope="scope">
             <!--<el-button
               size="mini"
