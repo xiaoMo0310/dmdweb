@@ -51,13 +51,14 @@
       this.getList();
     },
     filters:{
-      formatTime(time) {
-        if (time == null || time === '') {
-          return 'N/A';
+        formatTime(time){
+            if(time==null){
+                return 'N/A';
+            }
+            let replace = time.replace(/-/g, "/");
+            let date = new Date(replace);
+            return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
         }
-        let date = new Date(time);
-        return formatDate(date, 'hh:mm:ss')
-      }
     },
     methods: {
       handleShowRelation(index,row){

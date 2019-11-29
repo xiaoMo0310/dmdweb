@@ -16,9 +16,10 @@
       <el-form-item label="排序：">
         <el-input v-model="role.sort" class="input-width"></el-input>
       </el-form-item>
-      <el-button type="primary" @click="onSubmit('roleFrom',role.id)" style="margin-left: 150px;">提交</el-button>
-      <el-button v-if="!isEdit" @click="resetForm('roleFrom')">重置</el-button>
-      <el-button type="primary" @click="goBack()">返回</el-button>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit('roleFrom',role.id)" style="margin-left: 150px;">提交</el-button>
+        <el-button v-if="!isEdit" @click="resetForm('roleFrom')">重置</el-button>
+        <el-button type="primary" @click="goBack()">返回</el-button>
       </el-form-item>
     </el-form>
   </el-card>

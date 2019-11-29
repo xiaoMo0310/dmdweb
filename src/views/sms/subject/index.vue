@@ -241,13 +241,14 @@
           return '未推荐';
         }
       },
-      formatTime(time){
-        if(time==null||time===''){
-          return 'N/A';
-        }
-        let date = new Date(time);
-        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
-      },
+        formatTime(time){
+            if(time==null){
+                return 'N/A';
+            }
+            let replace = time.replace(/-/g, "/");
+            let date = new Date(replace);
+            return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+        },
     },
     methods: {
       handleResetSearch() {

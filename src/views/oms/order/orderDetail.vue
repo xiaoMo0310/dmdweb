@@ -154,7 +154,7 @@
           <el-col :span="6" class="table-cell">-￥{{order.integrationAmount}}</el-col>
         </el-row>
       </div>
-      <div style="margin-top: 20px">
+      <!--<div style="margin-top: 20px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">操作信息</span>
       </div>
@@ -191,7 +191,7 @@
             {{scope.row.note}}
           </template>
         </el-table-column>
-      </el-table>
+      </el-table>-->
     </el-card>
     <el-dialog title="修改收货人信息"
                :visible.sync="receiverDialogVisible"
@@ -476,13 +476,14 @@
         this.receiverInfo.receiverCity=data.city.value;
         this.receiverInfo.receiverRegion=data.area.value;
       },
-      formatTime(time) {
-        if (time == null || time === '') {
-          return '';
-        }
-        let date = new Date(time);
-        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
-      },
+        formatTime(time){
+            if(time==null){
+                return 'N/A';
+            }
+            let replace = time.replace(/-/g, "/");
+            let date = new Date(replace);
+            return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+        },
       formatStepStatus(value) {
         if (value === 1) {
           //待发货

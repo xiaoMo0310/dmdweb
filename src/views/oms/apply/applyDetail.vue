@@ -7,25 +7,30 @@
         class="standard-margin"
         ref="productTable"
         :data="productList">
-        <el-table-column label="商品图片" width="160" align="center">
+        <el-table-column label="商品图片" width="150" align="center">
           <template slot-scope="scope">
             <img style="height:80px" :src="scope.row.productPic">
           </template>
         </el-table-column>
         <el-table-column label="商品名称" align="center">
           <template slot-scope="scope">
-            <span class="font-small">{{scope.row.productName}}</span><br>
-            <span class="font-small">品牌：{{scope.row.productBrand}}</span>
+            <span class="font-small">{{scope.row.productTitle}}</span><br>
           </template>
         </el-table-column>
-        <el-table-column label="价格/货号" width="180" align="center">
+        <el-table-column label="商品价格" width="100" align="center">
           <template slot-scope="scope">
-            <span class="font-small">价格：￥{{scope.row.productRealPrice}}</span><br>
-            <span class="font-small">货号：NO.{{scope.row.productId}}</span>
+            <span class="font-small">￥{{scope.row.productPrice}}</span><br>
           </template>
         </el-table-column>
-        <el-table-column label="属性" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.productAttr}}</template>
+        <el-table-column label="实际支付价格" width="110" align="center">
+          <template slot-scope="scope">
+            <span class="font-small">￥{{scope.row.productRealPrice}}</span><br>
+          </template>
+        </el-table-column>
+        <el-table-column label="属性" width="230" align="center">
+          <template slot-scope="scope">
+            <p  v-for="item in parseProductAttr(scope.row.productAttr)">{{item.key}}:{{item.value}}</p>
+          </template>
         </el-table-column>
         <el-table-column label="数量" width="100" align="center">
           <template slot-scope="scope">{{scope.row.productCount}}</template>
@@ -60,7 +65,7 @@
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">申请时间</el-col>
-          <el-col class="form-border font-small" :span="18">{{orderReturnApply.createTime | formatTime}}</el-col>
+          <el-col class="form-border font-small" :span="18">{{orderReturnApply.createdTime | formatTime}}</el-col>
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">用户账号</el-col>
@@ -72,7 +77,7 @@
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">联系电话</el-col>
-          <el-col class="form-border font-small" :span="18">{{orderReturnApply.returnPhone}}</el-col>
+          <el-col class="form-border font-small" :span="18">{{orderReturnApply.returnPhone | formatMessage}}</el-col>
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">退货原因</el-col>
@@ -80,7 +85,7 @@
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">问题描述</el-col>
-          <el-col class="form-border font-small" :span="18">{{orderReturnApply.description}}</el-col>
+          <el-col class="form-border font-small" :span="18">{{orderReturnApply.description | formatMessage}}</el-col>
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:100px;line-height:80px">凭证图片
@@ -105,7 +110,7 @@
                       style="width:200px;margin-left: 10px"></el-input>
           </el-col>
         </el-row>
-        <div v-show="orderReturnApply.status!==3">
+        <!--<div v-show="orderReturnApply.status!==3">
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">选择收货点
           </el-col>
@@ -113,7 +118,7 @@
             <el-select size="small"
                        style="width:200px"
                        :disabled="orderReturnApply.status!==0"
-                       v-model="updateStatusParam.companyAddressId">
+                       v-model="updateStatusParam.shippingId">
               <el-option v-for="address in companyAddressList"
                          :key="address.id"
                          :value="address.id"
@@ -138,7 +143,7 @@
           <el-col class="form-border form-left-bg font-small" :span="6">联系电话</el-col>
           <el-col class="form-border font-small" :span="18">{{currentAddress.phone}}</el-col>
         </el-row>
-        </div>
+        </div>-->
       </div>
       <div class="form-container-border" v-show="orderReturnApply.status!==0">
         <el-row>
@@ -151,7 +156,7 @@
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">处理备注</el-col>
-          <el-col class="form-border font-small" :span="18">{{orderReturnApply.handleNote}}</el-col>
+          <el-col class="form-border font-small" :span="18">{{orderReturnApply.handleNote | formatMessage}}</el-col>
         </el-row>
       </div>
       <div class="form-container-border" v-show="orderReturnApply.status===2">
@@ -165,7 +170,7 @@
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">收货备注</el-col>
-          <el-col class="form-border font-small" :span="18">{{orderReturnApply.receiveNote}}</el-col>
+          <el-col class="form-border font-small" :span="18">{{orderReturnApply.receiveNote | formatMessage}}</el-col>
         </el-row>
       </div>
       <div class="form-container-border" v-show="orderReturnApply.status===0">
@@ -187,20 +192,23 @@
       <div style="margin-top:15px;text-align: center" v-show="orderReturnApply.status===0">
         <el-button type="primary" size="small" @click="handleUpdateStatus(1)">确认退货</el-button>
         <el-button type="danger" size="small" @click="handleUpdateStatus(3)">拒绝退货</el-button>
+        <el-button type="primary" size="info" @click="onReturn()">返回</el-button>
       </div>
       <div style="margin-top:15px;text-align: center" v-show="orderReturnApply.status===1">
-        <el-button type="primary" size="small" @click="handleUpdateStatus(2)">确认收货</el-button>
+        <el-button type="primary" size="small" @click="handleUpdateStatus(2)">确人完成</el-button>
+        <el-button type="primary" size="info" @click="onReturn()">返回</el-button>
+      </div>
+      <div style="margin-top:15px;text-align: center" v-if="orderReturnApply.status !=0 && orderReturnApply.status !=1">
+        <el-button type="primary" size="info" @click="onReturn()">返回</el-button>
       </div>
     </el-card>
   </div>
 </template>
 <script>
   import {getApplyDetail,updateApplyStatus} from '@/api/returnApply';
-  import {fetchList} from '@/api/companyAddress';
   import {formatDate} from '@/utils/date';
 
   const defaultUpdateStatusParam = {
-    companyAddressId: null,
     handleMan: 'admin',
     handleNote: null,
     receiveMan: 'admin',
@@ -211,7 +219,6 @@
   const defaultOrderReturnApply = {
     id: null,
     orderId: null,
-    companyAddressId: null,
     productId: null,
     orderSn: null,
     createTime: null,
@@ -246,7 +253,6 @@
         productList: null,
         proofPics: null,
         updateStatusParam: Object.assign({}, defaultUpdateStatusParam),
-        companyAddressList: null
       }
     },
     created() {
@@ -260,18 +266,6 @@
         } else {
           return 0;
         }
-      },
-      currentAddress() {
-        console.log("currentAddress()");
-        let id = this.updateStatusParam.companyAddressId;
-        if(this.companyAddressList==null)return {};
-        for (let i = 0; i < this.companyAddressList.length; i++) {
-          let address = this.companyAddressList[i];
-          if (address.id === id) {
-            return address;
-          }
-        }
-        return null;
       }
     },
     filters: {
@@ -286,13 +280,19 @@
           return "已拒绝";
         }
       },
-      formatTime(time) {
-        if (time == null || time === '') {
-          return 'N/A';
-        }
-        let date = new Date(time);
-        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+      formatMessage(mgessage) {
+          if(mgessage==null||mgessage===''){
+              return '暂无';
+          }
       },
+        formatTime(time){
+            if(time==null){
+                return '暂无';
+            }
+            let replace = time.replace(/-/g, "/");
+            let date = new Date(replace);
+            return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+        },
       formatRegion(address) {
         let str = address.province;
         if (address.city != null) {
@@ -306,9 +306,11 @@
       handleViewOrder(){
         this.$router.push({path:'/oms/orderDetail',query:{id:this.orderReturnApply.orderId}});
       },
+      parseProductAttr(attr){
+          return JSON.parse(attr);
+      },
       getDetail() {
         getApplyDetail(this.id).then(response => {
-          console.log("getDetail")
           this.orderReturnApply = response.data;
           this.productList = [];
           this.productList.push(this.orderReturnApply);
@@ -318,21 +320,11 @@
           //退货中和完成
           if(this.orderReturnApply.status===1||this.orderReturnApply.status===2){
             this.updateStatusParam.returnAmount=this.orderReturnApply.returnAmount;
-            this.updateStatusParam.companyAddressId=this.orderReturnApply.companyAddressId;
           }
-          this.getCompanyAddressList();
         });
       },
-      getCompanyAddressList() {
-        fetchList().then(response => {
-          console.log("getCompanyAddressList()")
-          this.companyAddressList = response.data;
-          for (let i = 0; i < this.companyAddressList.length; i++) {
-            if (this.companyAddressList[i].receiveStatus === 1&&this.orderReturnApply.status===0) {
-              this.updateStatusParam.companyAddressId = this.companyAddressList[i].id;
-            }
-          }
-        });
+      onReturn(){
+          this.$router.back();
       },
       handleUpdateStatus(status){
         this.updateStatusParam.status=status;

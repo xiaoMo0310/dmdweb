@@ -30,7 +30,7 @@ export const constantRouterMap = [
       path: 'home',
       name: 'home',
       component: () => import('@/views/home/index'),
-      meta: {title: '首页', icon: 'home'}
+      meta: {title: '首页', icon: 'home'},
     }]
   },
   {
@@ -38,13 +38,13 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '#',
     name: 'ums',
-    meta: {title: '用户', icon: 'user',role:"TEST"},
+    meta: {title: '用户', icon: 'user'},
     children: [
       {
         path: 'userManagement',
         name: 'userManagement',
         component: () => import('@/views/ums/member/index'),
-        meta: {title: '用户管理', icon: "form",role:"TEST"},
+        meta: {title: '用户管理', icon: "form"},
       },
       {
         path: 'coachManagement',
@@ -67,7 +67,6 @@ export const constantRouterMap = [
       },
     ]
   },
-
   {
     path: '',
     component: Layout,
@@ -123,9 +122,9 @@ export const constantRouterMap = [
   {
     path: '/pms',
     component: Layout,
-    redirect: '/pms/product',
+    redirect: '/pms/productReview',
     name: 'pms',
-    meta: {title: '商品', icon: 'product'},
+    meta: {title: '商品管理', icon: 'product'},
     children: [
       /*{
       path: 'product',
@@ -234,10 +233,58 @@ export const constantRouterMap = [
         meta: {title: '商品审核', icon: 'product-comment'},
       },
       {
+        path: 'courseProductDetail',
+        name: 'courseProductDetail',
+        component: () => import('@/views/pms/courseProduct/productDetail'),
+        meta: {title: '潜水学证商品详情', icon: "total-today"},
+        hidden:true
+      },
+      {
+        path: 'IntegralGifts',
+        name: 'IntegralGifts',
+        component: () => import('@/views/pms/integraGiftProduct/index'),
+        meta: {title: '积分好礼', icon: "gifts"},
+      },
+      {
+        path: 'updateIntegralGifts',
+        name: 'updateIntegralGifts',
+        component: () => import('@/views/pms/integraGiftProduct/update'),
+        meta: {title: '积分好礼修改'},
+        hidden:true
+      },
+      {
+        path: 'addIntegralGifts',
+        name: 'addIntegralGifts',
+        component: () => import('@/views/pms/integraGiftProduct/add'),
+        meta: {title: '积分好礼添加'},
+        hidden:true
+      },
+      {
+        path: 'selectSpe',
+        name: 'selectSpe',
+        component: () => import('@/views/pms/integraGiftProduct/select'),
+        meta: {title: '规格与库存查询'},
+        hidden:true
+      },
+      {
+        path: 'addSpe',
+        name: 'addSpe',
+        component: () => import('@/views/pms/integraGiftProduct/addSpe'),
+        meta: {title: '规格与库存添加'},
+        hidden:true
+      },
+      {
+        path: 'updateIntegralGiftsSpe',
+        name: 'updateIntegralGiftsSpe',
+        component: () => import('@/views/pms/integraGiftProduct/updateSpe'),
+        meta: {title: '礼品规格修改'},
+        hidden:true
+      },
+      {
         path: 'certificateList',
         name: 'certificateList',
         component: () => import('@/views/pms/certificate/index'),
-        meta: {title: '证书列表', icon: 'product-brand'},
+        meta: {title: '证书商品', icon: 'product-brand'},
       },
       {
         path: 'addCertificate',
@@ -252,20 +299,13 @@ export const constantRouterMap = [
         component: () => import('@/views/pms/certificate/update'),
         meta: {title: '修改证书'},
         hidden: true
-      },
-      {
-        path: 'courseProductDetail',
-        name: 'courseProductDetail',
-        component: () => import('@/views/pms/courseProduct/productDetail'),
-        meta: {title: '潜水学证商品详情', icon: "total-today"},
-        hidden:true
       }
     ]
   },
   {
     path: '/oms',
     component: Layout,
-    redirect: '#',
+    redirect: '/oms/order',
     name: 'oms',
     meta: {title: '订单管理', icon: 'order'},
     children: [
@@ -319,7 +359,7 @@ export const constantRouterMap = [
   {
     path:'/sms',
     component: Layout,
-    redirect: '#',
+    redirect: '/sms/advertise',
     name: 'sms',
     meta: {title: '营销管理', icon: 'sms'},
     children: [
@@ -534,48 +574,7 @@ export const constantRouterMap = [
         component: () => import('@/views/integral/integrationRule/update'),
         meta: {title: '积分规则编辑'},
         hidden:true
-      },
-      {
-        path: 'IntegralGifts',
-        name: 'IntegralGifts',
-        component: () => import('@/views/integral/integralGifts/index'),
-        meta: {title: '积分好礼管理', icon: "gifts"},
-      },
-      {
-        path: 'updateIntegralGifts',
-        name: 'updateIntegralGifts',
-        component: () => import('@/views/integral/integralGifts/update'),
-        meta: {title: '积分好礼修改'},
-        hidden:true
-      },
-      {
-        path: 'addIntegralGifts',
-        name: 'addIntegralGifts',
-        component: () => import('@/views/integral/integralGifts/add'),
-        meta: {title: '积分好礼添加'},
-        hidden:true
-      },
-      {
-        path: 'selectSpe',
-        name: 'selectSpe',
-        component: () => import('@/views/integral/integralGifts/select'),
-        meta: {title: '规格与库存查询'},
-        hidden:true
-      },
-      {
-        path: 'addSpe',
-        name: 'addSpe',
-        component: () => import('@/views/integral/integralGifts/addSpe'),
-        meta: {title: '规格与库存添加'},
-        hidden:true
-      },
-      {
-        path: 'updateIntegralGiftsSpe',
-        name: 'updateIntegralGiftsSpe',
-        component: () => import('@/views/integral/integralGifts/updateSpe'),
-        meta: {title: '礼品规格修改'},
-        hidden:true
-      },
+      }
     ]
   },
   {

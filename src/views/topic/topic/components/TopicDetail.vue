@@ -25,6 +25,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('homeAdvertiseFrom')">提交</el-button>
+        <el-button type="info" size="small" @click="onReturn('homeAdvertiseFrom')">返回</el-button>
         <el-button v-if="!isEdit" @click="resetForm('homeAdvertiseFrom')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -123,6 +124,9 @@
             return false;
           }
         });
+      },
+      onReturn(){
+          this.$router.back();
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

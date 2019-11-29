@@ -12,7 +12,7 @@
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
-        <el-table-column label="编号" width="120" align="center">
+        <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="证书中文名称" width="200"  align="center">
@@ -21,13 +21,13 @@
         <el-table-column label="证书英文名称" width="320 " align="center">
           <template slot-scope="scope">{{scope.row.englishName}}</template>
         </el-table-column>
-        <el-table-column label="证书等级" width="100" align="center">
+        <el-table-column label="证书等级"  align="center">
           <template slot-scope="scope">{{scope.row.certificateLevel}}</template>
         </el-table-column>
         <el-table-column label="简写名称" width="120" align="center">
           <template slot-scope="scope">{{scope.row.englishShorthand}}</template>
         </el-table-column>
-        <el-table-column label="简介" align="center">
+        <el-table-column label="简介" width="455" align="center">
           <template slot-scope="scope">{{scope.row.introduction}}</template>
         </el-table-column>
         <el-table-column label="广告图片" width="120" align="center">
@@ -99,13 +99,14 @@
           return 'PC首页轮播';
         }
       },
-      formatTime(time){
-        if(time==null||time===''){
-          return 'N/A';
-        }
-        let date = new Date(time);
-        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
-      },
+        formatTime(time){
+            if(time==null){
+                return 'N/A';
+            }
+            let replace = time.replace(/-/g, "/");
+            let date = new Date(replace);
+            return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+        },
     },
     methods: {
       handleResetSearch() {

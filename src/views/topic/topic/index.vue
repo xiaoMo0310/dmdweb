@@ -159,8 +159,9 @@
         if(time==null){
           return 'N/A';
         }
-        let date = new Date(time);
-        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+          let replace = time.replace(/-/g, "/");
+        let date = new Date(replace);
+        return date
       },
     },
     methods: {

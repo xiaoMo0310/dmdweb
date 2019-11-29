@@ -282,8 +282,12 @@
     },
     filters: {
       formatCreateTime(time) {
-        let date = new Date(time);
-        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+          if(time==null){
+              return 'N/A';
+          }
+          let replace = time.replace(/-/g, "/");
+          let date = new Date(replace);
+          return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
       },
       formatPayType(value) {
         if (value === 1) {

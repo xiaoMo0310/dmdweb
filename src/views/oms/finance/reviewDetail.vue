@@ -217,11 +217,12 @@
             }
         },
         methods: {
-            formatTime(time) {
-                if (time == null || time === '') {
-                    return '';
+            formatTime(time){
+                if(time==null){
+                    return 'N/A';
                 }
-                let date = new Date(time);
+                let replace = time.replace(/-/g, "/");
+                let date = new Date(replace);
                 return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
             },
             showLogisticsDialog(oidPaybill){
