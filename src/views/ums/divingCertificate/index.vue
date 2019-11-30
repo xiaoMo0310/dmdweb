@@ -70,52 +70,33 @@
         <el-table-column label="用户ID" align="center">
           <template slot-scope="scope">{{scope.row.userId}}</template>
         </el-table-column>
-        <el-table-column label="OWD证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.owd"  v-image-preview></template>
+        <el-table-column label="证书图片" width="140" align="center">
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pictures"  v-image-preview></template>
         </el-table-column>
-        <el-table-column label="AOWD证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.aowd"  v-image-preview></template>
+        <el-table-column label="审核状态" align="center">
+          <template slot-scope="scope">{{scope.row.status | formatType}}</template>
         </el-table-column>
-        <el-table-column label="EFA证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.efa"  v-image-preview></template>
+        <el-table-column label="证书ID" align="center">
+          <template slot-scope="scope">{{scope.row.certificateId}}</template>
         </el-table-column>
-        <el-table-column label="RD证书" width="140"align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.rd"   v-image-preview></template>
+        <el-table-column label="证书名称" align="center">
+          <template slot-scope="scope">{{scope.row.certificateName}}</template>
         </el-table-column>
-        <el-table-column label="SC证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.sc"   v-image-preview></template>
-        </el-table-column>
-        <el-table-column label="SC证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.sc"   v-image-preview></template>
-        </el-table-column>
-        <el-table-column label="MSD证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.msd"   v-image-preview></template>
-        </el-table-column>
-        <el-table-column label="DM证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.dm"   v-image-preview></template>
-        </el-table-column>
-        <el-table-column label="OWSI" width="140"align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.owsi"   v-image-preview></template>
-        </el-table-column>
-        <el-table-column label="MSDT证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.msdt"   v-image-preview></template>
-        </el-table-column>
-        <el-table-column label="IDCSI证书"width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.idcsi"   v-image-preview></template>
-        </el-table-column>
-        <el-table-column label="MI证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.mi"   v-image-preview></template>
-        </el-table-column>
-        <el-table-column label="CD证书" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.cd"   v-image-preview></template>
-        </el-table-column>
-        <el-table-column label="申请时间" width="220" align="center">
+        <el-table-column label="上传时间" width="220" align="center">
           <template slot-scope="scope">
             {{scope.row.createTime | formatTime}}
           </template>
         </el-table-column>
-        <el-table-column label="审核状态" align="center">
-          <template slot-scope="scope">{{scope.row.status | formatType}}</template>
+        <el-table-column label="审核通过时间" width="220" align="center">
+          <template slot-scope="scope">
+            {{scope.row.adopTime | formatTime}}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作人" align="center">
+          <template slot-scope="scope">{{scope.row.operator}}</template>
+        </el-table-column>
+        <el-table-column label="未通过原因" align="center">
+          <template slot-scope="scope">{{scope.row.reason}}</template>
         </el-table-column>
         <el-table-column label="操作" width="220" align="center">
           <template slot-scope="scope">
@@ -166,10 +147,39 @@
         :total="total">
       </el-pagination>
     </div>
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <el-form ref="productAttrCatForm":model="productAttrCate" :rules="rules" label-width="120px">
+        <el-form-item label="图片" prop="pictures" v-if="productAttrCate.pictures === null">
+          <el-input v-if="productAttrCate.pictures === null" v-model="productAttrCate.pictures" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="用户id" prop="userId" v-if="productAttrCate.userId === null">
+          <el-input v-if="productAttrCate.userId === null" v-model="productAttrCate.userId" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="证书id" prop="certificateId" v-if="productAttrCate.certificateId === null">
+          <el-input v-if="productAttrCate.certificateId === null" v-model="productAttrCate.certificateId" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="用户上传时间" prop="createTime" v-if="productAttrCate.createTime === null">
+          <el-input v-if="productAttrCate.createTime === null" v-model="productAttrCate.createTime" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="请填写未通过原因" prop="reason">
+          <el-input  v-model="productAttrCate.reason" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="操作人" prop="operator">
+          <el-input  v-model="productAttrCate.operator" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleConfirm('productAttrCatForm')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
-  import {selectDiveCertificate ,updateDiveCertificateStatusPass,updateDiveCertificateStatusNoPass} from '@/api/diveCertificate';
+  import {selectDiveCertificate ,updateDiveCertificateStatusPass,updateCertificateStatusNoPass} from '@/api/diveCertificate';
   import {formatDate} from '@/utils/date';
   const defaultListQuery = {
     pageNum: 1,
@@ -207,11 +217,18 @@
             label: "审核通过",
             value: 1
           },
-          {
-            label: "审核不通过",
-            value: 2
-          }
         ],
+        dialogVisible: false,
+        dialogTitle:'',
+        productAttrCate:{
+          name:'',
+          id:null
+        },
+        rules: {
+          name: [
+            { required: true, message: '请输入类型名称', trigger: 'blur' }
+          ]
+        },
         operateType: null
       }
     },
@@ -237,6 +254,48 @@
       },
     },
     methods: {
+      handUpdate2(index, row) {
+        this.dialogVisible = true;
+        this.dialogTitle = "请填写审核未通过的原因";
+        this.productAttrCate.pictures = row.pictures;
+        this.productAttrCate.userId = row.userId;
+        this.productAttrCate.id = row.id;
+        this.productAttrCate.certificateId = row.certificateId;
+        this.productAttrCate.createTime = row.createTime;
+        this.productAttrCate.operator = row.operator;
+        this.productAttrCate.reason = row.reason;
+      },
+      handleConfirm(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let data = new URLSearchParams();
+            data.append("pictures",this.productAttrCate.pictures);
+            data.append("userId",this.productAttrCate.userId);
+            data.append("certificateId",this.productAttrCate.certificateId);
+            data.append("createTime",this.productAttrCate.createTime);
+            data.append("operator",this.productAttrCate.operator);
+            data.append("reason",this.productAttrCate.reason);
+
+            console.log(this.dialogTitle)
+            console.log("=============================================")
+            if(this.dialogTitle==="请填写审核未通过的原因"){
+              updateCertificateStatusNoPass(this.productAttrCate.id,data).then(response=>{
+                this.$message({
+                  message: '修改成功',
+                  type: 'success',
+                  duration:1000
+                });
+                this.dialogVisible = false;
+                this.getList();
+              });
+            }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
       },
@@ -274,8 +333,6 @@
         }
         if(this.operateType===1){
           this.updateDiveCertificateStatusPass(ids);
-        }if(this.operateType===2){
-          this.updateDiveCertificateStatusPass2(ids);
         }
         else {
           this.$message({
@@ -344,9 +401,7 @@
       handUpdate(index, row){
         this.updateDiveCertificateStatusPass(row.id);
       },
-      handUpdate2(index, row){
-        this.updateDiveCertificateStatusPass2(row.id);
-      },
+
       getList() {
         this.listLoading = true;
         selectDiveCertificate (this.listQuery).then(response => {
@@ -395,24 +450,7 @@
             });
           })
       },
-      updateDiveCertificateStatusPass2(id){
-          this.$confirm('是否不通过审核', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            let params = new URLSearchParams();
-            params.append("ids",id);
-            updateDiveCertificateStatusNoPass(params).then(response=>{
-              this.$message({
-                message: '审核不通过成功！',
-                type: 'success',
-                duration: 1000
-              });
-              this.getList();
-            });
-          })
-      },
+
     }
   }
 </script>
