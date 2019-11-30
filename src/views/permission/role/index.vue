@@ -32,7 +32,7 @@
         <el-table-column label="是否启用" align="center">
           <template slot-scope="scope">{{scope.row.status==0?"禁用":"启用"}}</template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" width="400" align="center">
           <template slot-scope="scope">
             <!--<el-button
               size="mini"
@@ -83,7 +83,7 @@
       <div>
         <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择权限</div>
         <div v-for="item in items"  v-bind:key="item.message" style="float: left;width: 150px;margin-bottom: 15px;">
-          <el-checkbox v-model="item.check" style="margin-left: 10px;width: 140px;"  border>{{item.name}}</el-checkbox>
+          <el-checkbox v-model="item.beCheck" style="margin-left: 10px;width: 140px;"  border>{{item.name}}</el-checkbox>
         </div>
       </div>
       <div>
@@ -173,14 +173,16 @@
                 let permissionRelations=[];
                 let items=this.items;
                 for(var i=0;i<items.length;i++){
-                    if(items[i].check){
+                    if(items[i].beCheck){
                         let permissionRelation={roleId:this.roleIdForPermission,permissionId:items[i].id};
                         permissionRelations.push(permissionRelation);
                     }
                 }
+                if(permissionRelations.length===0){
+                    permissionRelations.push({roleId:this.userIdForRole,permissionId:null})
+                }
                 addPermissionForRole(JSON.stringify(permissionRelations)).then(response => {
                     this.listLoading = false;
-                    this.list = response.result.list;
                     this.total = response.result.total;
                     this.closePermission();
                     this.getList();
