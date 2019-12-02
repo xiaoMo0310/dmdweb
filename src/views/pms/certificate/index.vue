@@ -39,7 +39,7 @@
               @change="handleUpdateStatus(scope.$index, scope.row)"
               :active-value="1"
               :inactive-value="2"
-              v-model="scope.row.status">
+              v-model="scope.row.status" disabled>
             </el-switch>
           </template>
         </el-table-column>

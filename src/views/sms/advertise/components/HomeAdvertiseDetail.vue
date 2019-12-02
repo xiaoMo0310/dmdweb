@@ -60,7 +60,7 @@
           <el-option
             v-for="type in list"
             :key="type.id"
-            :label="type.topicName || type.title"
+            :label="type.topicName || type.title || type.englishShorthand"
             :value="type.id">
           </el-option>
           <div style="bottom: 0;width: 100%;background: #fff">
@@ -108,7 +108,8 @@
   </el-card>
 </template>
 <script>
-  import {findCourseProductList, findCourseProductById} from '@/api/courseProduct'
+  import {findCourseProductList,findCourseProductById} from '@/api/courseProduct'
+  import {fetchList, findCertificateById} from '@/api/certificate'
   import {topicList, getTopicById} from '@/api/topicManagement';
   import SingleUpload from '@/components/Upload/singleUpload'
   import {createHomeAdvertise, getHomeAdvertise, updateHomeAdvertise} from '@/api/homeAdvertise'
@@ -219,12 +220,15 @@
           this.homeAdvertise = response.data;
           if(response.data.linkType === 1){
               this.findCourseProductById(this.homeAdvertise.url);
-              this.linkType = response.data.linkType;
+              this.linkType = 1;
           }else if(response.data.linkType === 2){
               this.getTopicById(this.homeAdvertise.url)
               this.sleep(1000).then(()=>{
                   this.linkType = response.data.linkType;
               })
+          }else if(response.data.linkType === 4){
+              this.findCertificateById(this.homeAdvertise.url);
+              this.linkType = 1;
           }else {
               this.linkType = response.data.linkType;
               this.id = this.homeAdvertise.url;
@@ -293,7 +297,11 @@
           this.listQuery.pageNum = 1;
           this.listQuery.pageSize = val;
           if(this.linkType === 1){
-              this.getProductList();
+              if(this.type === 1){
+                  this.getCertificateList()
+              }if(this.linkType === 2){
+                  this.getDivingProductList();
+              }
           }else if(this.linkType === 2){
               this.getTopicList()
           }
@@ -302,7 +310,11 @@
       handleCurrentChange(val) {
           this.listQuery.pageNum = val;
           if(this.linkType === 1){
-              this.getProductList();
+              if(this.type === 1){
+                  this.getCertificateList()
+              }if(this.linkType === 2){
+                  this.getDivingProductList();
+              }
           }else if(this.linkType === 2){
               this.getTopicList()
           }
@@ -311,10 +323,19 @@
         this.$refs[formName].resetFields();
         this.homeAdvertise = Object.assign({},defaultHomeAdvertise);
       },
-      getProductList() {
+      getDivingProductList() {
           this.listQuery.productType = this.type
           findCourseProductList (this.listQuery).then(response => {
               this.list = response.result.list;
+              this.total = response.result.total;
+          })
+      },
+      getCertificateList(){
+          fetchList(this.listQuery).then(response => {
+              this.list = response.result.list;
+              for (let i = 0; i < this.list.length; i++) {
+                  this.list[i].englishShorthand = this.list[i].englishShorthand + "证书"
+              };
               this.total = response.result.total;
           })
       },
@@ -326,7 +347,7 @@
       },
       findCourseProductById(id){
           findCourseProductById(id).then(response => {
-              this.type = response.result.productType
+              this.type = 2
               this.id = response.result.id
           });
       },
@@ -334,14 +355,26 @@
           getTopicById(id).then(response => {
               this.id = response.data.id;
           });
+      },
+      findCertificateById(id){
+          findCertificateById(id).then(response => {
+              this.type = 1
+              this.id = response.result.id
+          });
       }
+
     },
     watch: {
         type(val, oldval){
             if (this.type != null) {
+                if(val === 1){
+                    this.getCertificateList();
+                }else {
+                    this.getDivingProductList();
+                }
                 this.homeAdvertise.url = null;
                 this.list = null;
-                this.getProductList();
+
             }
             if(this.id != null){
                 this.homeAdvertise.url = this.id;

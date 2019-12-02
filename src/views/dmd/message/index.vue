@@ -211,7 +211,7 @@
   const defaultTypeOptions = [
     {
       label: '普通用户',
-      value: 1
+      value: 'member'
     }
   ];
   const isDelete = [
@@ -287,7 +287,7 @@
           }
       },
       userType(type){
-          if(type===1){
+          if(type==='member'){
               return '普通用户';
           }
       },

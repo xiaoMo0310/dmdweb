@@ -191,9 +191,13 @@
     filters:{
       formatType(type){
         if(type===1){
-          return 'APP首页轮播';
-        }else{
-          return 'PC首页轮播';
+          return '首页轮播';
+        }else if(type===2){
+          return '商场轮播';
+        }else if(type===3){
+          return '启动页';
+        }else {
+          return '引导页';
         }
       },
         formatTime(time){

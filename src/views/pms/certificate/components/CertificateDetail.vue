@@ -29,8 +29,8 @@
       </el-form-item>
       <el-form-item label="启动/禁用：">
         <el-radio-group v-model="certificate.status">
-          <el-radio :label="1">启动</el-radio>
-          <el-radio :label="2">禁用</el-radio>
+          <el-radio :label="1" disabled>启动</el-radio>
+          <el-radio :label="2" disabled>禁用</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="简介：">
