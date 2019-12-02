@@ -20,13 +20,16 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="礼品名称：">
-            <el-input v-model="listQuery.name" class="input-width" placeholder="礼品名称"></el-input>
+          <el-form-item label="用户Id：">
+            <el-input v-model="listQuery.userId" class="input-width" placeholder="用户Id"></el-input>
+          </el-form-item>
+          <el-form-item label="问题描述：">
+            <el-input v-model="listQuery.problemDescription" class="input-width" placeholder="问题描述"></el-input>
           </el-form-item>
           <el-form-item label="发布起始时间：">
             <el-date-picker
               class="input-width"
-              v-model="listQuery.stratTime"
+              v-model="listQuery.startTime"
               value-format="yyyy-MM-dd hh:mm:ss"
               type="date"
               placeholder="请选择时间">
@@ -41,23 +44,18 @@
               placeholder="请选择时间">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="上下架查询：">
-            <el-select v-model="listQuery.status" placeholder="全部" clearable class="input-width">
-              <el-option v-for="item in typeOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
+          <el-form-item label="意见反馈类别：">
+            <el-select v-model="listQuery.problemId" value-key="id" @click.native="selectTopicType()">
+              <el-option v-for="item in arr" :label="item.questionName" :key="item.id" :value="item.id">
               </el-option>
             </el-select>
           </el-form-item>
         </el-form>
-
       </div>
     </el-card>
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
-      <el-button size="mini" class="btn-add" @click="handleAdd()">添加好礼</el-button>
     </el-card>
     <div class="table-container">
       <el-table ref="homeAdvertiseTable"
@@ -66,57 +64,31 @@
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="80" align="center"></el-table-column>
-        <el-table-column label="编号" width="100" align="center">
+        <el-table-column label="编号" width="120" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="礼品名称" align="center">
-          <template slot-scope="scope">{{scope.row.name}}</template>
+        <el-table-column label="用户id" width="120" align="center">
+          <template slot-scope="scope">{{scope.row.userId}}</template>
         </el-table-column>
-        <el-table-column label="礼品图片"  align="center">
-          <template slot-scope="scope" >
-            <div v-for="item in getImg(scope.row.picture)" >
-              <img style="height: 80px" :src="item"  v-image-preview>
-            </div>
+        <el-table-column label="问题类别" align="center">
+          <template slot-scope="scope">{{scope.row.problemName}}</template>
+        </el-table-column>
+        <el-table-column label="问题描述" align="center">
+          <template slot-scope="scope">{{scope.row.problemDescription}}</template>
+        </el-table-column>
+        <el-table-column label="描述图片" width="150" align="center">
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.picture" v-image-preview></template>
+        </el-table-column>
+        <el-table-column label="发布时间" width="220" align="center">
+          <template slot-scope="scope">
+            {{scope.row.createTime | formatTime}}
           </template>
         </el-table-column>
-        <el-table-column label="所需积分"  align="center">
-          <template slot-scope="scope">{{scope.row.integral}}</template>
-        </el-table-column>
-        <el-table-column label="介绍图片"  align="center">
-          <template slot-scope="scope"><img style="height: 80px" v-image-preview :src="scope.row.introduce"></template>
-        </el-table-column>
-        <el-table-column label="时间" width="220" align="center">
-          <template slot-scope="scope">
-            发布时间:{{scope.row.createTime | formatTime}}
-            修改时间:{{scope.row.updateTime | formatTime}}
-          </template>
-        </el-table-column>
-        <el-table-column label="状态"  align="center">
-          <template slot-scope="scope">{{scope.row.status | formatStatusType}}</template>
-        </el-table-column>
-        <el-table-column label="操作" width="400" align="center">
+        <el-table-column label="操作" width="120" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       @click="handUpdate(scope.$index, scope.row)">编辑
-            </el-button>
-            <el-button size="mini"
-                       type="danger"
+                       type="text"
                        @click="handleDelete(scope.$index, scope.row)">删除
-            </el-button>
-            <el-button size="mini"
-                       @click="handUpdateStatus(scope.$index, scope.row)"
-                       v-show="scope.row.status===1"
-            >上架
-            </el-button>
-            <el-button size="mini"
-                       type="danger "
-                       @click="handUpdateStatus2(scope.$index, scope.row)"
-                       v-show="scope.row.status===0"
-            >下架
-            </el-button>
-            <el-button size="mini"
-                       @click="handSelect(scope.$index, scope.row)"
-            >查看添加礼品库存规格
             </el-button>
           </template>
         </el-table-column>
@@ -157,66 +129,48 @@
   </div>
 </template>
 <script>
-  import {queryIntegralGifts , deleteIntegralGiftsById , updateIntegralGiftsNoPass ,updateIntegralGiftsPass } from '@/api/integralGifts';
+  import {queryUserFeedback,queryProblemFeedbackByName,deletequeryUserFeedback} from '@/api/feedback';
   import {formatDate} from '@/utils/date';
   const defaultListQuery = {
     pageNum: 1,
     pageSize: 5,
-    name: null,
-    stratTime:null,
+    userId: null,
+    problemDescription: null,
+    startTime:null,
     endTime:null
   };
-  const defaultTypeOptions=[
-    {
-      label: '上架',
-      value: 0
-    },
-    {
-      label: '下架',
-      value: 1
-    },
-  ];
-  export default {
-    name: 'searchqueryIntegralGifts',
 
+  export default {
+    name: 'searchqueryUserFeedback',
     data() {
       return {
-        typeOptions:Object.assign({},defaultTypeOptions),
-
         listQuery: Object.assign({}, defaultListQuery),
         list: null,
         total: null,
         listLoading: false,
         multipleSelection: [],
-        /*msg :[
-          {
-            picture:null
-          },
-        ],*/
         operates: [
           {
             label: "删除",
             value: 0
-          },
-          {
-            label: "上架",
-            value: 1
-          },
-          {
-            label: "下架",
-            value: 2
           }
         ],
         operateType: null,
-
+        problemId : null,
+        arr:null,
+        selectTopicType(){
+          queryProblemFeedbackByName ().then(response => {
+            for (let i = 0; i < response.data.length; i++) {
+              this.arr = response.data;
+              this.problemId = response.data[i].id;
+            }
+          })
+        },
       }
-
     },
     created() {
       this.getList();
-
     },
-
     filters:{
       formatTime(time){
         if(time==null){
@@ -225,63 +179,8 @@
         let date = new Date(time);
         return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
       },
-      formatStatusType(status){
-        if(status===0){
-          return "已上架";
-        }if(status===1){
-          return '已下架';
-        }
-      },
     },
     methods: {
-      handUpdateStatus(index, row){
-        this.updateDiveCertificateStatusPass(row.id);
-      },
-      updateDiveCertificateStatusPass(id){
-        this.$confirm('是否上架?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          let params = new URLSearchParams();
-          params.append("ids",id);
-          updateIntegralGiftsPass(params).then(response=>{
-            this.$message({
-              message: '上架成功！',
-              type: 'success',
-              duration: 1000
-            });
-            this.getList();
-          });
-        })
-      },
-      handUpdateStatus2(index, row){
-        this.updateDiveCertificateStatusPass2(row.id);
-      },
-      updateDiveCertificateStatusPass2(id){
-        this.$confirm('是否下架?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          let params = new URLSearchParams();
-          params.append("ids",id);
-          updateIntegralGiftsNoPass(params).then(response=>{
-            this.$message({
-              message: '下架成功！',
-              type: 'success',
-              duration: 1000
-            });
-            this.getList();
-          });
-        })
-      },
-      handSelect(index,row){
-        this.$router.push({path: '/integral/selectSpe', query: {id: row.id}})
-      },
-      handAddSpe(index,row){
-        this.$router.push({path: '/integral/addSpe', query: {id: row.id}})
-      },
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
       },
@@ -302,7 +201,7 @@
         this.getList();
       },
       handleDelete(index,row){
-        this.deleteIntegralGiftsById(row.id);
+        this.deletequeryUserFeedback(row.id);
       },
       handleBatchOperate(){
         if (this.multipleSelection < 1) {
@@ -319,17 +218,8 @@
         }
         if(this.operateType===0){
           //删除
-          this.deleteIntegralGiftsById(ids);
-        }
-        if(this.operateType===2){
-          //删除
-          this.updateDiveCertificateStatusPass2(ids);
-        }
-        if(this.operateType===1){
-          //删除
-          this.updateDiveCertificateStatusPass(ids);
-        }
-        else {
+          this.deletequeryUserFeedback(ids);
+        }else {
           this.$message({
             message: '请选择批量操作类型',
             type: 'warning',
@@ -338,14 +228,14 @@
         }
       },
       handleAdd(){
-        this.$router.push({path: '/integral/addIntegralGifts'})
+        this.$router.push({path: '/topic/addTopic'})
       },
       handUpdate(index,row){
-        this.$router.push({path: '/integral/updateIntegralGifts', query: {id: row.id}})
+        this.$router.push({path: '/topic/updateTopic', query: {id: row.id}})
       },
       getList() {
         this.listLoading = true;
-        queryIntegralGifts (this.listQuery).then(response => {
+        queryUserFeedback (this.listQuery).then(response => {
           console.log(response)
           this.listLoading = false;
           this.list = response.data.list;
@@ -355,21 +245,15 @@
 
         })
       },
-      getImg(val){
-        if(val!=null){
-          var words = val.split(',');
-          return words;
-        }
-      },
-      deleteIntegralGiftsById(ids){
-        this.$confirm('是否要删除该礼品?', '提示', {
+      deletequeryUserFeedback(ids){
+        this.$confirm('是否要删除该话题?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           let params=new URLSearchParams();
           params.append("ids",ids);
-          deleteIntegralGiftsById(params).then(response=>{
+          deletequeryUserFeedback(params).then(response=>{
             this.getList();
             this.$message({
               type: 'success',

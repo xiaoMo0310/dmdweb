@@ -380,7 +380,7 @@
       },
       formatTime(time){
         if(time==null){
-          return 'N/A';
+          return '暂无';
         }
         let date = new Date(time);
         return formatDate(date, 'yyyy-MM-dd hh:mm:ss')

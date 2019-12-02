@@ -2,62 +2,20 @@
   <div class="app-container">
     <el-card class="filter-container" shadow="never">
       <div>
-        <i class="el-icon-search"></i>
-        <span>筛选搜索</span>
-        <el-button
-          style="float:right"
-          type="primary"
-          @click="handleSearchList()"
-          size="small">
-          查询搜索
-        </el-button>
-        <el-button
-          style="float:right;margin-right: 15px"
-          @click="handleResetSearch()"
-          size="small">
-          重置
-        </el-button>
-      </div>
-      <div style="margin-top: 15px">
-        <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="礼品名称：">
-            <el-input v-model="listQuery.name" class="input-width" placeholder="礼品名称"></el-input>
-          </el-form-item>
-          <el-form-item label="发布起始时间：">
-            <el-date-picker
-              class="input-width"
-              v-model="listQuery.stratTime"
-              value-format="yyyy-MM-dd hh:mm:ss"
-              type="date"
-              placeholder="请选择时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="发布结束时间：">
-            <el-date-picker
-              class="input-width"
-              v-model="listQuery.endTime"
-              value-format="yyyy-MM-dd hh:mm:ss"
-              type="date"
-              placeholder="请选择时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="上下架查询：">
-            <el-select v-model="listQuery.status" placeholder="全部" clearable class="input-width">
-              <el-option v-for="item in typeOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
+        <i class=""></i>
+        <span>意见反馈类型列表</span>
 
       </div>
     </el-card>
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
-      <el-button size="mini" class="btn-add" @click="handleAdd()">添加好礼</el-button>
+      <template slot-scope="scope">
+        <el-button
+          size="mini"
+          @click="handleAdd(scope.$index, scope.row)">添加意见反馈类型
+        </el-button>
+      </template>
     </el-card>
     <div class="table-container">
       <el-table ref="homeAdvertiseTable"
@@ -65,83 +23,45 @@
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
-        <el-table-column type="selection" width="80" align="center"></el-table-column>
         <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="礼品名称" align="center">
-          <template slot-scope="scope">{{scope.row.name}}</template>
+        <el-table-column label="问题类型名称" align="center" width="300">
+          <template slot-scope="scope">{{scope.row.questionName}}</template>
         </el-table-column>
-        <el-table-column label="礼品图片"  align="center">
-          <template slot-scope="scope" >
-            <div v-for="item in getImg(scope.row.picture)" >
-              <img style="height: 80px" :src="item"  v-image-preview>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="所需积分"  align="center">
-          <template slot-scope="scope">{{scope.row.integral}}</template>
-        </el-table-column>
-        <el-table-column label="介绍图片"  align="center">
-          <template slot-scope="scope"><img style="height: 80px" v-image-preview :src="scope.row.introduce"></template>
-        </el-table-column>
-        <el-table-column label="时间" width="220" align="center">
+        <el-table-column label="更发布时间" width="250" align="center">
           <template slot-scope="scope">
-            发布时间:{{scope.row.createTime | formatTime}}
-            修改时间:{{scope.row.updateTime | formatTime}}
+            {{scope.row.createTime | formatTime}}
           </template>
         </el-table-column>
-        <el-table-column label="状态"  align="center">
+        <el-table-column label="修改时间" width="250" align="center">
+          <template slot-scope="scope">
+            {{scope.row.updateTime | formatTime}}
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" width="210" align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatusType}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="400" align="center">
+        <el-table-column label="启动/禁用" width="210" align="center">
+          <template slot-scope="scope">
+            <el-switch
+              @change="handleUpdateStatus(scope.$index, scope.row)"
+              :active-value="0"
+              :inactive-value="1"
+              v-model="scope.row.status">
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       @click="handUpdate(scope.$index, scope.row)">编辑
-            </el-button>
-            <el-button size="mini"
-                       type="danger"
-                       @click="handleDelete(scope.$index, scope.row)">删除
-            </el-button>
-            <el-button size="mini"
-                       @click="handUpdateStatus(scope.$index, scope.row)"
-                       v-show="scope.row.status===1"
-            >上架
-            </el-button>
-            <el-button size="mini"
-                       type="danger "
-                       @click="handUpdateStatus2(scope.$index, scope.row)"
-                       v-show="scope.row.status===0"
-            >下架
-            </el-button>
-            <el-button size="mini"
-                       @click="handSelect(scope.$index, scope.row)"
-            >查看添加礼品库存规格
+                       @click="handleUpdate(scope.$index, scope.row)">编辑
             </el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <div class="batch-operate-container">
-      <el-select
-        size="small"
-        v-model="operateType" placeholder="批量操作">
-        <el-option
-          v-for="item in operates"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <el-button
-        style="margin-left: 20px"
-        class="search-button"
-        @click="handleBatchOperate()"
-        type="primary"
-        size="small">
-        确定
-      </el-button>
-    </div>
+
     <div class="pagination-container">
       <el-pagination
         background
@@ -154,10 +74,31 @@
         :total="total">
       </el-pagination>
     </div>
+
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <el-form ref="productAttrCatForm":model="productAttrCate" :rules="rules" label-width="120px">
+        <el-form-item label="问题类型名称:" prop="questionName">
+          <el-input v-model="productAttrCate.questionName" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="状态:" prop="status" v-if="productAttrCate.status === null">
+          <el-input v-if="productAttrCate.createTime === null" v-model="productAttrCate.status" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="用户上传时间" prop="createTime" v-if="productAttrCate.createTime === null">
+          <el-input v-if="productAttrCate.createTime === null" v-model="productAttrCate.createTime" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleConfirm('productAttrCatForm')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
-  import {queryIntegralGifts , deleteIntegralGiftsById , updateIntegralGiftsNoPass ,updateIntegralGiftsPass } from '@/api/integralGifts';
+  import {queryProblemFeedback , saveOrUpdate , updateStatus ,addFeedback} from '@/api/feedback';
   import {formatDate} from '@/utils/date';
   const defaultListQuery = {
     pageNum: 1,
@@ -189,25 +130,22 @@
         listLoading: false,
         multipleSelection: [],
         /*msg :[
-          {
-            picture:null
-          },
-        ],*/
-        operates: [
-          {
-            label: "删除",
-            value: 0
-          },
-          {
-            label: "上架",
-            value: 1
-          },
-          {
-            label: "下架",
-            value: 2
-          }
-        ],
+         {
+         picture:null
+         },
+         ],*/
         operateType: null,
+        dialogVisible: false,
+        dialogTitle:'',
+        productAttrCate:{
+          name:'',
+          id:null
+        },
+        rules: {
+          name: [
+            { required: true, message: '请输入类型名称', trigger: 'blur' }
+          ]
+        }
 
       }
 
@@ -227,13 +165,86 @@
       },
       formatStatusType(status){
         if(status===0){
-          return "已上架";
+          return "启动";
         }if(status===1){
-          return '已下架';
+          return '禁用';
         }
       },
     },
     methods: {
+      handleUpdate(index, row) {
+          this.dialogVisible = true;
+          this.dialogTitle = "请修改问题类型名称";
+          this.productAttrCate.questionName = row.questionName;
+          this.productAttrCate.status = row.status;
+          this.productAttrCate.id = row.id;
+          this.productAttrCate.createTime = row.createTime;
+      },
+      handleAdd(index, row) {
+        this.dialogVisible = true;
+        this.dialogTitle = "请添加问题类型名称";
+        this.productAttrCate.questionName = row.questionName;
+      },
+      handleConfirm(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let data = new URLSearchParams();
+            data.append("questionName",this.productAttrCate.questionName);
+            data.append("status",this.productAttrCate.status);
+            data.append("id",this.productAttrCate.id);
+            data.append("createTime",this.productAttrCate.createTime);
+            console.log(this.dialogTitle)
+            console.log("=============================================")
+            if(this.dialogTitle==="请修改问题类型名称"){
+              updateStatus(this.productAttrCate.id,data).then(response=>{
+                this.$message({
+                  message: '修改成功',
+                  type: 'success',
+                  duration:1000
+                });
+                this.dialogVisible = false;
+                this.getList();
+              });
+            }else if(this.dialogTitle==="请添加问题类型名称"){
+              addFeedback(data).then(response=>{
+                this.$message({
+                  message: '修改成功',
+                  type: 'success',
+                  duration:1000
+                });
+                this.dialogVisible = false;
+                this.getList();
+              });
+            }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      handleUpdateStatus(index,row){
+        this.listQuery.id= row .id;
+        this.listQuery.status = row.status;
+        this.$confirm('是否要修改启用/禁用状态?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          saveOrUpdate(this.listQuery).then(response=>{
+            this.getList();
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'success',
+            message: '已取消操作!'
+          });
+          this.getList();
+        });
+      },
       handUpdateStatus(index, row){
         this.updateDiveCertificateStatusPass(row.id);
       },
@@ -337,15 +348,15 @@
           });
         }
       },
-      handleAdd(){
-        this.$router.push({path: '/integral/addIntegralGifts'})
-      },
-      handUpdate(index,row){
-        this.$router.push({path: '/integral/updateIntegralGifts', query: {id: row.id}})
-      },
+      /*handleAdd(){
+        this.$router.push({path: '/feedback/addFeedbackList'})
+      },*/
+      /*handUpdate(index,row){
+        this.$router.push({path: '/feedback/addFeedbackList', query: {id: row.id}})
+      },*/
       getList() {
         this.listLoading = true;
-        queryIntegralGifts (this.listQuery).then(response => {
+        queryProblemFeedback(this.listQuery).then(response => {
           console.log(response)
           this.listLoading = false;
           this.list = response.data.list;

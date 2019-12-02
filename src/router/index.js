@@ -643,6 +643,27 @@ export const constantRouterMap = [
     ]
   },
   {
+    path:'/feedback',
+    component: Layout,
+    redirect: '#',
+    name: 'feedback',
+    meta: {title: '意见反馈管理', icon: 'feedback2'},
+    children: [
+      {
+        path: 'feedbackList',
+        name: 'feedbackList',
+        component: () => import('@/views/feedback/feedbackList/index'),
+        meta: {title: '意见反馈列表', icon: "feedbackList"},
+      },
+      {
+        path: 'userFeedback',
+        name: 'userFeedback',
+        component: () => import('@/views/feedback/userFeedback/index'),
+        meta: {title: '用户意见反馈', icon: "userFeedbackList"},
+      },
+    ]
+  },
+  {
     path:'/statistics',
     component: Layout,
     redirect: '#',
