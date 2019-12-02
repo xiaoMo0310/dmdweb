@@ -296,7 +296,7 @@
       },
         formatTime(time){
             if(time==null){
-                return 'N/A';
+                return '暂无';
             }
             let replace = time.replace(/-/g, "/");
             let date = new Date(replace);
