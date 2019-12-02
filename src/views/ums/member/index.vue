@@ -75,8 +75,8 @@
         <el-table-column label="手机号码" align="center">
           <template slot-scope="scope">{{scope.row.phone}}</template>
         </el-table-column>
-        <el-table-column label="身份证号码" align="center">
-          <template slot-scope="scope">{{scope.row.identityCard}}</template>
+        <el-table-column label="个人简介" align="center">
+          <template slot-scope="scope">{{scope.row.personalizedSignature}}</template>
         </el-table-column>
         <el-table-column label="注册时间" align="center">
           <template slot-scope="scope">{{scope.row.createTime}}</template>
@@ -95,13 +95,13 @@
             <el-button
               size="mini"
               @click="handleFreezeUser(scope.$index, scope.row)"
-              v-show="scope.row.status===0">启用用户
+              v-show="scope.row.status===1">启用用户
             </el-button>
             <el-button
               size="mini"
               type="danger"
               @click="handleFreezeUser(scope.$index, scope.row)"
-              v-show="scope.row.status===1">冻结用户
+              v-show="scope.row.status===2">冻结用户
             </el-button>
           </template>
         </el-table-column>
@@ -166,19 +166,19 @@
                 operates: [
                     {
                         label: "冻结",
-                        value: 0
-                    },
-                    {
-                        label: "启用",
                         value: 1
                     },
                     {
-                        label: "发送通知",
+                        label: "启用",
                         value: 2
                     },
                     {
-                        label: "全部发送通知",
+                        label: "发送通知",
                         value: 3
+                    },
+                    {
+                        label: "全部发送通知",
+                        value: 4
                     }
 
                 ],
@@ -224,19 +224,20 @@
                 this.listLoading = true;
                 selectUserList(this.listQuery).then(response => {
                     this.listLoading = false;
+                    console.log(response.result.list)
                     this.list = response.result.list;
                     this.total = response.result.total;
                 });
             },
             freezeUser(id, status){
-                if(status == 1){
+                if(status == 2){
                     this.$confirm('是否要进行该冻结操作?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
                         let params = new URLSearchParams();
-                        params.append("status", 0)
+                        params.append("status", 1)
                         params.append("id",id);
                         freezeUser(params).then(response=>{
                             this.$message({
@@ -254,7 +255,7 @@
                         type: 'warning'
                     }).then(() => {
                         let params = new URLSearchParams();
-                        params.append("status", 1)
+                        params.append("status", 2)
                         params.append("id",id);
                         freezeUser(params).then(response=>{
                             this.$message({
@@ -277,7 +278,7 @@
                     return;
                 }
                 if(this.multipleSelection==null||this.multipleSelection.length<1){
-                    if(this.operateType != 3){
+                    if(this.operateType != 4){
                         this.$message({
                             message: '请选择要操作的用户',
                             type: 'warning',
@@ -286,7 +287,7 @@
                         return;
                     }
                 }
-                if(this.operateType == 3){
+                if(this.operateType == 4){
                     this.$confirm(
                         '是否要进行全部用户通知?', '提示', {
                             confirmButtonText: '确定',
@@ -308,11 +309,11 @@
                         }
                         switch (this.operateType) {
                             case this.operates[0].value:
-                                this.editUserStatus(0,ids);
+                                this.editUserStatus(1,ids);
                                 this.getList();
                                 break;
                             case this.operates[1].value:
-                                this.editUserStatus(1,ids);
+                                this.editUserStatus(2,ids);
                                 this.getList();
                                 break;
                             case this.operates[2].value:

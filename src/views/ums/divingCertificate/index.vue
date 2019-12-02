@@ -164,7 +164,7 @@
         <el-form-item label="用户上传时间" prop="createTime" v-if="productAttrCate.createTime === null">
           <el-input v-if="productAttrCate.createTime === null" v-model="productAttrCate.createTime" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="填写未通过原因" prop="reason" >
+        <el-form-item label="请填写未通过原因" prop="reason">
           <el-input  v-model="productAttrCate.reason" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="操作人" prop="operator">
@@ -245,13 +245,14 @@
           return '审核未通过';
         }
       },
-      formatTime(time){
-        if(time==null){
-          return '暂无';
-        }
-        let date = new Date(time);
-        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
-      },
+        formatTime(time){
+            if(time==null){
+                return '暂无';
+            }
+            let replace = time.replace(/-/g, "/");
+            let date = new Date(replace);
+            return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+        },
     },
     methods: {
       handUpdate2(index, row) {

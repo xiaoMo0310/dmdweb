@@ -29,8 +29,8 @@
       </el-form-item>
       <el-form-item label="启动/禁用：">
         <el-radio-group v-model="certificate.status">
-          <el-radio :label="1">启动</el-radio>
-          <el-radio :label="2">禁用</el-radio>
+          <el-radio :label="1" disabled>启动</el-radio>
+          <el-radio :label="2" disabled>禁用</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="简介：">
@@ -44,6 +44,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('certificateForm')">提交</el-button>
+        <el-button type="info" size="small" @click="onReturn('homeAdvertiseFrom')">返回</el-button>
         <el-button v-if="!isEdit" @click="resetForm('certificateForm')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -189,6 +190,9 @@
             return false;
           }
         });
+      },
+      onReturn(){
+          this.$router.back();
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

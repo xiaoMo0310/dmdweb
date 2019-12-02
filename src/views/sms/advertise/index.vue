@@ -65,10 +65,10 @@
         <el-table-column label="广告位置" width="120" align="center">
           <template slot-scope="scope">{{scope.row.type | formatType}}</template>
         </el-table-column>
-        <el-table-column label="广告图片" width="120" align="center">
+        <el-table-column label="广告图片" width="150" align="center">
           <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pic"></template>
         </el-table-column>
-        <el-table-column label="时间" width="220" align="center">
+        <el-table-column label="时间" width="250" align="center">
           <template slot-scope="scope">
             <p>开始时间：{{scope.row.startTime | formatTime}}</p>
             <p>到期时间：{{scope.row.endTime | formatTime}}</p>
@@ -191,18 +191,23 @@
     filters:{
       formatType(type){
         if(type===1){
-          return 'APP首页轮播';
-        }else{
-          return 'PC首页轮播';
+          return '首页轮播';
+        }else if(type===2){
+          return '商场轮播';
+        }else if(type===3){
+          return '启动页';
+        }else {
+          return '引导页';
         }
       },
-      formatTime(time){
-        if(time==null||time===''){
-          return 'N/A';
-        }
-        let date = new Date(time);
-        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
-      },
+        formatTime(time){
+            if(time==null){
+                return 'N/A';
+            }
+            let replace = time.replace(/-/g, "/");
+            let date = new Date(replace);
+            return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+        },
     },
     methods: {
       handleResetSearch() {

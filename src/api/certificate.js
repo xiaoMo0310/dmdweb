@@ -13,3 +13,9 @@ export function fetchList(data) {
     data:data
   })
 }
+export function findCertificateById(data) {
+  return request({
+    url:'/pms/certificate/findById/' + data,
+    method:'get',
+  })
+}

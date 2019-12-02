@@ -35,7 +35,7 @@
           <el-form-item label="申请时间：">
             <el-date-picker
               class="input-width"
-              v-model="listQuery.createTime"
+              v-model="listQuery.createdTime"
               value-format="yyyy-MM-dd"
               type="date"
               placeholder="请选择时间">
@@ -71,7 +71,7 @@
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="申请时间" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.createTime | formatTime}}</template>
+          <template slot-scope="scope">{{scope.row.createdTime | formatTime}}</template>
         </el-table-column>
         <el-table-column label="用户账号" align="center">
           <template slot-scope="scope">{{scope.row.memberUsername}}</template>
@@ -137,18 +137,26 @@
     id: null,
     receiverKeyword: null,
     status: null,
-    createTime: null,
+    createdTime: null,
     handleMan: null,
     handleTime: null
   };
   const defaultStatusOptions=[
     {
-      label: '禁用',
+      label: '待处理',
       value: 0
     },
     {
-      label: '正常',
+      label: '退款(货)中',
       value: 1
+    },
+    {
+      label: '已完成',
+      value: 2
+    },
+    {
+      label: '已拒绝',
+      value: 3
     }
   ];
   export default {
@@ -174,13 +182,14 @@
       this.getList();
     },
     filters:{
-      formatTime(time) {
-        if(time==null||time===''){
-          return 'N/A';
-        }
-        let date = new Date(time);
-        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
-      },
+        formatTime(time){
+            if(time==null){
+                return '暂无';
+            }
+            let replace = time.replace(/-/g, "/");
+            let date = new Date(replace);
+            return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+        },
       formatStatus(status){
         for(let i=0;i<defaultStatusOptions.length;i++){
           if(status===defaultStatusOptions[i].value){

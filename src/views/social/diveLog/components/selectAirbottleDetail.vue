@@ -3,6 +3,7 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>气瓶消耗</span>
+      <el-button type="primary" size="small" style="float: right" @click="onReturn('homeAdvertiseFrom')">返回</el-button>
     </el-card>
     <div class="table-container">
       <el-table ref="homeAdvertiseTable"
@@ -76,6 +77,9 @@
           this.id = response.data.list.id;
         })
       },
+      onReturn(){
+          this.$router.back();
+      }
     }
   }
 </script>

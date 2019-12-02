@@ -277,10 +277,10 @@
         })
       },
       handSelect(index,row){
-        this.$router.push({path: '/integral/selectSpe', query: {id: row.id}})
+        this.$router.push({path: '/pms/selectSpe', query: {id: row.id}})
       },
       handAddSpe(index,row){
-        this.$router.push({path: '/integral/addSpe', query: {id: row.id}})
+        this.$router.push({path: '/pms/addSpe', query: {id: row.id}})
       },
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
@@ -338,10 +338,10 @@
         }
       },
       handleAdd(){
-        this.$router.push({path: '/integral/addIntegralGifts'})
+        this.$router.push({path: '/pms/addIntegralGifts'})
       },
       handUpdate(index,row){
-        this.$router.push({path: '/integral/updateIntegralGifts', query: {id: row.id}})
+        this.$router.push({path: '/pms/updateIntegralGifts', query: {id: row.id}})
       },
       getList() {
         this.listLoading = true;
