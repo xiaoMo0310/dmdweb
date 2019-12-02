@@ -20,3 +20,10 @@ export function updateDiveCertificateStatusNoPass(data) {
     data:data
   })
 }
+export function updateCertificateStatusNoPass(id,data) {
+  return request({
+    url:'/diveCertificate/updateCertificateStatusNoPass?id='+id,
+    method:'post',
+    data:data
+  })
+}
