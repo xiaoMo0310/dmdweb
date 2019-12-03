@@ -59,7 +59,7 @@
         <el-table-column label="话题下动态数量" width="120" align="center">
           <template slot-scope="scope">{{scope.row.topicNum}}</template>
         </el-table-column>
-        <el-table-column label="话题描述" align="center">
+        <el-table-column label="话题描述" align="center" width="350">
           <template slot-scope="scope">{{scope.row.topicDescribes}}</template>
         </el-table-column>
         <el-table-column label="操作人" align="center">
@@ -159,9 +159,10 @@
         if(time==null){
           return '暂无';
         }
-          let replace = time.replace(/-/g, "/");
+        let replace = time.replace(/-/g, "/");
         let date = new Date(replace);
-        return date
+        return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+
       },
     },
     methods: {

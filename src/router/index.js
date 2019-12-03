@@ -679,7 +679,13 @@ export const constantRouterMap = [
         path: 'salesReport',
         name: 'salesReport',
         component: () => import('@/views/statistics/salesReport/index'),
-        meta: {title: '销售报表统计', icon: "salesRepor"},
+        meta: {title: '订单分析统计', icon: "salesRepor"},
+      },
+      {
+        path: 'sale',
+        name: 'sale',
+        component: () => import('@/views/statistics/salesStatistics/index'),
+        meta: {title: '销售报表统计', icon: "sale"},
       },
     ]
   },
