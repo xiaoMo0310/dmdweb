@@ -125,7 +125,7 @@
     methods: {
 
       uploadFile(myfiles) {
-        this.formPicsData.append('myfiles', myfiles.file);
+        this.formPicsData.append('files', myfiles.file);
       },
       addSomePeoplePicsForm: function () {
         let self = this;
