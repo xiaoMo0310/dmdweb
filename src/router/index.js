@@ -591,6 +591,13 @@ export const constantRouterMap = [
         meta: {title: '用户动态管理', icon: "dongtai"},
       },
       {
+        path: 'dynamicDetail',
+        name: 'dynamicDetail',
+        component: () => import('@/views/social/dynamic/dynamicDetail'),
+        meta: {title: '潜水学证商品详情', icon: "total-today"},
+        hidden:true
+      },
+      {
         path: 'dynamicLog',
         name: 'dynamicLog',
         component: () => import('@/views/social/diveLog/index'),

@@ -1,5 +1,4 @@
 import Vue from 'vue'
-
 import 'normalize.css/normalize.css'// A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
@@ -15,7 +14,6 @@ import store from './store'
 
 import '@/icons' // icon
 import '@/permission' // permission control
-
 import tinymce from 'tinymce/tinymce'
 import Editor from '@tinymce/tinymce-vue'
 import 'tinymce/themes/mobile/theme.js'
@@ -29,6 +27,7 @@ import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
 import 'vue-directive-image-previewer/dist/assets/style.css'
 Vue.use(VueDirectiveImagePreviewer)
 Vue.config.productionTip = false
+
 
 new Vue({
   el: '#app',

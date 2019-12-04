@@ -70,24 +70,24 @@
         <el-table-column label="作者" align="center">
           <template slot-scope="scope">{{scope.row.dynamicAuthor}}</template>
         </el-table-column>
-        <el-table-column label="动态内容" width="220" align="center">
-          <template slot-scope="scope">{{scope.row.dynamicContent}}</template>
+        <el-table-column label="动态内容" width="230" align="center">
+          <template slot-scope="scope">{{scope.row.dynamicContent | count}}</template>
         </el-table-column>
         <el-table-column label="发布时间" width="170" align="center">
           <template slot-scope="scope">
             {{scope.row.createTime | formatTime}}
             </template>
         </el-table-column>
-        <el-table-column label="发布地址" align="center">
+        <!--<el-table-column label="发布地址" align="center">
           <template slot-scope="scope">{{scope.row.dynamicAddress}}</template>
-        </el-table-column>
-        <el-table-column label="动态图片" width="170" align="center">
+        </el-table-column>-->
+        <!--<el-table-column label="动态图片" width="170" align="center">
           <template slot-scope="scope">
             <div v-for="item in getImg(scope.row.dynamicPicture)">
               <img style="height: 80px" :src="item" v-image-preview>
             </div>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="点赞数" align="center">
           <template slot-scope="scope">{{scope.row.dynamicPraise}}</template>
         </el-table-column>
@@ -103,11 +103,14 @@
         <el-table-column label="所在话题" width="120" align="center">
           <template slot-scope="scope">{{scope.row.topicName}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="100" align="center">
+        <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       type="text"
+                       type="danger"
                        @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
+            <el-button size="mini"
+                       @click="handleSelect(scope.$index, scope.row)">查看详情
             </el-button>
           </template>
         </el-table-column>
@@ -203,8 +206,18 @@
             let date = new Date(replace);
             return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
         },
+        count(count){
+            if(count.length>20){
+                return count.slice(0,20)+"..."
+            }else{
+              return count
+            }
+        },
     },
     methods: {
+      handleSelect(index, row){
+        this.$router.push({path:'/social/dynamicDetail',query:{id:row.id}})
+      },
      /* selectTopicType(){
         selectTopic ().then(response => {
           for (let i = 0; i < response.data.length; i++) {

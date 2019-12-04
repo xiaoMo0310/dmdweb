@@ -20,3 +20,11 @@ export function selectTopic(params) {
     params:params
   })
 }
+export function queryDynamicById(id,params) {
+  return request({
+    url:'/dynamic/selectDynamicById?id=' + id,
+    method:'get',
+    params:params
+
+  })
+}
