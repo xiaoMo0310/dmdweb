@@ -19,3 +19,35 @@ export function updateApprovalStatus(data) {
     data: data
   })
 }
+
+export function queryAudited(data) {
+  return request({
+    url:'/pms/queryAudited',
+    method:'get',
+    data:data
+  })
+}
+
+export function queryAuditPass(data) {
+  return request({
+    url:'/pms/queryAuditPass',
+    method:'get',
+    data:data
+  })
+}
+
+export function queryAuditFailed(data) {
+  return request({
+    url:'/pms/queryAuditFailed',
+    method:'get',
+    data:data
+  })
+}
+
+export function queryAllMerchandise(data) {
+  return request({
+    url:'/pms/queryAllMerchandise',
+    method:'get',
+    data:data
+  })
+}

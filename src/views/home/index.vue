@@ -50,21 +50,21 @@
           <div class="total-frame">
             <img :src="img_home_order" class="total-icon">
             <div class="total-title">今日订单总数</div>
-            <div class="total-value">200</div>
+            <div class="total-value">{{orderNumtoDay}}</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="total-frame">
             <img :src="img_home_today_amount" class="total-icon">
             <div class="total-title">今日销售总额</div>
-            <div class="total-value">￥5000.00</div>
+            <div class="total-value">￥{{orderMoneyToDay}}</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="total-frame">
             <img :src="img_home_yesterday_amount" class="total-icon">
             <div class="total-title">昨日销售总额</div>
-            <div class="total-value">￥5000.00</div>
+            <div class="total-value">￥{{orderMoneyToYesterday}}</div>
           </div>
         </el-col>
         <el-col :span="6">
@@ -72,7 +72,7 @@
             <svg-icon icon-class="total-week" class="total-icon">
             </svg-icon>
             <div class="total-title">近7天销售总额</div>
-            <div class="total-value">￥50000.00</div>
+            <div class="total-value">￥{{orderMoneyToSeven}}</div>
           </div>
         </el-col>
       </el-row>
@@ -85,19 +85,19 @@
           <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">待付款订单</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span style="float: right" class="color-danger">({{substitutePayment}})</span>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">已完成订单</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span style="float: right" class="color-danger">({{completed}})</span>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">待确认收货订单</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span style="float: right" class="color-danger">({{receiptConfirmed}})</span>
             </div>
           </el-col>
         </el-row>
@@ -105,23 +105,30 @@
           <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">待发货订单</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span style="float: right" class="color-danger">({{shipped}})</span>
             </div>
           </el-col>
-          <el-col :span="8">
+          <!--<el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">新缺货登记</span>
               <span style="float: right" class="color-danger">(10)</span>
             </div>
+          </el-col>-->
+
+          <el-col :span="8">
+            <div class="un-handle-item">
+              <span class="font-medium">售后申请</span>
+              <span style="float: right" class="color-danger">({{afterSale}})</span>
+            </div>
           </el-col>
           <el-col :span="8">
             <div class="un-handle-item">
-              <span class="font-medium">待处理退款申请</span>
-              <span style="float: right" class="color-danger">(10)</span>
+              <span class="font-medium">已确认收货订单</span>
+              <span style="float: right" class="color-danger">({{confirmReceipt}})</span>
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+       <!-- <el-row :gutter="20">
           <el-col :span="8">
             <div class="un-handle-item">
               <span class="font-medium">已发货订单</span>
@@ -140,7 +147,7 @@
               <span style="float: right" class="color-danger">(10)</span>
             </div>
           </el-col>
-        </el-row>
+        </el-row>-->
       </div>
     </div>
     <div class="overview-layout">
@@ -150,15 +157,15 @@
             <div class="layout-title">商品总览</div>
             <div style="padding: 40px">
               <el-row>
-                <el-col :span="6" class="color-danger overview-item-value">100</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">400</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">50</el-col>
-                <el-col :span="6" class="color-danger overview-item-value">500</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{audited}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{auditPass}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{auditFailed}}</el-col>
+                <el-col :span="6" class="color-danger overview-item-value">{{allMerchandise}}</el-col>
               </el-row>
               <el-row class="font-medium">
-                <el-col :span="6" class="overview-item-title">已下架</el-col>
-                <el-col :span="6" class="overview-item-title">已上架</el-col>
-                <el-col :span="6" class="overview-item-title">库存紧张</el-col>
+                <el-col :span="6" class="overview-item-title">待审核</el-col>
+                <el-col :span="6" class="overview-item-title">审核通过</el-col>
+                <el-col :span="6" class="overview-item-title">审核未通过</el-col>
                 <el-col :span="6" class="overview-item-title">全部商品</el-col>
               </el-row>
             </div>
@@ -264,6 +271,9 @@
   import img_home_today_amount from '@/assets/images/home_today_amount.png';
   import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
   import {countDayRegisterUser, countYesterdayVisitUser, countTotalUser, countRetentionRate, countThirtyRetentionRate} from '@/api/user';
+  import {queryOrderNumtoDay , queryOrderMoneyToDay,queryOrderMoneyToYesterday,queryOrderMoneyToSeven,querySubstitutePayment,queryCompleted,queryReceiptConfirmed,queryShipped,queryAfterSale,queryConfirmReceipt} from '@/api/order';
+  import {queryAudited,queryAuditPass,queryAuditFailed,queryAllMerchandise} from '@/api/courseProduct';
+
   const DATA_FROM_BACKEND = {
     columns: ['date', 'orderCount','orderAmount'],
     rows: [
@@ -331,7 +341,21 @@
         registerDayUser: {"today": 0, "yesterday": 0},
         yesterdayVisitUser: 0,
         totalUser: 0,
-        RetentionRate:{"seven":0, "thirty": 0}
+        RetentionRate:{"seven":0, "thirty": 0},
+        orderNumtoDay:0,
+        orderMoneyToDay:null,
+        orderMoneyToYesterday:null,
+        orderMoneyToSeven:null,
+        substitutePayment:0,
+        completed:0,
+        receiptConfirmed:0,
+        shipped:0,
+        afterSale:0,
+        confirmReceipt:0,
+        audited:0,
+        auditPass:0,
+        auditFailed:0,
+        allMerchandise:0,
       }
     },
     created(){
@@ -341,6 +365,20 @@
       this.getYesterdayVisitUser();
       this.getTotalUser();
       this.getRetentionRate();
+      this.getQueryOrderNumtoDay();
+      this.getOrderMoneyToDay();
+      this.getQueryOrderMoneyToYesterday();
+      this.getQueryOrderMoneyToSeven();
+      this.getQuerySubstitutePayment();
+      this.getQueryCompleted();
+      this.getQueryReceiptConfirmed();
+      this.getQueryShipped();
+      this.getQueryAfterSale();
+      this.getQueryConfirmReceipt();
+      this.getQueryAudited();
+      this.getQueryAuditPass();
+      this.getQueryAuditFailed();
+      this.getQueryAllMerchandise();
     },
     methods:{
       handleDateChange(){
@@ -396,6 +434,88 @@
           countThirtyRetentionRate(30).then(response => {
               this.RetentionRate.thirty = response.result.thirty;
           });
+      },
+      getQueryOrderNumtoDay(){
+        queryOrderNumtoDay().then(response => {
+          this.orderNumtoDay = response.data;
+        })
+      },
+      getOrderMoneyToDay(){
+        queryOrderMoneyToDay().then(response => {
+          if(response.data===null){
+            this.orderMoneyToDay = 0;
+          }else{
+            this.orderMoneyToDay = response.data;
+          }
+        })
+      },
+      getQueryOrderMoneyToYesterday(){
+        queryOrderMoneyToYesterday().then(response => {
+          if(response.data===null){
+            this.orderMoneyToYesterday = 0;
+          }else{
+            this.orderMoneyToYesterday = response.data;
+          }
+        })
+      },
+      getQueryOrderMoneyToSeven(){
+        queryOrderMoneyToSeven().then(response => {
+          if(response.data===null){
+            this.orderMoneyToSeven = 0;
+          }else{
+            this.orderMoneyToSeven = response.data;
+          }
+        })
+      },
+      getQuerySubstitutePayment(){
+        querySubstitutePayment().then(response => {
+          this.substitutePayment = response.data;
+        })
+      },
+      getQueryCompleted(){
+        queryCompleted().then(response => {
+          this.completed = response.data;
+        })
+      },
+      getQueryReceiptConfirmed(){
+        queryReceiptConfirmed().then(response => {
+          this.receiptConfirmed = response.data;
+        })
+      },
+      getQueryShipped(){
+        queryShipped().then(response => {
+          this.shipped = response.data;
+        })
+      },
+      getQueryAfterSale(){
+        queryAfterSale().then(response => {
+          this.afterSale = response.data;
+        })
+      },
+      getQueryConfirmReceipt(){
+        queryConfirmReceipt().then(response => {
+          this.confirmReceipt = response.data;
+        })
+      },
+      getQueryAudited(){
+        queryAudited().then(response => {
+          this.audited = response.data;
+        })
+      },
+      getQueryAuditPass(){
+        queryAuditPass().then(response => {
+          this.auditPass = response.data;
+        })
+      },
+      getQueryAuditFailed(){
+        queryAuditFailed().then(response => {
+          this.auditFailed = response.data;
+        })
+      },
+      getQueryAllMerchandise(){
+        queryAllMerchandise().then(response => {
+          this.allMerchandise = response.data;
+        })
       }
     }
   }

@@ -145,6 +145,15 @@
             </el-select>
           </el-form-item>
 
+          <el-form-item label="商品类别：">
+            <el-select v-model="listQuery.orderType" placeholder="全部" clearable class="input-width">
+              <el-option v-for="item in typeOptions3"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
@@ -187,6 +196,9 @@
           <template slot-scope="scope">
             {{scope.row.orderCreatedTime | formatTime}}
           </template>
+        </el-table-column>
+        <el-table-column label="订单类型" align="center" width="130">
+          <template slot-scope="scope">{{scope.row.orderType | formatOrderType}}</template>
         </el-table-column>
         <el-table-column label="付款时间" width="220" align="center">
           <template slot-scope="scope">
@@ -314,6 +326,20 @@
       value: 6
     },
   ];
+  const defaultTypeOptions3=[
+    {
+      label: '普通订单',
+      value: 0
+    },
+    {
+      label: '潜水学证订单',
+      value: 1
+    },
+    {
+      label: '积分商品订单',
+      value: 2
+    },
+  ];
   export default {
     name: 'searchtopicList',
     data() {
@@ -321,6 +347,7 @@
         listQuery: Object.assign({}, defaultListQuery),
         typeOptions:Object.assign({},defaultTypeOptions),
         typeOptions2:Object.assign({},defaultTypeOptions2),
+        typeOptions3:Object.assign({},defaultTypeOptions3),
 
         list: null,
         total: null,
@@ -385,6 +412,15 @@
         let date = new Date(time);
         return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
       },
+      formatOrderType(orderType){
+        if(orderType===0){
+          return '普通订单';
+        }if(orderType===1){
+          return '潜水学证订单';
+        }if(orderType===2){
+          return '积分商品订单';
+        }
+      }
     },
     methods: {
       handleResetSearch() {
