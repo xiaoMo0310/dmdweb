@@ -1,13 +1,12 @@
 <template> 
   <div>
     <el-upload
-      action="http://macro-oss.oss-cn-shenzhen.aliyuncs.com"
+      action="#"
       :data="dataObj"
       list-type="picture-card"
       :file-list="fileList"
       :before-upload="beforeUpload"
       :on-remove="handleRemove"
-      :on-success="handleUploadSuccess"
       :on-preview="handlePreview"
       :limit="maxCount"
       :on-exceed="handleExceed"
@@ -21,7 +20,7 @@
 </template>
 <script>
   import {policy} from '@/api/oss'
-  import {uploadFileAll} from '@/api/uploadAll'
+  import {uploadFile} from '@/api/upload'
 
   export default {
     name: 'multiUpload',
@@ -36,14 +35,12 @@
     },
     data() {
       return {
-        dataObj: {
-          policy: '',
-          signature: '',
-          key: '',
-          ossaccessKeyId: '',
-          dir: '',
-          host: ''
-        },
+          dataObj: {
+            fileName: '',
+            extName: '',
+            fileSize: '',
+            serverPath: ''
+          },
         dialogVisible: false,
         dialogImageUrl:null
       };
@@ -73,25 +70,33 @@
         this.dialogImageUrl=file.url;
       },
       beforeUpload(file) {
-        let _self = this;
-        return new Promise((resolve, reject) => {
-          policy().then(response => {
-            _self.dataObj.policy = response.data.policy;
-            _self.dataObj.signature = response.data.signature;
-            _self.dataObj.ossaccessKeyId = response.data.accessKeyId;
-            _self.dataObj.key = response.data.dir + '/${filename}';
-            _self.dataObj.dir = response.data.dir;
-            _self.dataObj.host = response.data.host;
-            resolve(true)
+          let isJPG = file.type === 'image/png' || file.type === 'image/gif' || file.type === 'image/jpg' || file.type === 'image/jpeg'
+          const isLt2M = file.size / 1024 / 1024 < 2
+          if(!isJPG) {
+              this.$notify.warning({
+                  title: '警告',
+                  message: '请上传格式为image/png, image/gif, image/jpg, image/jpeg的图片'
+              })
+          }
+          if(!isLt2M) {
+              this.$notify.warning({
+                  title: '警告',
+                  message: '图片大小必须小于2M'
+              })
+          }
+          //上传文件
+          let formData = new FormData();
+          formData.append('file', file);
+          let config = {
+              headers:{'Content-Type':'multipart/form-data'}
+          };
+          uploadFile(formData, config).then(response => {
+              this.dataObj = response.result
+              this.fileList.push({name: file.name,url:this.dataObj.serverPath});
+              this.emitInput(this.fileList);
           }).catch(err => {
-            console.log(err)
-            reject(false)
-          })
-        })
-      },
-      handleUploadSuccess(res, file) {
-        this.fileList.push({url: file.name,url:this.dataObj.host + '/' + this.dataObj.dir + '/' + file.name});
-        this.emitInput(this.fileList);
+              console.log(err)
+          });
       },
       handleExceed(files, fileList) {
         this.$message({

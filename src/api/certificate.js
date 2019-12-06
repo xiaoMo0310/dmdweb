@@ -19,3 +19,10 @@ export function findCertificateById(data) {
     method:'get',
   })
 }
+export function deletePmsCertificate(data) {
+  return request({
+    url:'/pms/certificate/delete',
+    method:'post',
+    data: data
+  })
+}

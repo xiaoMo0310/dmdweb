@@ -59,3 +59,10 @@ export function batchUpdateUserStatus(param) {
   })
 }
 
+export function findUserMemberById(data) {
+  return request({
+    url:'/ums/user/findById/' + data,
+    method:'get'
+  })
+}
+

@@ -77,15 +77,15 @@
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">联系电话</el-col>
-          <el-col class="form-border font-small" :span="18">{{orderReturnApply.returnPhone | formatMessage}}</el-col>
+          <el-col class="form-border font-small" :span="18">{{orderReturnApply.returnPhone | formatNull}}</el-col>
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">退货原因</el-col>
-          <el-col class="form-border font-small" :span="18">{{orderReturnApply.reason}}</el-col>
+          <el-col class="form-border font-small" :span="18">{{orderReturnApply.reason | formatNull}}</el-col>
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">问题描述</el-col>
-          <el-col class="form-border font-small" :span="18">{{orderReturnApply.description | formatMessage}}</el-col>
+          <el-col class="form-border font-small" :span="18">{{orderReturnApply.description | formatNull}}</el-col>
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:100px;line-height:80px">凭证图片
@@ -156,7 +156,7 @@
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">处理备注</el-col>
-          <el-col class="form-border font-small" :span="18">{{orderReturnApply.handleNote | formatMessage}}</el-col>
+          <el-col class="form-border font-small" :span="18">{{orderReturnApply.handleNote | formatNull}}</el-col>
         </el-row>
       </div>
       <div class="form-container-border" v-show="orderReturnApply.status===2">
@@ -170,7 +170,7 @@
         </el-row>
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">收货备注</el-col>
-          <el-col class="form-border font-small" :span="18">{{orderReturnApply.receiveNote | formatMessage}}</el-col>
+          <el-col class="form-border font-small" :span="18">{{orderReturnApply.receiveNote | formatNull}}</el-col>
         </el-row>
       </div>
       <div class="form-container-border" v-show="orderReturnApply.status===0">
@@ -192,14 +192,14 @@
       <div style="margin-top:15px;text-align: center" v-show="orderReturnApply.status===0">
         <el-button type="primary" size="small" @click="handleUpdateStatus(1)">确认退货</el-button>
         <el-button type="danger" size="small" @click="handleUpdateStatus(3)">拒绝退货</el-button>
-        <el-button type="primary" size="info" @click="onReturn()">返回</el-button>
+        <el-button type="info" size="small" @click="onReturn()">返回</el-button>
       </div>
       <div style="margin-top:15px;text-align: center" v-show="orderReturnApply.status===1">
         <el-button type="primary" size="small" @click="handleUpdateStatus(2)">确人完成</el-button>
-        <el-button type="primary" size="info" @click="onReturn()">返回</el-button>
+        <el-button type="info" size="small" @click="onReturn()">返回</el-button>
       </div>
       <div style="margin-top:15px;text-align: center" v-if="orderReturnApply.status !=0 && orderReturnApply.status !=1">
-        <el-button type="primary" size="info" @click="onReturn()">返回</el-button>
+        <el-button type="info" size="small" @click="onReturn()">返回</el-button>
       </div>
     </el-card>
   </div>
@@ -280,19 +280,21 @@
           return "已拒绝";
         }
       },
-      formatMessage(mgessage) {
-          if(mgessage==null||mgessage===''){
+      formatNull(value) {
+          if(value===undefined||value===null||value===''){
               return '暂无';
+          }else{
+              return value;
           }
       },
-        formatTime(time){
-            if(time==null){
-                return '暂无';
-            }
-            let replace = time.replace(/-/g, "/");
-            let date = new Date(replace);
-            return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
-        },
+      formatTime(time){
+          if(time==null){
+              return '暂无';
+          }
+          let replace = time.replace(/-/g, "/");
+          let date = new Date(replace);
+          return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+      },
       formatRegion(address) {
         let str = address.province;
         if (address.city != null) {
@@ -314,6 +316,7 @@
           this.orderReturnApply = response.data;
           this.productList = [];
           this.productList.push(this.orderReturnApply);
+          this.updateStatusParam.returnAmount=this.orderReturnApply.returnAmount;
           if (this.orderReturnApply.proofPics != null) {
             this.proofPics = this.orderReturnApply.proofPics.split(",")
           }

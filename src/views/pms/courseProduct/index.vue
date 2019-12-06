@@ -48,13 +48,13 @@
         <el-table-column label="商品标题" align="center">
           <template slot-scope="scope">{{scope.row.title}}</template>
         </el-table-column>
-        <el-table-column label="商品价格"width="150" align="center">
+        <el-table-column label="商品价格"width="100" align="center">
           <template slot-scope="scope">{{scope.row.price}}</template>
         </el-table-column>
-        <el-table-column label="商品类型"width="150" align="center">
+        <el-table-column label="商品类型"width="100" align="center">
           <template slot-scope="scope">{{scope.row.productType | productType}}</template>
         </el-table-column>
-        <el-table-column label="地点"width="200" align="center">
+        <el-table-column label="地点"width="150" align="center">
           <template slot-scope="scope">{{scope.row.location}}</template>
         </el-table-column>
         <el-table-column label="审核状态"width="120" align="center">

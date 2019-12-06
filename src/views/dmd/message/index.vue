@@ -79,7 +79,7 @@
         <el-table-column label="标题" width="250" align="center">
           <template slot-scope="scope">{{scope.row.umsNotice.title}}</template>
         </el-table-column>
-        <el-table-column label="内容" width="400" align="center">
+        <el-table-column label="内容" align="center" width="400">
           <template slot-scope="scope">{{scope.row.umsNotice.content}}</template>
         </el-table-column>
         <el-table-column label="消息类型" width="100" align="center">
@@ -111,7 +111,7 @@
             <p>{{scope.row.umsNotice.createdTime | formatTime}}</p>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button size="mini"
                        @click="handleUpdate(scope.$index, scope.row)">通知用户列表
@@ -159,7 +159,7 @@
     <el-dialog
       :title="dialogTitle"
       :visible.sync="dialogVisible"
-      width="30%" >
+      width="40%" >
       <el-table ref="userNoticeTable"
                 :data="noticeMarkVos"
                 style="width: 100%; overflow: auto; max-height: 400px"
@@ -176,7 +176,7 @@
         <el-table-column label="是否阅读" width="80" align="center">
           <template slot-scope="scope">{{scope.row.isRead | isRead}}</template>
         </el-table-column>
-        <el-table-column label="阅读时间(分钟)" width="150" align="center">
+        <el-table-column label="阅读时间(分钟)" width="120" align="center">
           <template slot-scope="scope">{{scope.row.readTime}}</template>
         </el-table-column>
       </el-table>

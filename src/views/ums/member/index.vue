@@ -75,8 +75,8 @@
         <el-table-column label="手机号码" align="center">
           <template slot-scope="scope">{{scope.row.phone}}</template>
         </el-table-column>
-        <el-table-column label="个人简介" align="center">
-          <template slot-scope="scope">{{scope.row.personalizedSignature}}</template>
+        <el-table-column label="个人简介" width="350" align="center" style="overflow: hidden; white-space: nowrap;text-overflow:ellipsis;">
+          <template slot-scope="scope">{{scope.row.personalizedSignature | ellipsis | formatNull}}</template>
         </el-table-column>
         <el-table-column label="注册时间" align="center">
           <template slot-scope="scope">{{scope.row.createTime}}</template>
@@ -88,6 +88,10 @@
               @click="handleViewUserDetail(scope.$index, scope.row)"
             >详细信息
             </el-button>-->
+            <el-button
+              size="mini"
+              @click="handlerUserDetail(scope.$index, scope.row)">详细信息
+            </el-button>
             <el-button
               size="mini"
               @click="sendMessage(scope.$index, scope.row)">发送消息
@@ -185,6 +189,22 @@
                 operateType: null
             }
         },
+        filters: {
+            ellipsis (value) {
+                if (!value) return ''
+                if (value.length > 20) {
+                    return value.slice(0,20) + '....'
+                }
+                return value
+            },
+            formatNull(value) {
+                if(value===undefined||value===null||value===''){
+                    return '暂无';
+                }else{
+                    return value;
+                }
+            },
+        },
         created() {
             this.getList();
         },
@@ -216,6 +236,9 @@
             sendAllMessage(){
                 this.$router.push({path: '/dmd/addAllMessage'})
             },
+            handlerUserDetail(index,row){
+                this.$router.push({path: '/ums/userDetail', query: {id: row.id}})
+            },
             handleCurrentChange(val){
                 this.listQuery.pageNum = val;
                 this.getList();
@@ -224,7 +247,6 @@
                 this.listLoading = true;
                 selectUserList(this.listQuery).then(response => {
                     this.listLoading = false;
-                    console.log(response.result.list)
                     this.list = response.result.list;
                     this.total = response.result.total;
                 });
