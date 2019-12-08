@@ -75,6 +75,18 @@
         </el-table-column>
       </el-table>
     </div>
+    <div class="pagination-container">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        layout="total, sizes,prev, pager, next,jumper"
+        :page-size="listQuery.pageSize"
+        :page-sizes="[5,10,15]"
+        :current-page.sync="listQuery.pageNum"
+        :total="total">
+      </el-pagination>
+    </div>
   </div>
 </template>
 <script>

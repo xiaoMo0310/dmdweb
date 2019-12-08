@@ -311,7 +311,7 @@ export const constantRouterMap = [
         path: 'playAddressList',
         name: 'playAddressList',
         component: () => import('@/views/pms/playAddress/index'),
-        meta: {title: '游玩地址', icon: 'feedbackList'},
+        meta: {title: '潜水地址', icon: 'feedbackList'},
       },
       {
         path: 'addPlayAddress',
