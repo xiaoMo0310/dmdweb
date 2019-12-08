@@ -69,7 +69,7 @@
         </el-col>
         <el-col :span="6">
           <div class="total-frame">
-            <img :src="img_total_week" class="total-icon">
+            <img :src="img_home_today_amount" class="total-icon">
             <div class="total-title">近7天销售总额</div>
             <div class="total-value">￥{{orderMoneyToSeven}}</div>
           </div>
