@@ -401,7 +401,6 @@
           type: 'warning'
         }).then(() => {
           let params=new URLSearchParams();
-          console.log(ids)
           params.append("ids",ids);
           deleteNotice(params).then(response=>{
             this.getList();

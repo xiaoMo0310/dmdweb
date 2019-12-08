@@ -182,7 +182,6 @@
               params.append("ids",ids);
               deletePmsCertificate(params).then(response=>{
                   this.getList();
-                  console.log(response)
                   if(response.code === 500){
                       this.$message({
                           type: 'error',
