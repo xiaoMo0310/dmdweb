@@ -3,11 +3,14 @@
     <el-card class="operate-container" shadow="never">
         <i class="el-icon-tickets"></i>
         <span>意见反馈类型列表</span>
-        <el-button
-          size="mini"
-          @click="handleAdd(scope.$index, scope.row)"
-          class="btn-add">添加意见反馈类型
-        </el-button>
+      <el-card class="operate-container" shadow="never">
+        <template slot-scope="scope">
+          <el-button
+            size="medium"
+            @click="handleAdd(scope.$index, scope.row)">添加意见反馈类型
+          </el-button>
+        </template>
+      </el-card>
     </el-card>
     <div class="table-container">
       <el-table ref="homeAdvertiseTable"
