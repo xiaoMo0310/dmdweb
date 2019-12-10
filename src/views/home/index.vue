@@ -313,6 +313,7 @@
         pickerOptions: {
           shortcuts: [{
             text: '最近一周',
+
             onClick(picker) {
 /*              const end = new Date();
               let start = new Date();
