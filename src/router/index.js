@@ -47,6 +47,13 @@ export const constantRouterMap = [
         meta: {title: '用户管理', icon: "form"},
       },
       {
+        path: 'userDetail',
+        name: 'userDetail',
+        component: () => import('@/views/ums/member/userDetail'),
+        meta: {title: '潜水学证商品详情', icon: "total-today"},
+        hidden:true
+      },
+      {
         path: 'coachManagement',
         name: 'coachManagement',
         component: () => import('@/views/ums/coach/index'),
@@ -298,6 +305,26 @@ export const constantRouterMap = [
         name: 'updateCertificate',
         component: () => import('@/views/pms/certificate/update'),
         meta: {title: '修改证书'},
+        hidden: true
+      },
+      {
+        path: 'playAddressList',
+        name: 'playAddressList',
+        component: () => import('@/views/pms/playAddress/index'),
+        meta: {title: '潜水地址', icon: 'feedbackList'},
+      },
+      {
+        path: 'addPlayAddress',
+        name: 'addPlayAddress',
+        component: () => import('@/views/pms/playAddress/add'),
+        meta: {title: '添加游玩地址'},
+        hidden: true
+      },
+      {
+        path: 'updatePlayAddress',
+        name: 'updatePlayAddress',
+        component: () => import('@/views/pms/playAddress/update'),
+        meta: {title: '修改游玩地址'},
         hidden: true
       }
     ]

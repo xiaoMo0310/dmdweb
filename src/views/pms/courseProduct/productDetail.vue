@@ -132,8 +132,10 @@
         created: function () {
             findCourseProductById(this.$route.query.id).then(response => {
                 this.courseProductMessage = response.result
-                this.imageList = this.courseProductMessage.image.split(',');
-                if(response.result.contentArrangement != null){
+                if(this.courseProductMessage.image != null){
+                  this.imageList = this.courseProductMessage.image.split(',');
+                }
+                if(response.result.contentArrangement != null || response.result.contentArrangement != ''){
                     this.contentArrangement = JSON.parse(this.courseProductMessage.contentArrangement)
                 }
             });

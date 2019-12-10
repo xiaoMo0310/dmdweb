@@ -18,7 +18,7 @@
         <el-table-column label="规则说明" align="center">
           <div slot-scope="scope" v-html="scope.row.ruledescription">{{scope.row.ruledescription}}</div>
         </el-table-column>
-        <el-table-column label="图片示例" width="350" align="center">
+        <el-table-column label="图片示例" width="300" align="center">
           <template slot-scope="scope"><img style="height: 250px" :src="scope.row.picturesample" v-image-preview></template>
         </el-table-column>
         <el-table-column label="更新时间" width="200" align="center">

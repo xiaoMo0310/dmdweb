@@ -276,9 +276,6 @@
             data.append("createTime",this.productAttrCate.createTime);
             data.append("operator",this.productAttrCate.operator);
             data.append("reason",this.productAttrCate.reason);
-
-            console.log(this.dialogTitle)
-            console.log("=============================================")
             if(this.dialogTitle==="请填写审核未通过的原因"){
               updateCertificateStatusNoPass(this.productAttrCate.id,data).then(response=>{
                 this.$message({
@@ -291,7 +288,7 @@
               });
             }
           } else {
-            console.log('error submit!!');
+            //console.log('error submit!!');
             return false;
           }
         });
@@ -406,13 +403,9 @@
       getList() {
         this.listLoading = true;
         selectDiveCertificate (this.listQuery).then(response => {
-          console.log(response);
           this.listLoading = false;
           this.list = response.data.list;
           this.total = response.data.total;
-
-          console.log(response.data.list)
-
         })
       },
       deleteselectDiveCertificate(ids){

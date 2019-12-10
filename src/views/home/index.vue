@@ -69,8 +69,7 @@
         </el-col>
         <el-col :span="6">
           <div class="total-frame">
-            <svg-icon icon-class="total-week" class="total-icon">
-            </svg-icon>
+            <img :src="img_home_today_amount" class="total-icon">
             <div class="total-title">近7天销售总额</div>
             <div class="total-value">￥{{orderMoneyToSeven}}</div>
           </div>
@@ -280,6 +279,7 @@
   import img_home_order from '@/assets/images/home_order.png';
   import img_home_today_amount from '@/assets/images/home_today_amount.png';
   import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
+  import img_total_week from '@/assets/images/total-week.png';
   import {countDayRegisterUser, countYesterdayVisitUser, countTotalUser, countRetentionRate, countThirtyRetentionRate} from '@/api/user';
   import {queryOrderNumtoDay , queryOrderMoneyToDay,queryOrderMoneyToYesterday,queryOrderMoneyToSeven,querySubstitutePayment,queryCompleted,queryReceiptConfirmed,queryShipped,queryAfterSale,queryConfirmReceipt,queryOrderMonthNum,queryOrderPercentage,queryOrderWeek,queryOrderWeekPercentage,querySalesMonth,querySalesLastMonth,querySalesWeek,querySalesLastWeek,setTimeout} from '@/api/order';
   import {queryAudited,queryAuditPass,queryAuditFailed,queryAllMerchandise} from '@/api/courseProduct';
@@ -367,6 +367,7 @@
         img_home_order,
         img_home_today_amount,
         img_home_yesterday_amount,
+        img_total_week,
         registerDayUser: {"today": 0, "yesterday": 0},
         yesterdayVisitUser: 0,
         totalUser: 0,

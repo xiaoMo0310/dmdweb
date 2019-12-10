@@ -15,25 +15,26 @@
         <el-input v-model="certificate.englishShorthand" class="input-width"></el-input>
       </el-form-item>
       <el-form-item label="证书等级：" prop="certificateLevel">
-        <el-select v-model="certificate.certificateLevel">
+        <el-input :disabled="true"  v-model="certificate.certificateLevel" class="input-width" ></el-input>
+        <!--<el-select v-model="certificate.certificateLevel">
           <el-option
             v-for="type in typeOptions"
             :key="type.value"
             :label="type.label"
             :value="type.value">
           </el-option>
-        </el-select>
+        </el-select>-->
       </el-form-item>
       <el-form-item label="证书图片：">
         <single-upload v-model="certificate.pic"></single-upload>
       </el-form-item>
-      <el-form-item label="启动/禁用：">
+      <!--<el-form-item label="启动/禁用：">
         <el-radio-group v-model="certificate.status">
           <el-radio :label="1" disabled>启动</el-radio>
           <el-radio :label="2" disabled>禁用</el-radio>
         </el-radio-group>
-      </el-form-item>
-      <el-form-item label="简介：">
+      </el-form-item>-->
+      <el-form-item label="简介：" prop="introduction">
         <el-input
           class="input-width"
           type="textarea"
@@ -52,60 +53,60 @@
 </template>
 <script>
   import SingleUpload from '@/components/Upload/singleUpload'
-  import {saveOrUpdate} from '@/api/certificate'
+  import {saveOrUpdate, findCertificateById} from '@/api/certificate'
   const defaultTypeOptions = [
       {
           label: '一级证书',
-          value: 1
+          value: '1'
       },
       {
           label: '二级证书',
-          value: 2
+          value: '2'
       },
       {
           label: '三级证书',
-          value: 3
+          value: '3'
       },
       {
           label: '四级证书',
-          value: 4
+          value: '4'
       },
       {
           label: '五级证书',
-          value: 5
+          value: '5'
       },
       {
           label: '六级证书',
-          value: 6
+          value: '6'
       },
       {
           label: '七级证书',
-          value: 7
+          value: '7'
       },
       {
           label: '八级证书',
-          value: 8
+          value: '8'
       },
       {
           label: '九级证书',
-          value: 9
+          value: '9'
       },
       {
           label: '十级证书',
-          value: 10
+          value: '10'
       },
       {
           label: '十一级证书',
-          value: 11
+          value: '11'
       },
       {
           label: '十二级证书',
-          value: 12
+          value: '12'
       }
   ];
   const defaultCertificate = {
     name: null,
-    certificateLevel: 1,
+    certificateLevel: null,
     englishShorthand: null,
     chineseName: null,
     englishName: null,
@@ -136,6 +137,9 @@
           ],
           englishShorthand: [
             {required: true, message: '请选择简称', trigger: 'blur'}
+          ],
+          introduction: [
+              {min: 2, max: 500, message: '长度在 2 到 500 个字符', trigger: 'blur'}
           ]
         },
         typeOptions: Object.assign({}, defaultTypeOptions),
@@ -143,9 +147,10 @@
     },
     created(){
       if (this.isEdit) {
-          this.certificate = this.$route.query.row;
+          this.findCertificateById(this.$route.query.id)
       }else{
         this.certificate = Object.assign({},defaultCertificate);
+        this.certificate.certificateLevel = Number(this.$route.query.total) + Number(1);
       }
     },
     methods: {
@@ -197,6 +202,11 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
         this.certificate = Object.assign({},defaultCertificate);
+      },
+      findCertificateById(id){
+          findCertificateById(id).then(response => {
+              this.certificate = response.result;
+          });
       }
     }
   }

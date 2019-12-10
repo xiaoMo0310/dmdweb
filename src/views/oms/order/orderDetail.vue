@@ -381,13 +381,15 @@
         }
       },
       formatPayType(value) {
-        if (value === 1) {
-          return '支付宝';
-        } else if (value === 2) {
-          return '微信';
-        } else {
-          return '未支付';
-        }
+          if (value === 1) {
+              return '支付宝';
+          } else if (value === 2) {
+              return '微信';
+          } else if (value === 3) {
+              return '积分支付';
+          } else {
+              return '未支付';
+          }
       },
       formatSourceType(value) {
         if (value === 1) {

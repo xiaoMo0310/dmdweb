@@ -84,10 +84,10 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="点击次数" width="120" align="center">
+        <el-table-column label="点击次数" width="100" align="center">
           <template slot-scope="scope">{{scope.row.clickCount}}</template>
         </el-table-column>
-        <el-table-column label="生成订单" width="120" align="center">
+        <el-table-column label="生成订单" width="100" align="center">
           <template slot-scope="scope">{{scope.row.orderCount}}</template>
         </el-table-column>
         <el-table-column label="操作" width="120" align="center">

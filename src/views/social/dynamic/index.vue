@@ -287,13 +287,9 @@
       getList() {
         this.listLoading = true;
         selectDynamicPage (this.listQuery).then(response => {
-          console.log(response)
           this.listLoading = false;
           this.list = response.data.list;
           this.total = response.data.total;
-
-          console.log(response.data.list)
-
         })
       },
       updateDynamicDelflagById(ids){

@@ -451,13 +451,9 @@
       getList() {
         this.listLoading = true;
         queryOrderStatisticsPage (this.listQuery).then(response => {
-          console.log(response)
           this.listLoading = false;
           this.list = response.data.list;
           this.total = response.data.total;
-
-          console.log(response.data.list)
-
         })
       },
       getList2(){
@@ -467,7 +463,7 @@
           }
 
         }).catch(err => {
-          console.log(err) // 这里catch到错误timeout
+          //console.log(err) // 这里catch到错误timeout
         })
       }
     }

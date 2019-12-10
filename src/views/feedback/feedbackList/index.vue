@@ -1,21 +1,13 @@
 <template> 
   <div class="app-container">
-    <el-card class="filter-container" shadow="never">
-      <div>
-        <i class=""></i>
-        <span>意见反馈类型列表</span>
-
-      </div>
-    </el-card>
     <el-card class="operate-container" shadow="never">
-      <i class="el-icon-tickets"></i>
-      <span>数据列表</span>
-      <template slot-scope="scope">
+        <i class="el-icon-tickets"></i>
+        <span>意见反馈类型列表</span>
         <el-button
           size="mini"
-          @click="handleAdd(scope.$index, scope.row)">添加意见反馈类型
+          @click="handleAdd(scope.$index, scope.row)"
+          class="btn-add">添加意见反馈类型
         </el-button>
-      </template>
     </el-card>
     <div class="table-container">
       <el-table ref="homeAdvertiseTable"
@@ -26,23 +18,24 @@
         <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="问题类型名称" align="center" width="300">
+        <el-table-column label="问题类型名称" align="center" >
           <template slot-scope="scope">{{scope.row.questionName}}</template>
         </el-table-column>
-        <el-table-column label="更发布时间" width="250" align="center">
+
+        <el-table-column label="状态" width="100" align="center">
+          <template slot-scope="scope">{{scope.row.status | formatStatusType}}</template>
+        </el-table-column>
+        <el-table-column label="创建时间" width="180" align="center">
           <template slot-scope="scope">
             {{scope.row.createTime | formatTime}}
           </template>
         </el-table-column>
-        <el-table-column label="修改时间" width="250" align="center">
+        <el-table-column label="修改时间" width="180" align="center">
           <template slot-scope="scope">
             {{scope.row.updateTime | formatTime}}
           </template>
         </el-table-column>
-        <el-table-column label="状态" width="210" align="center">
-          <template slot-scope="scope">{{scope.row.status | formatStatusType}}</template>
-        </el-table-column>
-        <el-table-column label="启动/禁用" width="210" align="center">
+        <el-table-column label="启动/禁用" width="100" align="center">
           <template slot-scope="scope">
             <el-switch
               @change="handleUpdateStatus(scope.$index, scope.row)"
@@ -52,7 +45,7 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
                        @click="handleUpdate(scope.$index, scope.row)">编辑

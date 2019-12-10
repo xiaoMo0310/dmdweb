@@ -201,10 +201,10 @@
         });
       },
       getProductList(index, row) {
-        console.log(index, row);
+        //console.log(index, row);
       },
       getProductCommentList(index, row) {
-        console.log(index, row);
+        //console.log(index, row);
       },
       handleFactoryStatusChange(index, row) {
         var data = new URLSearchParams();

@@ -30,10 +30,10 @@
         <el-table-column label="简介" width="455" align="center">
           <template slot-scope="scope">{{scope.row.introduction}}</template>
         </el-table-column>
-        <el-table-column label="广告图片" width="120" align="center">
+        <el-table-column label="广告图片" width="150" align="center">
           <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pic"></template>
         </el-table-column>
-        <el-table-column label="启动/禁用" width="120" align="center">
+        <!--<el-table-column label="启动/禁用" width="120" align="center">
           <template slot-scope="scope">
             <el-switch
               @change="handleUpdateStatus(scope.$index, scope.row)"
@@ -42,12 +42,16 @@
               v-model="scope.row.status" disabled>
             </el-switch>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="操作" width="120" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
                        type="text"
                        @click="handleUpdate(scope.$index, scope.row)">编辑
+            </el-button>
+            <el-button size="mini"
+                       type="text"
+                       @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
@@ -68,7 +72,7 @@
   </div>
 </template>
 <script>
-  import {fetchList,saveOrUpdate} from '@/api/certificate';
+  import {fetchList,saveOrUpdate,deletePmsCertificate} from '@/api/certificate';
   import {formatDate} from '@/utils/date';
   const defaultListQuery = {
     pageNum: 1,
@@ -152,10 +156,10 @@
         });
       },
       handleAdd(){
-        this.$router.push({path: '/pms/addCertificate'})
+        this.$router.push({path: '/pms/addCertificate', query: {total: this.total}})
       },
       handleUpdate(index,row){
-        this.$router.push({path: '/pms/updateCertificate', query: {row: row}})
+        this.$router.push({path: '/pms/updateCertificate', query: {id: row.id}})
       },
       getList() {
         this.listLoading = true;
@@ -164,6 +168,34 @@
           this.list = response.result.list;
           this.total = response.result.total;
         })
+      },
+      handleDelete(index,row){
+          this.deletePmsCertificate(row.id);
+      },
+      deletePmsCertificate(ids){
+          this.$confirm('是否要删除该证书信息?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+          }).then(() => {
+              let params=new URLSearchParams();
+              params.append("ids",ids);
+              deletePmsCertificate(params).then(response=>{
+                  this.getList();
+                  if(response.code === 500){
+                      this.$message({
+                          type: 'error',
+                          message: response.message
+                      });
+                  }else {
+                      this.$message({
+                          type: 'success',
+                          message: '删除成功!'
+                      });
+                  }
+
+              });
+          })
       }
     }
   }
