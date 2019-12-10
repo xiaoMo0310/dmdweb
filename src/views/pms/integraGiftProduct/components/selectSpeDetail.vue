@@ -96,7 +96,7 @@
 
     methods: {
       handUpdate(index,row){
-        this.$router.push({path: '/integral/updateIntegralGiftsSpe', query: {id: row.id}})
+        this.$router.push({path: '/pms/updateIntegralGiftsSpe', query: {id: row.id}})
       },
       handleDelete(index,row){
         this.deleteIntegralGiftsSpeById(row.id);

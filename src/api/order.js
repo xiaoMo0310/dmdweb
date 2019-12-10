@@ -139,3 +139,74 @@ export function queryConfirmReceipt(data) {
     data:data
   })
 }
+
+export function queryOrderMonthNum(data) {
+  return request({
+    url:'/order/queryOrderMonthNum',
+    method:'get',
+    data:data
+  })
+}
+
+export function queryOrderPercentage(data) {
+  return request({
+    url:'/order/queryOrderPercentage',
+    method:'get',
+    data:data
+  })
+}
+
+export function queryOrderWeek(data) {
+  return request({
+    url:'/order/queryOrderWeek',
+    method:'get',
+    data:data
+  })
+}
+
+export function queryOrderWeekPercentage(data) {
+  return request({
+    url:'/order/queryOrderWeekPercentage',
+    method:'get',
+    data:data
+  })
+}
+
+export function querySalesMonth(data) {
+  return request({
+    url:'/order/querySalesMonth',
+    method:'get',
+    data:data
+  })
+}
+
+export function querySalesLastMonth(data) {
+  return request({
+    url:'/order/querySalesLastMonth',
+    method:'get',
+    data:data
+  })
+}
+
+export function querySalesWeek(data) {
+  return request({
+    url:'/order/querySalesWeek',
+    method:'get',
+    data:data
+  })
+}
+
+export function querySalesLastWeek(data) {
+  return request({
+    url:'/order/querySalesLastWeek',
+    method:'get',
+    data:data
+  })
+}
+export function setTimeout(data) {
+  return request({
+    url:'/order/setTimeout',
+    method:'get',
+    data:data
+  })
+}
