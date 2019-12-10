@@ -621,7 +621,7 @@ export const constantRouterMap = [
         path: 'dynamicDetail',
         name: 'dynamicDetail',
         component: () => import('@/views/social/dynamic/dynamicDetail'),
-        meta: {title: '潜水学证商品详情', icon: "total-today"},
+        meta: {title: '用户动态详情', icon: "total-today"},
         hidden:true
       },
       {
