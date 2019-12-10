@@ -23,7 +23,7 @@
           <el-col :span="6" class="table-cell">{{userMessage.phone}}</el-col>
           <el-col :span="6" class="table-cell">{{userMessage.createTime}}</el-col>
           <el-col :span="6" class="table-cell">
-            <img style="height: 40px; width: 40px" :src="userMessage.icon">
+            <img preview="2" style="height: 40px; width: 40px" :src="userMessage.icon">
           </el-col>
         </el-row>
       </div>
@@ -36,7 +36,7 @@
           <el-col :span="3" style="height: 150px; width:150px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px"
                   class="table-cell"
                   v-for="(pic, i) in picList" :key="i">
-            <img style="height: 150px; width: 150px" :src="pic">
+            <img preview="1" style="height: 150px; width: 150px" :src="pic">
           </el-col>
         </el-row>
       </div>

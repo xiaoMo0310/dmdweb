@@ -82,8 +82,8 @@
         <el-table-column label="订单类型" align="center" width="120">
           <template slot-scope="scope">{{scope.row.orderType | orderType}}</template>
         </el-table-column>
-        <el-table-column label="订单金额" width="120" align="center">
-          <template slot-scope="scope">￥{{scope.row.totalAmount}}</template>
+        <el-table-column label="订单金额/积分" width="120" align="center">
+          <template slot-scope="scope">{{scope.row.totalAmount}}</template>
         </el-table-column>
         <el-table-column label="获得积分" width="120" align="center">
           <template slot-scope="scope">{{scope.row.integration}}</template>
@@ -97,7 +97,7 @@
         <el-table-column label="提交时间" width="180" align="center">
           <template slot-scope="scope">{{scope.row.createdTime | formatCreateTime}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" width="200" align="left">
           <template slot-scope="scope">
             <el-button
               size="mini"

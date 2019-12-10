@@ -4,17 +4,18 @@
              ref="orderSettingForm"
              :rules="rules"
              label-width="150px">
-      <!--<el-form-item label="秒杀订单超过：" prop="flashOrderOvertime">
-        <el-input v-model="orderSetting.flashOrderOvertime" class="input-width">
-          <template slot="append">分</template>
-        </el-input>
-        <span class="note-margin">未付款，订单自动关闭</span>
-      </el-form-item>-->
+
       <el-form-item label="正常订单超过：" prop="normalOrderOvertime">
         <el-input v-model="orderSetting.normalOrderOvertime" class="input-width">
           <template slot="append">分</template>
         </el-input>
         <span class="note-margin">未付款，订单自动关闭</span>
+      </el-form-item>
+      <el-form-item label="售后审核订单：" prop="returnOrderOvertime">
+        <el-input v-model="orderSetting.returnOrderOvertime" class="input-width">
+          <template slot="append">天</template>
+        </el-input>
+        <span class="note-margin">未审核，订单自动审核通过</span>
       </el-form-item>
       <el-form-item label="进行中订单：" prop="confirmOvertime">
         <el-input v-model="orderSetting.confirmOvertime" class="input-width">
@@ -37,7 +38,8 @@
       <el-form-item>
         <el-button
           @click="confirm('orderSettingForm')"
-          type="primary">提交</el-button>
+          type="primary" size="small">提交</el-button>
+        <!--<el-button type="info" size="small" @click="onReturn()">返回</el-button>-->
       </el-form-item>
     </el-form>
   </el-card>
@@ -46,7 +48,7 @@
   import {getOrderSetting,updateOrderSetting} from '@/api/orderSetting';
   const defaultOrderSetting = {
     id: null,
-    flashOrderOvertime: 0,
+    returnOrderOvertime: 0,
     normalOrderOvertime: 0,
     confirmOvertime: 0,
     finishOvertime: 0,
@@ -69,7 +71,7 @@
       return {
         orderSetting: Object.assign({}, defaultOrderSetting),
         rules: {
-          flashOrderOvertime:{validator: checkTime, trigger: 'blur' },
+          returnOrderOvertime:{validator: checkTime, trigger: 'blur' },
           normalOrderOvertime:{validator: checkTime, trigger: 'blur' },
           confirmOvertime: {validator: checkTime, trigger: 'blur' },
           finishOvertime: {validator: checkTime, trigger: 'blur' },
@@ -110,6 +112,9 @@
         getOrderSetting(1).then(response=>{
           this.orderSetting=response.data;
         })
+      },
+      onReturn(){
+          this.$router.back();
       }
     }
   }

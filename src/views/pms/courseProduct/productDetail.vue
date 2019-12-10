@@ -5,6 +5,7 @@
         <div class="operate-button-container">
           <el-button size="mini" v-if="courseProductMessage.approvalStatus == 1" @click="handlerExaminationPassed">审核通过</el-button>
           <el-button size="mini" v-if="courseProductMessage.approvalStatus == 1" type="danger" @click="handlerAuditNotPassed">审核不通过</el-button>
+          <el-button type="info" size="small" @click="onReturn()">返回</el-button>
         </div>
       </div>
       <div style="margin-top: 20px">
@@ -50,7 +51,7 @@
           <el-col :span="3" style="height: 150px; width:150px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px"
                   class="table-cell"
                   v-for="(image, i) in imageList" :key="i">
-            <img style="height: 150px; width: 150px" :src="image">
+            <img preview="1" style="height: 150px; width: 150px" :src="image">
           </el-col>
         </el-row>
       </div>
@@ -229,6 +230,9 @@
                         this.$router.back();
                     });
                 })
+            },
+            onReturn(){
+                this.$router.back();
             },
         }
     }

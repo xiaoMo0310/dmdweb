@@ -85,9 +85,9 @@
           <el-col :span="6" class="table-cell-title">收货地址</el-col>
         </el-row>
         <el-row>
-          <el-col :span="6" class="table-cell">{{order.omsShipping.receiverName}}</el-col>
-          <el-col :span="6" class="table-cell">{{order.omsShipping.receiverMobileNo}}</el-col>
-          <el-col :span="6" class="table-cell">{{order.omsShipping.receiverZipCode}}</el-col>
+          <el-col :span="6" class="table-cell">{{order.receiverName}}</el-col>
+          <el-col :span="6" class="table-cell">{{order.receiverMobileNo}}</el-col>
+          <el-col :span="6" class="table-cell">{{order.receiverZipCode}}</el-col>
           <el-col :span="6" class="table-cell">{{order | formatAddress}}</el-col>
         </el-row>
       </div>
@@ -101,7 +101,7 @@
         style="width: 100%;margin-top: 20px" border>
         <el-table-column label="商品图片" width="120" align="center">
           <template slot-scope="scope">
-            <img :src="scope.row.productPic" style="height: 80px">
+            <img :src="imageSplit(scope.row.productPic)" style="height: 80px">
           </template>
         </el-table-column>
         <el-table-column label="商品名称" align="center">
@@ -133,7 +133,8 @@
         </el-table-column>
       </el-table>
       <div style="float: right;margin: 20px">
-        合计：<span class="color-danger" v-if="order.orderType != 2">￥{{order.totalAmount}}</span><span class="color-danger" v-if="order.orderType === 2">￥{{order.useIntegration}}</span>
+        合计：<span class="color-danger" v-if="order.orderType != 2">￥{{order.totalAmount}}</span>
+              <span class="color-danger" v-if="order.orderType === 2">{{order.totalAmount}} 积分</span>
       </div>
       <div style="margin-top: 60px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
@@ -142,19 +143,22 @@
       <div class="table-layout">
         <el-row>
           <el-col :span="6" class="table-cell-title" >商品合计</el-col>
-          <el-col :span="6" class="table-cell-title">订单总金额</el-col>
-          <el-col :span="6" class="table-cell-title">应付款金额</el-col>
+          <el-col :span="6" class="table-cell-title">订单总金额/总积分</el-col>
+          <el-col :span="6" class="table-cell-title">应付款金额/积分</el-col>
           <el-col :span="6" class="table-cell-title">积分抵扣</el-col>
         </el-row>
         <el-row>
           <el-col :span="6" class="table-cell" v-if="order.orderType  != 2">￥{{order.totalAmount}}</el-col>
-          <el-col :span="6" class="table-cell" v-if="order.orderType  === 2">{{order.useIntegration}}</el-col>
-          <el-col :span="6" class="table-cell"><span class="color-danger">￥{{order.totalAmount+order.freightAmount}}</span></el-col>
-          <el-col :span="6" class="table-cell"><span class="color-danger">￥{{order.payAmount+order.freightAmount-order.discountAmount}}</span></el-col>
-          <el-col :span="6" class="table-cell">-￥{{order.integrationAmount}}</el-col>
+          <el-col :span="6" class="table-cell" v-if="order.orderType  === 2">{{order.totalAmount}}</el-col>
+          <el-col :span="6" class="table-cell" v-if="order.orderType  != 2"><span class="color-danger">￥{{order.totalAmount+order.freightAmount}}</span></el-col>
+          <el-col :span="6" class="table-cell" v-if="order.orderType  === 2"><span class="color-danger">{{order.totalAmount+order.freightAmount}}</span></el-col>
+          <el-col :span="6" class="table-cell" v-if="order.orderType  != 2"><span class="color-danger">￥{{order.payAmount+order.freightAmount-order.discountAmount}}</span></el-col>
+          <el-col :span="6" class="table-cell" v-if="order.orderType  === 2"><span class="color-danger">{{order.payAmount+order.freightAmount-order.discountAmount}}</span></el-col>
+          <el-col :span="6" class="table-cell" v-if="order.orderType  != 2">-￥{{order.integrationAmount}}</el-col>
+          <el-col :span="6" class="table-cell" v-if="order.orderType  === 2">{{order.totalAmount}}</el-col>
         </el-row>
       </div>
-      <!--<div style="margin-top: 20px">
+      <div style="margin-top: 20px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">操作信息</span>
       </div>
@@ -191,7 +195,7 @@
             {{scope.row.note}}
           </template>
         </el-table-column>
-      </el-table>-->
+      </el-table>
     </el-card>
     <el-dialog title="修改收货人信息"
                :visible.sync="receiverDialogVisible"
@@ -268,32 +272,13 @@
       <el-button type="primary" @click="handleUpdateMoneyInfo">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="发送站内信"
-               :visible.sync="messageDialogVisible"
-               width="40%">
-      <el-form :model="message"
-               ref="receiverInfoForm"
-               label-width="150px">
-        <el-form-item label="标题：">
-          <el-input v-model="message.title" style="width: 200px"></el-input>
-        </el-form-item>
-        <el-form-item label="内容：">
-          <el-input v-model="message.content" type="textarea" rows="3">
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="messageDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleSendMessage">确 定</el-button>
-      </span>
-    </el-dialog>
     <el-dialog title="关闭订单"
                :visible.sync="closeDialogVisible"
                width="40%">
       <el-form :model="closeInfo"
                label-width="150px">
         <el-form-item label="操作备注：">
-          <el-input v-model="closeInfo.note" type="textarea" rows="3">
+          <el-input v-model="closeInfo.remark" type="textarea" rows="3">
           </el-input>
         </el-form-item>
       </el-form>
@@ -308,7 +293,7 @@
       <el-form :model="markInfo"
                label-width="150px">
         <el-form-item label="操作备注：">
-          <el-input v-model="markInfo.note" type="textarea" rows="3">
+          <el-input v-model="markInfo.remark" type="textarea" rows="3">
           </el-input>
         </el-form-item>
       </el-form>
@@ -347,12 +332,10 @@
         receiverInfo:Object.assign({},defaultReceiverInfo),
         moneyDialogVisible:false,
         moneyInfo:{orderId:null, freightAmount:0, discountAmount:0,status:null},
-        messageDialogVisible:false,
-        message: {title:null, content:null},
         closeDialogVisible:false,
-        closeInfo:{note:null,id:null},
+        closeInfo:{remark:null,id:null},
         markOrderDialogVisible:false,
-        markInfo:{note:null},
+        markInfo:{remark: null},
         logisticsDialogVisible:false
       }
     },
@@ -360,7 +343,6 @@
       this.id = this.list = this.$route.query.id;
       getOrderDetail(this.id).then(response => {
         this.order = response.data;
-        console.log(response.data)
       });
     },
     filters: {
@@ -408,12 +390,12 @@
         }
       },
       formatAddress(order) {
-        let str = order.omsShipping.provinceName;
-        if (order.omsShipping.cityName != null) {
-          str += "  " + order.omsShipping.cityName;
+        let str = order.provinceName;
+        if (order.cityName != null) {
+          str += "  " + order.cityName;
         }
-        str += "  " + order.omsShipping.districtName;
-        str += "  " + order.omsShipping.detailAddress;
+        str += "  " + order.districtName;
+        str += "  " + order.detailAddress;
         return str;
       },
       formatStatus(value) {
@@ -480,7 +462,7 @@
       },
         formatTime(time){
             if(time==null){
-                return 'N/A';
+                return '';
             }
             let replace = time.replace(/-/g, "/");
             let date = new Date(replace);
@@ -505,15 +487,21 @@
         this.receiverDialogVisible=true;
         this.receiverInfo={
           orderId:this.order.id,
-          receiverName:this.order.omsShipping.receiverName,
-          receiverMobileNo:this.order.omsShipping.receiverMobileNo,
-          receiverZipCode:this.order.omsShipping.receiverZipCode,
-          detailAddress:this.order.omsShipping.detailAddress,
-          provinceName:this.order.omsShipping.provinceName,
-          cityName:this.order.omsShipping.cityName,
-          districtName:this.order.omsShipping.districtName,
+          receiverName:this.order.receiverName,
+          receiverMobileNo:this.order.receiverMobileNo,
+          receiverZipCode:this.order.receiverZipCode,
+          detailAddress:this.order.detailAddress,
+          provinceName:this.order.provinceName,
+          cityName:this.order.cityName,
+          districtName:this.order.districtName,
           status:this.order.status
         }
+      },
+      imageSplit(image){
+          if(image != null || image != ''){
+              return image.split(",")[0]
+          }
+
       },
       handleUpdateReceiverInfo(){
         this.$confirm('是否要修改收货信息?', '提示', {
@@ -566,26 +554,11 @@
         });
       },
       showMessageDialog(){
-        this.messageDialogVisible=true;
-        this.message.title=null;
-        this.message.content=null;
-      },
-      handleSendMessage(){
-        this.$confirm('是否要发送站内信?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.messageDialogVisible=false;
-          this.$message({
-            type: 'success',
-            message: '发送成功!'
-          });
-        });
+          this.$router.push({path: '/dmd/sendMessage', query: {id: this.order.memberId, userType: 'member'}})
       },
       showCloseOrderDialog(){
         this.closeDialogVisible=true;
-        this.closeInfo.note=null;
+        this.closeInfo.remark=null;
         this.closeInfo.id=this.id;
       },
       handleCloseOrder(){
@@ -596,7 +569,7 @@
         }).then(() => {
             let params = new URLSearchParams();
             params.append("ids",[this.closeInfo.id]);
-            params.append("note",this.closeInfo.note);
+            params.append("remark",this.closeInfo.remark);
             closeOrder(params).then(response=>{
               this.closeDialogVisible=false;
               this.$message({
@@ -612,7 +585,7 @@
       showMarkOrderDialog(){
         this.markOrderDialogVisible=true;
         this.markInfo.id=this.id;
-        this.closeOrder.note=null;
+        this.closeInfo.remark=null;
       },
       handleMarkOrder(){
         this.$confirm('是否要备注订单?', '提示', {
@@ -622,7 +595,7 @@
         }).then(() => {
           let params = new URLSearchParams();
           params.append("id",this.markInfo.id);
-          params.append("note",this.markInfo.note);
+          params.append("remark",this.markInfo.remark);
           params.append("status",this.order.status);
           updateOrderNote(params).then(response=>{
             this.markOrderDialogVisible=false;
@@ -662,15 +635,18 @@
           let listItem={
               orderId:order.id,
               orderSn:order.orderSn,
-              receiverName:order.omsShipping.receiverName,
-              receiverPhone:order.omsShipping.receiverMobileNo,
-              receiverPostCode:order.omsShipping.receiverZipCode,
+              receiverName:order.receiverName,
+              receiverPhone:order.receiverMobileNo,
+              receiverPostCode:order.receiverZipCode,
               address:address,
               deliveryCompany:null,
               deliverySn:null
           };
           return listItem;
-      }
+      },
+      onReturn(){
+          this.$router.back();
+      },
 
     }
   }

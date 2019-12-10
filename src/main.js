@@ -28,7 +28,6 @@ import 'vue-directive-image-previewer/dist/assets/style.css'
 Vue.use(VueDirectiveImagePreviewer)
 Vue.config.productionTip = false
 
-
 new Vue({
   el: '#app',
   router,//

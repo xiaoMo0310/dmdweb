@@ -212,6 +212,10 @@
     {
       label: '普通用户',
       value: 'member'
+    },
+    {
+        label: '教练用户',
+        value: 'coach'
     }
   ];
   const isDelete = [
@@ -228,7 +232,15 @@
     {
       label: '系统消息',
       value: 1,
-    }
+    },
+    {
+      label: '点赞消息',
+      value: 2,
+    },
+    {
+      label: '评论消息',
+      value: 3,
+    },
   ];
 
   export default {
@@ -282,8 +294,12 @@
           }
       },
       messageType(type){
-          if(type===1){
+          if(type === 1){
               return '系统消息';
+          }else if(type === 2){
+              return '点赞消息';
+          }else {
+              return '评论消息';
           }
       },
       userType(type){

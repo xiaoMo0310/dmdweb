@@ -9,7 +9,7 @@
         :data="productList">
         <el-table-column label="商品图片" width="150" align="center">
           <template slot-scope="scope">
-            <img style="height:80px" :src="scope.row.productPic">
+            <img style="height:80px" :src="imageSplit(scope.row.productPic)">
           </template>
         </el-table-column>
         <el-table-column label="商品名称" align="center">
@@ -91,7 +91,7 @@
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:100px;line-height:80px">凭证图片
           </el-col>
           <el-col class="form-border font-small" :span="18" style="height:100px">
-            <img v-for="item in proofPics" style="width:80px;height:80px" :src="item">
+            <img preview="0" v-for="item in proofPics" style="width:80px;height:80px; margin-left: 6px;" :src="item">
           </el-col>
         </el-row>
       </div>
@@ -311,6 +311,12 @@
       parseProductAttr(attr){
           return JSON.parse(attr);
       },
+      imageSplit(image){
+          if(image != null || image != ''){
+              return image.split(",")[0]
+          }
+
+      },
       getDetail() {
         getApplyDetail(this.id).then(response => {
           this.orderReturnApply = response.data;
@@ -319,6 +325,7 @@
           this.updateStatusParam.returnAmount=this.orderReturnApply.returnAmount;
           if (this.orderReturnApply.proofPics != null) {
             this.proofPics = this.orderReturnApply.proofPics.split(",")
+            this.$previewRefresh();
           }
           //退货中和完成
           if(this.orderReturnApply.status===1||this.orderReturnApply.status===2){

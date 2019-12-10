@@ -75,7 +75,7 @@
         <el-table-column label="礼品图片"  align="center">
           <template slot-scope="scope" >
             <div v-for="item in getImg(scope.row.picture)" >
-              <img style="height: 80px" :src="item"  v-image-preview>
+              <img style="height: 80px" :src="item"  preview="1">
             </div>
           </template>
         </el-table-column>
@@ -83,7 +83,7 @@
           <template slot-scope="scope">{{scope.row.integral}}</template>
         </el-table-column>
         <el-table-column label="介绍图片"  align="center">
-          <template slot-scope="scope"><img style="height: 80px" v-image-preview :src="scope.row.introduce"></template>
+          <template slot-scope="scope"><img style="height: 80px" preview="1" :src="scope.row.introduce"></template>
         </el-table-column>
         <el-table-column label="时间" width="220" align="center">
           <template slot-scope="scope">

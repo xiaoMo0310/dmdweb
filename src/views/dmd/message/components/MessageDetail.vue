@@ -19,6 +19,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('messageFrom')">发送</el-button>
+        <el-button type="info" size="small" @click="onReturn('homeAdvertiseFrom')">返回</el-button>
         <el-button  @click="resetForm('messageFrom')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -51,6 +52,9 @@
       }
     },
     methods: {
+      onReturn(){
+          this.$router.back();
+      },
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -60,8 +64,7 @@
               type: 'warning'
             }).then(() => {
               if (this.sendType === 1) {
-                  console.log(this.message)
-                sendMessage(this.$route.query.id, 'member', this.message).then(response => {
+                sendMessage(this.$route.query.id, this.$route.query.userType, this.message).then(response => {
                   this.$refs[formName].resetFields();
                   this.$message({
                     message: '发送成功',
@@ -73,7 +76,7 @@
               } else if(this.sendType === 2) {
                   let params = new URLSearchParams();
                   params.append("ids",this.$route.params.ids);
-                  batchSendMessage(params, 'member',  this.message).then(response => {
+                  batchSendMessage(params, this.$route.params.userType,  this.message).then(response => {
                   this.$refs[formName].resetFields();
                   this.$message({
                     message: '发送成功',
@@ -83,7 +86,7 @@
                   this.$router.back();
                 });
               } else {
-                  sendAllMessage('member', this.message).then(response => {
+                  sendAllMessage(this.$route.query.userType, this.message).then(response => {
                       this.$refs[formName].resetFields();
                       this.$message({
                           message: '发送成功',

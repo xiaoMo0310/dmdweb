@@ -50,7 +50,7 @@ export const constantRouterMap = [
         path: 'userDetail',
         name: 'userDetail',
         component: () => import('@/views/ums/member/userDetail'),
-        meta: {title: '潜水学证商品详情', icon: "total-today"},
+        meta: {title: '用户详情', icon: "total-today"},
         hidden:true
       },
       {
@@ -58,6 +58,7 @@ export const constantRouterMap = [
         name: 'coachManagement',
         component: () => import('@/views/ums/coach/index'),
         meta: {title: '教练管理', icon: "eye"},
+        hidden:true
       },
       {
         path: 'supplierManagement',

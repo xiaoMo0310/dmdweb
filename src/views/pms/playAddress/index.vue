@@ -23,8 +23,8 @@
         </el-table-column>
         <el-table-column label="图集"  align="center">
           <template slot-scope="scope">
-            <div style="height: 150px; width:150px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.atlas)" :key="i">
-              <img style="height: 150px; width: 150px" :src="image">
+            <div style="height: 100px; width:100px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.atlas)" :key="i">
+              <img preview="1" style="height: 100px; width: 100px" :src="image">
             </div>
           </template>
         </el-table-column>

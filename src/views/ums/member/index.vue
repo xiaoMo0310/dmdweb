@@ -228,13 +228,13 @@
                 this.getList();
             },
             sendMessage(index,row){
-                this.$router.push({path: '/dmd/sendMessage', query: {id: row.id}})
+                this.$router.push({path: '/dmd/sendMessage', query: {id: row.id, userType: 'member'}})
             },
             batchSendMessage(ids){
-                this.$router.push({name: 'batchAddMessage', params: {ids: ids}})
+                this.$router.push({name: 'batchAddMessage', params: {ids: ids, userType: 'member'}})
             },
             sendAllMessage(){
-                this.$router.push({path: '/dmd/addAllMessage'})
+                this.$router.push({path: '/dmd/addAllMessage', query: {userType: 'member'}})
             },
             handlerUserDetail(index,row){
                 this.$router.push({path: '/ums/userDetail', query: {id: row.id}})
