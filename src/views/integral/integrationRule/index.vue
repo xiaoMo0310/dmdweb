@@ -19,7 +19,7 @@
           <div slot-scope="scope" v-html="scope.row.ruledescription">{{scope.row.ruledescription}}</div>
         </el-table-column>
         <el-table-column label="图片示例" width="300" align="center">
-          <template slot-scope="scope"><img style="height: 250px" :src="scope.row.picturesample" v-image-preview></template>
+          <template slot-scope="scope"><img style="height: 250px" :src="scope.row.picturesample" preview="1"></template>
         </el-table-column>
         <el-table-column label="更新时间" width="200" align="center">
           <template slot-scope="scope">
@@ -134,12 +134,10 @@
       getList() {
         this.listLoading = true;
         integrationRule (this.listQuery).then(response => {
-          console.log(response)
           this.listLoading = false;
           this.list = response.data.list;
           this.total = response.data.total;
 
-          console.log(response.data.list)
 
         })
       },

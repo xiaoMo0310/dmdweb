@@ -463,7 +463,6 @@
           };
           for(let i=0;i<DATA_FROM_BACKEND.rows.length;i++){
             let item = DATA_FROM_BACKEND.rows[i];
-            console.log(item.date);
             let currDate=str2Date(item.date);
             let start=this.orderCountDate[0];
             let end=this.orderCountDate[1];
