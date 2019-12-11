@@ -23,7 +23,6 @@
         <el-button type="primary" @click="onSubmit('adminFrom')">提交</el-button>
         <el-button v-if="!isEdit" @click="resetForm('adminFrom')">重置</el-button>
         <el-button type="primary" @click="goBack()">返回</el-button>
-      </el-form-item>
     </el-form>
   </el-card>
 </template>

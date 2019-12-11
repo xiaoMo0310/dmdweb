@@ -100,7 +100,7 @@
         <el-table-column label="展示图片" width="120" align="center">
           <template slot-scope="scope">
             <div  v-for="item in getImg(scope.row.pics)">
-              <img style="height: 80px" :src="item" v-image-preview>
+              <img style="height: 80px" :src="item" preview="1">
             </div>
           </template>
         </el-table-column>
