@@ -36,7 +36,7 @@
           <el-col :span="3" style="height: 150px; width:150px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px"
                   class="table-cell"
                   v-for="(image, i) in imageList" :key="i">
-            <img style="height: 150px; width: 150px" :src="image" v-image-preview>
+            <img style="height: 150px; width: 150px" :src="image" preview="1">
           </el-col>
         </el-row>
       </div>
