@@ -71,7 +71,7 @@
           <template slot-scope="scope">{{scope.row.userId}}</template>
         </el-table-column>
         <el-table-column label="证书图片" width="140" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pictures"  v-image-preview></template>
+          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pictures"  preview="1"></template>
         </el-table-column>
         <el-table-column label="审核状态" align="center">
           <template slot-scope="scope">{{scope.row.status | formatType}}</template>
