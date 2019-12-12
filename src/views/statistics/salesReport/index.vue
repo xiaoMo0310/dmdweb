@@ -138,10 +138,6 @@
       label: '潜水学证订单',
       value: 1
     },
-    {
-      label: '积分商品订单',
-      value: 2
-    },
   ];
 
   const defaultTypeOptions2=[
