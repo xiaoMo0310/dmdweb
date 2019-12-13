@@ -72,10 +72,17 @@
         <el-table-column label="礼品名称" align="center">
           <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
-        <el-table-column label="礼品图片"  align="center">
+        <!--<el-table-column label="礼品图片"  align="center">
           <template slot-scope="scope" >
             <div v-for="item in getImg(scope.row.picture)" >
               <img style="height: 80px" :src="item"  preview="1">
+            </div>
+          </template>
+        </el-table-column>-->
+        <el-table-column label="礼品图片"  align="center" width="500">
+          <template slot-scope="scope">
+            <div style="height: 100px; width:100px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.picture)" :key="i">
+              <img preview="1" style="height: 100px; width: 100px" :src="image">
             </div>
           </template>
         </el-table-column>
@@ -85,6 +92,7 @@
         <el-table-column label="介绍图片"  align="center">
           <template slot-scope="scope"><img style="height: 80px" preview="1" :src="scope.row.introduce"></template>
         </el-table-column>
+
         <el-table-column label="时间" width="220" align="center">
           <template slot-scope="scope">
             发布时间:{{scope.row.createTime | formatTime}}
@@ -94,7 +102,7 @@
         <el-table-column label="状态"  align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatusType}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="400" align="center">
+        <el-table-column label="操作" width="250" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
                        @click="handUpdate(scope.$index, scope.row)">编辑
@@ -116,6 +124,7 @@
             </el-button>
             <el-button size="mini"
                        @click="handSelect(scope.$index, scope.row)"
+                       style="margin-top: 10px"
             >查看添加礼品库存规格
             </el-button>
           </template>
@@ -234,6 +243,11 @@
       },
     },
     methods: {
+      getImageList(imageList){
+        if(imageList != null){
+          return  imageList.split(',');
+        }
+      },
       handUpdateStatus(index, row){
         this.updateDiveCertificateStatusPass(row.id);
       },
