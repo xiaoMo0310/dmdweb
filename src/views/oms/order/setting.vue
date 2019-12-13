@@ -17,7 +17,7 @@
         </el-input>
         <span class="note-margin">未审核，订单自动审核通过</span>
       </el-form-item>
-      <el-form-item label="进行中订单：" prop="confirmOvertime">
+      <el-form-item label="活动结束后订单：" prop="confirmOvertime">
         <el-input v-model="orderSetting.confirmOvertime" class="input-width">
           <template slot="append">天</template>
         </el-input>
@@ -27,14 +27,14 @@
         <el-input v-model="orderSetting.finishOvertime" class="input-width">
           <template slot="append">天</template>
         </el-input>
-        <span class="note-margin">自动关闭订单</span>
+        <span class="note-margin">自动好评并关闭订单</span>
       </el-form-item>
-      <el-form-item label="订单完成超过：" prop="commentOvertime">
+      <!--<el-form-item label="订单完成超过：" prop="commentOvertime">
         <el-input v-model="orderSetting.commentOvertime" class="input-width">
           <template slot="append">天</template>
         </el-input>
         <span class="note-margin">自动五星好评</span>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item>
         <el-button
           @click="confirm('orderSettingForm')"

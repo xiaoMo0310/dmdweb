@@ -4,7 +4,7 @@
       <div class="operate-container">
         <div class="operate-button-container">
           <el-button size="mini" @click="showLogisticsDialog">查询用户支付信息</el-button>
-          <el-button size="mini" v-if="reviewMessage.status == 1" @click="divideToWallet">审核通过结账到钱包</el-button>
+          <el-button size="mini" type="danger" v-if="reviewMessage.status == 1" @click="divideToWallet">审核通过结账到钱包</el-button>
           <el-button size="mini" v-if="reviewMessage.status == 1" type="danger" @click="udpateFashionableStatus">标记为待处理账单</el-button>
         </div>
       </div>

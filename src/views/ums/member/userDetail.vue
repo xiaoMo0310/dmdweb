@@ -5,6 +5,7 @@
         <div class="operate-button-container">
           <el-button size="mini" v-if="userMessage.status == 1" @click="handleFreezeUser(userMessage)">启用用户</el-button>
           <el-button size="mini" v-if="userMessage.status == 2" type="danger" @click="handleFreezeUser(userMessage)">冻结用户</el-button>
+          <el-button type="info" size="mini" @click="onReturn()">返回</el-button>
         </div>
       </div>
       <div style="margin-top: 20px">
@@ -149,7 +150,10 @@
             },
             handlerAuditNotPassed(){
                 this.dialogVisible = true;
-            }
+            },
+            onReturn(){
+                this.$router.back();
+            },
         }
     }
 </script>
