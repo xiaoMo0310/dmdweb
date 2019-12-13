@@ -213,13 +213,13 @@
         <el-table-column label="商品名称" align="center" width="130">
           <template slot-scope="scope">{{scope.row.productName}}</template>
         </el-table-column>
-        <el-table-column label="订单金额(元/分)" align="center" width="130">
+        <el-table-column label="订单金额/积分" align="center" width="130">
           <template slot-scope="scope">{{scope.row.total_amount}}</template>
         </el-table-column>
-        <el-table-column label="实际付款金额(元/分)" align="center" width="130">
+        <el-table-column label="实际付款金额/积分" align="center" width="130">
           <template slot-scope="scope">{{scope.row.payAmount}}</template>
         </el-table-column>
-        <el-table-column label="积分抵扣金额(元/分)" align="center" width="130">
+        <el-table-column label="积分抵扣金额" align="center" width="130">
           <template slot-scope="scope">{{scope.row.integrationAmount}}</template>
         </el-table-column>
         <el-table-column label="用户积分奖励" align="center" width="130">
