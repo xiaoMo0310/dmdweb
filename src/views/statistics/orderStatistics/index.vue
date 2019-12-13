@@ -213,14 +213,14 @@
         <el-table-column label="商品名称" align="center" width="130">
           <template slot-scope="scope">{{scope.row.productName}}</template>
         </el-table-column>
-        <el-table-column label="订单金额" align="center" width="130">
-          <template slot-scope="scope">{{scope.row.total_amount}}元</template>
+        <el-table-column label="订单金额(元/分)" align="center" width="130">
+          <template slot-scope="scope">{{scope.row.total_amount}}</template>
         </el-table-column>
-        <el-table-column label="实际付款金额" align="center" width="130">
-          <template slot-scope="scope">{{scope.row.payAmount}}元</template>
+        <el-table-column label="实际付款金额(元/分)" align="center" width="130">
+          <template slot-scope="scope">{{scope.row.payAmount}}</template>
         </el-table-column>
-        <el-table-column label="积分抵扣金额" align="center" width="130">
-          <template slot-scope="scope">{{scope.row.integrationAmount}}元</template>
+        <el-table-column label="积分抵扣金额(元/分)" align="center" width="130">
+          <template slot-scope="scope">{{scope.row.integrationAmount}}</template>
         </el-table-column>
         <el-table-column label="用户积分奖励" align="center" width="130">
           <template slot-scope="scope">{{scope.row.integration}}分</template>
@@ -420,7 +420,7 @@
         }if(orderType===2){
           return '积分商品订单';
         }
-      }
+      },
     },
     methods: {
       handleResetSearch() {
