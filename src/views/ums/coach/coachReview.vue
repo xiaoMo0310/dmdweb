@@ -11,15 +11,6 @@
           重置
         </el-button>
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px" align="right">
-          <el-form-item label="商品类型：">
-            <el-select v-model="listQuery.productType" placeholder="全部" clearable @change="getList" class="input-width">
-              <el-option v-for="item in productTypeOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
           <el-form-item label="状态：">
             <el-select v-model="listQuery.approvalStatus" placeholder="全部" clearable @change="getList" class="input-width">
               <el-option v-for="item in approvalStatusOptions"
@@ -35,7 +26,7 @@
     </el-card>
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
-      <span>潜水学证商品管理</span>
+      <span>教练审核列表</span>
     </el-card>
     <div class="table-container">
       <el-table ref="homeAdvertiseTable"
@@ -46,38 +37,40 @@
         <el-table-column label="ID" width="60" align="center">
           <template slot-scope="scope">{{scope.$index + 1}}</template>
         </el-table-column>
-        <el-table-column label="卖家id" align="center" width="80">
-          <template slot-scope="scope">{{scope.row.userId}}</template>
+        <el-table-column label="教练名称" width="200" align="center">
+          <template slot-scope="scope">{{scope.row.coachName}}</template>
         </el-table-column>
-        <el-table-column label="商品名称" width="200" align="center">
-          <template slot-scope="scope">{{scope.row.productName}}</template>
+        <el-table-column label="教练昵称" width="200" align="center">
+          <template slot-scope="scope">{{scope.row.nickName}}</template>
         </el-table-column>
-        <el-table-column label="商品标题" align="center">
-          <template slot-scope="scope">{{scope.row.title}}</template>
+
+        <el-table-column label="手机号"width="150" align="center">
+          <template slot-scope="scope">{{scope.row.phone}}</template>
         </el-table-column>
-        <el-table-column label="商品价格"width="100" align="center">
-          <template slot-scope="scope">{{scope.row.price}}</template>
+        <el-table-column label="邀请码"width="100" align="center">
+          <template slot-scope="scope">{{scope.row.invitationCode }}</template>
         </el-table-column>
-        <el-table-column label="商品类型"width="100" align="center">
-          <template slot-scope="scope">{{scope.row.productType | productType}}</template>
+        <el-table-column label="证书图片" align="center">
+          <template slot-scope="scope">
+            <div style="height: 100px; width:100px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.certificatePic)" :key="i">
+              <img preview="1" style="height: 100px; width: 100px" :src="image">
+            </div>
+          </template>
         </el-table-column>
-        <el-table-column label="地点"width="150" align="center">
-          <template slot-scope="scope">{{scope.row.location}}</template>
+        <el-table-column label="状态"width="100" align="center">
+          <template slot-scope="scope">{{scope.row.status | approvalStatus}}</template>
         </el-table-column>
-        <el-table-column label="审核状态"width="120" align="center">
-          <template slot-scope="scope">{{scope.row.approvalStatus | approvalStatus}}</template>
-        </el-table-column>
-        <el-table-column label="操作" align="center" width="120">
+        <el-table-column label="操作" align="center" width="320">
           <template slot-scope="scope">
             <el-button size="mini"
-                       @click="handleCourseProductDetail(scope.$index, scope.row)">详细信息
+                       @click="handleCoachDetail(scope.$index, scope.row)">详细信息
             </el-button>
-            <!--<el-button size="mini" type="danger" v-if="scope.row.approvalStatus === 1"
-                       @click="handleReviewDetail(scope.$index, scope.row)">审核通过
+            <el-button size="mini" type="danger" :disabled= 'scope.row.status === 3'
+                       @click="handleReviewDetail(scope.$index, scope.row, 2)">审核通过
             </el-button>
-            <el-button size="mini" type="danger" v-if="scope.row.approvalStatus === 1"
-                       @click="handleReviewDetail(scope.$index, scope.row)">审核不通过
-            </el-button>-->
+            <el-button size="mini" type="danger" :disabled= 'scope.row.status === 3'
+                       @click="handleNoReviewDetail(scope.$index, scope.row, 3)">审核不通过
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -94,18 +87,37 @@
         :total="total">
       </el-pagination>
     </div>
+    <el-dialog
+      title="审核原因"
+      :visible.sync="reviewCoach.dialogVisible" width="30%">
+      <span style="vertical-align: top">未通过原因：</span>
+      <el-input
+        style="width: 80%"
+        type="textarea"
+        :rows="5"
+        placeholder="请输入内容"
+        v-model="reviewCoach.failureReason">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="updateNoReviewDetail">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
-    import {findCourseProductList} from '@/api/courseProduct';
+    import {findByStatus, updateCoachMessageById} from '@/api/coach';
     import {formatDate} from '@/utils/date';
     const defaultListQuery = {
         pageNum: 1,
-        pageSize: 10,
-        productType: null,
-        approvalStatus: null
+        pageSize: 5,
+        status: null
     };
-
+    const defaultReviewCoach = {
+        dialogVisible: false,
+        failureReason: null,
+        coachId: null
+    }
     export default {
         name: 'searchintegrationRule',
         data() {
@@ -115,6 +127,7 @@
                 total: null,
                 listLoading: false,
                 multipleSelection: [],
+                reviewCoach: Object.assign({}, defaultReviewCoach),
                 approvalStatusOptions: [
                     {
                         label: "待审核",
@@ -129,17 +142,6 @@
                         label: "审核未通过",
                         value: 3
                     }
-                ],
-                productTypeOptions: [
-                    {
-                        label: "学证",
-                        value: 1,
-                        default: true
-                    },
-                    {
-                        label: "潜水",
-                        value: 2
-                    },
                 ],
                 operateType: null
             }
@@ -159,17 +161,8 @@
             approvalStatus(value){
                 if(value === 1) {
                     return "待审核"
-                }else if (value === 2){
-                    return "审核通过"
                 }else {
                     return "审核未通过"
-                }
-            },
-            productType(type){
-                if(type === 1){
-                  return "学证"
-                }else {
-                    return "潜水"
                 }
             }
 
@@ -195,15 +188,62 @@
                 this.listQuery.pageNum = val;
                 this.getList();
             },
-            handleCourseProductDetail(index, row){
-                this.$router.push({path:'/pms/courseProductDetail',query:{id:row.id}})
+            handleCoachDetail(index, row){
+                this.$router.push({path:'/ums/coachDetail',query:{id:row.id}})
             },
             getList() {
                 this.listLoading = true;
-                findCourseProductList (this.listQuery).then(response => {
+                findByStatus (this.listQuery).then(response => {
                     this.listLoading = false;
                     this.list = response.result.list;
                     this.total = response.result.total;
+                })
+            },
+            getImageList(imageList){
+                if(imageList != null){
+                    return  imageList.split(',');
+                }
+            },
+            handleNoReviewDetail(index, row, status){
+                this.reviewCoach.dialogVisible = true;
+                this.reviewCoach.coachId = row.id;
+                this.reviewCoach.status = status;
+            },
+            cancel(){
+                this.reviewCoach = Object.assign({}, defaultReviewCoach)
+            },
+            updateCoachMessageById(){
+                updateCoachMessageById (this.reviewCoach).then(response => {
+                    if(response.code === 200){
+                        this.$message({
+                            message: '审核成功',
+                            type: 'success',
+                            duration: 1000
+                        });
+                        this.cancel();
+                        this.getList();
+                    }
+                })
+            },
+            handleReviewDetail(index, row){
+                this.reviewCoach.coachId = row.id;
+                this.reviewCoach.status = 2;
+                this.$confirm('确定要审核通过吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.updateCoachMessageById();
+                })
+
+            },
+            updateNoReviewDetail(){
+                this.$confirm('确定审核不通过吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.updateCoachMessageById();
                 })
             }
         }

@@ -70,7 +70,7 @@
         </el-table-column>
         <el-table-column label="评论时间" width="220" align="center">
           <template slot-scope="scope">
-            {{scope.row.createTime | formatTime}}
+            {{scope.row.createTime}}
           </template>
         </el-table-column>
         <el-table-column label="评论内容" width="220" align="center">
