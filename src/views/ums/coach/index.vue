@@ -20,10 +20,10 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="用户名：">
+          <el-form-item label="教练名称：">
             <el-input v-model="listQuery.username" class="input-width" placeholder="用户名"></el-input>
           </el-form-item>
-          <el-form-item label="用户昵称：">
+          <el-form-item label="教练昵称：">
             <el-input v-model="listQuery.nickName" class="input-width" placeholder="用户昵称"></el-input>
           </el-form-item>
           <el-form-item label="手机号：">
@@ -54,7 +54,7 @@
     </el-card>
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
-      <span>用户列表</span>
+      <span>教练列表</span>
     </el-card>
     <div class="table-container">
       <el-table ref="orderTable"
@@ -66,28 +66,30 @@
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="用户名"  align="center">
-          <template slot-scope="scope">{{scope.row.username}}</template>
+        <el-table-column label="教练名称" align="center">
+          <template slot-scope="scope">{{scope.row.coachName}}</template>
         </el-table-column>
-        <el-table-column label="用户昵称" align="center">
-          <template slot-scope="scope">{{scope.row.nickname}}</template>
+        <el-table-column label="教练昵称" align="center">
+          <template slot-scope="scope">{{scope.row.nickName}}</template>
         </el-table-column>
         <el-table-column label="手机号码" align="center">
           <template slot-scope="scope">{{scope.row.phone}}</template>
         </el-table-column>
-        <el-table-column label="身份证号码" align="center">
-          <template slot-scope="scope">{{scope.row.identityCard}}</template>
+        <el-table-column label="个人简介" width="350" align="center" style="overflow: hidden; white-space: nowrap;text-overflow:ellipsis;">
+          <template slot-scope="scope">{{scope.row.personalizedSignature | ellipsis | formatNull}}</template>
         </el-table-column>
         <el-table-column label="注册时间" align="center">
-          <template slot-scope="scope">{{scope.row.createTime}}</template>
+          <template slot-scope="scope">{{scope.row.createdTime}}</template>
+        </el-table-column>
+        <el-table-column label="状态" align="center">
+          <template slot-scope="scope">{{scope.row.status | statusType}}</template>
         </el-table-column>
         <el-table-column label="操作" width="300" align="center">
           <template slot-scope="scope">
-            <!--<el-button
+            <el-button
               size="mini"
-              @click="handleViewUserDetail(scope.$index, scope.row)"
-            >详细信息
-            </el-button>-->
+              @click="handlerUserDetail(scope.$index, scope.row)">详细信息
+            </el-button>
             <el-button
               size="mini"
               @click="sendMessage(scope.$index, scope.row)">发送消息
@@ -101,7 +103,13 @@
               size="mini"
               type="danger"
               @click="handleFreezeUser(scope.$index, scope.row)"
-              v-show="scope.row.status===1">冻结用户
+              v-show="scope.row.status===1 || scope.row.status===3">审核中心
+            </el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleFreezeUser(scope.$index, scope.row)"
+              v-show="scope.row.status===2">冻结用户
             </el-button>
           </template>
         </el-table-column>
@@ -144,7 +152,7 @@
   </div>
 </template>
 <script>
-    import {selectUserList, freezeUser, batchUpdateUserStatus} from '@/api/user'
+    import {selectUserList, freezeUser, batchUpdateUserStatus} from '@/api/coach'
     const defaultListQuery = {
         pageNum: 1,
         pageSize: 10,
@@ -170,19 +178,46 @@
                     },
                     {
                         label: "启用",
-                        value: 1
-                    },
-                    {
-                        label: "发送通知",
                         value: 2
                     },
                     {
-                        label: "全部发送通知",
+                        label: "发送通知",
                         value: 3
+                    },
+                    {
+                        label: "全部发送通知",
+                        value: 4
                     }
 
                 ],
                 operateType: null
+            }
+        },
+        filters: {
+            ellipsis (value) {
+                if (!value) return ''
+                if (value.length > 20) {
+                    return value.slice(0,20) + '....'
+                }
+                return value
+            },
+            formatNull(value) {
+                if(value===undefined||value===null||value===''){
+                    return '暂无';
+                }else{
+                    return value;
+                }
+            },
+            statusType(value){
+               if(value === 0){
+                   return '禁用'
+               }else if(value === 1){
+                   return '待审核'
+               }else if(value === 2){
+                   return '正常'
+               }else {
+                   return '审核未通过'
+               }
             }
         },
         created() {
@@ -208,13 +243,16 @@
                 this.getList();
             },
             sendMessage(index,row){
-                this.$router.push({path: '/dmd/sendMessage', query: {id: row.id}})
+                this.$router.push({path: '/dmd/sendMessage', query: {id: row.id, userType: 'coach'}})
             },
             batchSendMessage(ids){
-                this.$router.push({name: 'batchAddMessage', params: {ids: ids}})
+                this.$router.push({name: 'batchAddMessage', params: {ids: ids, userType: 'coach'}})
             },
             sendAllMessage(){
-                this.$router.push({path: '/dmd/addAllMessage'})
+                this.$router.push({path: '/dmd/addAllMessage', query: {userType: 'coach'}})
+            },
+            handlerUserDetail(index,row){
+                this.$router.push({path: '/ums/coachDetail', query: {id: row.id}})
             },
             handleCurrentChange(val){
                 this.listQuery.pageNum = val;
@@ -227,9 +265,10 @@
                     this.list = response.result.list;
                     this.total = response.result.total;
                 });
+                this.operateType = null
             },
             freezeUser(id, status){
-                if(status == 1){
+                if(status == 2){
                     this.$confirm('是否要进行该冻结操作?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -247,14 +286,14 @@
                             this.getList();
                         });
                     })
-                }else {
+                }else if(status == 0){
                     this.$confirm('是否要进行该启用操作?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
                         let params = new URLSearchParams();
-                        params.append("status", 1)
+                        params.append("status", 2)
                         params.append("id",id);
                         freezeUser(params).then(response=>{
                             this.$message({
@@ -277,7 +316,7 @@
                     return;
                 }
                 if(this.multipleSelection==null||this.multipleSelection.length<1){
-                    if(this.operateType != 3){
+                    if(this.operateType != 4){
                         this.$message({
                             message: '请选择要操作的用户',
                             type: 'warning',
@@ -286,7 +325,7 @@
                         return;
                     }
                 }
-                if(this.operateType == 3){
+                if(this.operateType == 4){
                     this.$confirm(
                         '是否要进行全部用户通知?', '提示', {
                             confirmButtonText: '确定',
@@ -312,7 +351,7 @@
                                 this.getList();
                                 break;
                             case this.operates[1].value:
-                                this.editUserStatus(1,ids);
+                                this.editUserStatus(2,ids);
                                 this.getList();
                                 break;
                             case this.operates[2].value:
@@ -336,7 +375,7 @@
                 });
             },
             handleViewUserDetail(index,row){
-                this.$router.push({path:'/ums/userDetail',query:{id:row.id}})
+                this.$router.push({path:'/coach/coachDetail',query:{id:row.id}})
             },
         }
     }

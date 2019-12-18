@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-//统计当日新注册用户
+// //统计当日新注册用户
 export function countDayRegisterUser() {
   return request({
     url:'/ums/registerUser/countDay',
@@ -63,6 +63,15 @@ export function findUserMemberById(data) {
   return request({
     url:'/ums/user/findById/' + data,
     method:'get'
+  })
+}
+
+export function findByInvitationCode(data, param) {
+  return request({
+    url:'/ums/user/findByInvitationCode',
+    method:'post',
+    data: data,
+    params: param
   })
 }
 

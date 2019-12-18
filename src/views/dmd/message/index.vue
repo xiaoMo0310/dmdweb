@@ -305,6 +305,8 @@
       userType(type){
           if(type==='member'){
               return '普通用户';
+          }else if(type==='coach'){
+              return '教练';
           }
       },
         formatTime(time){
