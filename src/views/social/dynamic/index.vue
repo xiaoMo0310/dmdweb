@@ -50,6 +50,9 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="用户昵称查询：">
+            <el-input v-model="listQuery.dynamicAuthor" class="input-width" placeholder="用户昵称查询"></el-input>
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
@@ -160,7 +163,8 @@
     dynamicAddress: null,
     stratTime:null,
     endTime:null,
-    topicId : null
+    topicId : null,
+    dynamicAuthor:null
 
   };
 
@@ -216,7 +220,7 @@
     },
     methods: {
       handleSelect(index, row){
-        this.$router.push({path:'/social/dynamicDetail',query:{id:row.id}})
+        this.$router.push({path:'/social/dynamicDetail',query:{id:row.id,userType:row.userType}})
       },
      /* selectTopicType(){
         selectTopic ().then(response => {

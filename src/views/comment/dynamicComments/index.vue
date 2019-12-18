@@ -47,6 +47,9 @@
           <el-form-item label="按照日志ID查询：">
             <el-input v-model="listQuery.forDiveLogId" class="input-width" placeholder="日志ID"></el-input>
           </el-form-item>
+          <el-form-item label="用户昵称查询">
+            <el-input v-model="listQuery.commentName" class="input-width" placeholder="用户昵称查询"></el-input>
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
@@ -62,46 +65,54 @@
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="80" align="center"></el-table-column>
-        <el-table-column label="评论id" width="120" align="center">
+        <el-table-column label="评论id" width="70" align="center">
           <template slot-scope="scope">{{scope.row.commentId}}</template>
         </el-table-column>
-        <el-table-column label="评论人昵称" align="center" width="120">
+        <el-table-column label="用户ID" align="center" width="70">
+          <template slot-scope="scope">{{scope.row.userId}}</template>
+        </el-table-column>
+        <el-table-column label="动态ID" align="center" width="70">
+          <template slot-scope="scope">{{scope.row.forDynamicId}}</template>
+        </el-table-column>
+        <el-table-column label="评论人昵称" align="center" width="100">
           <template slot-scope="scope">{{scope.row.commentName}}</template>
         </el-table-column>
-        <el-table-column label="评论时间" width="220" align="center">
+        <el-table-column label="评论人角色" align="center" width="100">
+          <template slot-scope="scope">{{scope.row.userType | formatUserType}}</template>
+        </el-table-column>
+        <el-table-column label="评论时间" width="170" align="center">
           <template slot-scope="scope">
             {{scope.row.createTime | formatTime}}
           </template>
         </el-table-column>
-        <el-table-column label="评论内容" width="220" align="center">
-          <template slot-scope="scope">{{scope.row.content}}</template>
+        <el-table-column label="评论内容" width="280" align="center">
+          <template slot-scope="scope">{{scope.row.content | count}}</template>
         </el-table-column>
-        <el-table-column label="分类" align="center" width="80">
+        <el-table-column label="分类" align="center" width="100">
           <template slot-scope="scope">{{scope.row.type | formatType}}</template>
         </el-table-column>
-        <el-table-column label="IP地址" align="center" width="130">
+        <!--<el-table-column label="IP地址" align="center" width="130">
           <template slot-scope="scope">{{scope.row.ipAddress}}</template>
-        </el-table-column>
-        <el-table-column label="评论状态" align="center">
+        </el-table-column>-->
+        <el-table-column label="评论状态" align="center" width="100">
           <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
         </el-table-column>
-        <el-table-column label="回复的动态ID" align="center" width="70">
-          <template slot-scope="scope">{{scope.row.forDynamicId}}</template>
-        </el-table-column>
-        <el-table-column label="回复的日志ID" align="center" width="70">
+
+        <!--<el-table-column label="回复的日志ID" align="center" width="70">
           <template slot-scope="scope">{{scope.row.forDiveLogId}}</template>
+        </el-table-column>-->
+
+        <el-table-column label="回复给谁" align="center" width="200">
+          <template slot-scope="scope">{{scope.row.forUserTypeName | formatUserTypeName}}</template>
         </el-table-column>
-        <el-table-column label="用户ID" align="center" width="100">
-          <template slot-scope="scope">{{scope.row.userId}}</template>
-        </el-table-column>
-        <el-table-column label="被回复者ID" align="center" width="100">
-          <template slot-scope="scope">{{scope.row.forUid}}</template>
-        </el-table-column>
-        <el-table-column label="操作" width="120" align="center">
+        <el-table-column label="操作" width="185" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       type="text"
+                       type="danger"
                        @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
+            <el-button size="mini"
+                       @click="handleSelect(scope.$index, scope.row)">查看详情
             </el-button>
           </template>
         </el-table-column>
@@ -149,7 +160,8 @@
     pageSize: 5,
     topicName: null,
     topicDescribes: null,
-    stratTime:null
+    stratTime:null,
+    commentName:null
   };
 
   export default {
@@ -174,6 +186,13 @@
       this.getList();
     },
     filters:{
+      count(count){
+        if(count.length>18){
+          return count.slice(0,18)+"..."
+        }else{
+          return count
+        }
+      },
       formatStatus(status){
         if(status===0){
           return '正常';
@@ -181,6 +200,13 @@
           return '正常';
         }if(status===2){
           return '禁止';
+        }
+      },
+      formatUserType(value){
+          if (value===1){
+              return "普通用户"
+          }if(value===2){
+              return "教练"
         }
       },
       formatType(type){
@@ -191,14 +217,26 @@
         }
       },
       formatTime(time){
-        if(time==null){
-          return 'N/A';
+        if(time===null){
+          return '暂无';
         }
         let date = new Date(time);
         return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
       },
+      formatUserTypeName(value){
+         if(value!=null){
+             return value;
+         }if(value===null || value===""){
+           return "一级评论无回复人";
+        }
+      }
     },
     methods: {
+      handleSelect(index, row){
+        this.$router.push({path:'/comment/commentDetail',query:{forDynamicId:row.forDynamicId,commentId:row.commentId,userType:row.userType}
+
+        })
+      },
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
       },

@@ -50,6 +50,9 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="用户昵称：">
+            <el-input v-model="listQuery.nickName" class="input-width" placeholder="用户昵称"></el-input>
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
@@ -64,13 +67,19 @@
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="80" align="center"></el-table-column>
-        <el-table-column label="编号" width="120" align="center">
+        <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="用户id" width="120" align="center">
+        <el-table-column label="用户id" width="80" align="center">
           <template slot-scope="scope">{{scope.row.userId}}</template>
         </el-table-column>
-        <el-table-column label="问题类别" align="center">
+        <el-table-column label="用户昵称" width="100" align="center">
+          <template slot-scope="scope">{{scope.row.nickName}}</template>
+        </el-table-column>
+        <el-table-column label="用户类型" width="100" align="center">
+          <template slot-scope="scope">{{scope.row.userType | formtUserType}}</template>
+        </el-table-column>
+        <el-table-column label="问题类别" width="120" align="center">
           <template slot-scope="scope">{{scope.row.problemName}}</template>
         </el-table-column>
         <el-table-column label="问题描述" align="center">
@@ -137,7 +146,8 @@
     userId: null,
     problemDescription: null,
     startTime:null,
-    endTime:null
+    endTime:null,
+    nickName : null
   };
 
   export default {
@@ -172,6 +182,13 @@
       this.getList();
     },
     filters:{
+      formtUserType(value){
+        if(value === 1){
+          return "普通用户";
+        }if(value === 2){
+          return "教练";
+        }
+      },
       formatTime(time){
         if(time==null){
           return '暂无';

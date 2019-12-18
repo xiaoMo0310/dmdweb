@@ -13,3 +13,18 @@ export function deleteDynamicComments(data) {
     data:data
   })
 }
+export function queryDynamicById(forDynamicId,commentId,userType,params) {
+  return request({
+    url:'/comment/selectDynamicById?forDynamicId=' + forDynamicId+"&commentId="+commentId+"&userType="+userType,
+    method:'get',
+    params:params
+
+  })
+}
+export function dynamicCommentsByComment(data,forDynamicId) {
+  return request({
+    url:'/comment/selectDynamicByIdComment?forDynamicId='+forDynamicId,
+    method:'post',
+    data:data
+  })
+}

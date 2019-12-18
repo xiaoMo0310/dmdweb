@@ -565,7 +565,14 @@ export const constantRouterMap = [
         path: 'dynamicComments',
         name: 'dynamicComments',
         component: () => import('@/views/comment/dynamicComments/index'),
-        meta: {title: '动态/日志评论', icon: "dynamic"},
+        meta: {title: '动态评论', icon: "dynamic"},
+      },
+      {
+        path: 'commentDetail',
+        name: 'commentDetail',
+        component: () => import('@/views/comment/dynamicComments/commentDetail'),
+        meta: {title: '用户评论详情', icon: "total-today"},
+        hidden:true
       },
       {
         path: 'buyerComments',
