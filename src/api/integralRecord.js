@@ -20,3 +20,25 @@ export function updateIntegrationReduce(id,data) {
     data:data
   })
 }
+export function integralRecordListCoach(params) {
+  return request({
+    url:'/integral/selectIntegralChangeByCoach',
+    method:'get',
+    params:params
+  })
+}
+
+export function updateIntegrationCoach(id,data) {
+  return request({
+    url:'/integral/addIntegrationCoach?id='+id,
+    method:'post',
+    data:data
+  })
+}
+export function updateIntegrationReduceCoach(id,data) {
+  return request({
+    url:'/integral/reduceIntegrationCoach?id='+id,
+    method:'post',
+    data:data
+  })
+}

@@ -73,7 +73,7 @@
         <el-table-column label="用户ID" align="center" width="80">
           <template slot-scope="scope">{{scope.row.memberId}}</template>
         </el-table-column>
-        <el-table-column label="用户昵称" align="center" width="80">
+        <el-table-column label="教练昵称" align="center" width="80">
           <template slot-scope="scope">{{scope.row.userName}}</template>
         </el-table-column>
         <el-table-column label="更新时间" width="220" align="center">
@@ -96,9 +96,9 @@
         <el-table-column label="积分来源" align="center" width="100">
           <template slot-scope="scope">{{scope.row.sourceType | formatSourceType}}</template>
         </el-table-column>
-        <el-table-column label="积分动向" align="center"  width="170">
+        <!--<el-table-column label="积分动向" align="center"  width="170">
           <template slot-scope="scope">{{scope.row.integralTrend}}</template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="用户总积分" align="center">
           <template slot-scope="scope">{{scope.row.integration}}</template>
         </el-table-column>
@@ -148,9 +148,9 @@
         <el-form-item label="操作备注" prop="operateNote">
           <el-input v-model="productAttrCate.operateNote" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="积分动向" prop="integralTrend" >
+        <!--<el-form-item label="积分动向" prop="integralTrend" >
           <el-input v-model="productAttrCate.integralTrend" auto-complete="off"></el-input>
-        </el-form-item>
+        </el-form-item>-->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -160,7 +160,7 @@
   </div>
 </template>
 <script>
-  import {integralRecordList ,updateIntegration ,updateIntegrationReduce} from '@/api/integralRecord';
+  import {integralRecordListCoach ,updateIntegrationCoach ,updateIntegrationReduceCoach} from '@/api/integralRecord';
   import {formatDate} from '@/utils/date';
   const defaultListQuery = {
     pageNum: 1,
@@ -255,7 +255,7 @@
         this.productAttrCate.operateMan = row.operateMan;
         this.productAttrCate.id = row.id;
         this.productAttrCate.operateNote = row.operateNote;
-        this.productAttrCate.integralTrend = row.integralTrend;
+        //this.productAttrCate.integralTrend = row.integralTrend;
         this.productAttrCate.memberId = row.memberId;
 
       },
@@ -266,7 +266,7 @@
         this.productAttrCate.operateMan = row.operateMan;
         this.productAttrCate.id = row.id;
         this.productAttrCate.operateNote = row.operateNote;
-        this.productAttrCate.integralTrend = row.integralTrend;
+        //this.productAttrCate.integralTrend = row.integralTrend;
         this.productAttrCate.memberId = row.memberId;
 
       },
@@ -291,7 +291,7 @@
         this.getList();
       },
       handleDelete(index,row){
-        this.deleteintegralRecordList(row.id);
+        this.deleteintegralRecordListCoach(row.id);
       },
       handleBatchOperate(){
         if (this.multipleSelection < 1) {
@@ -308,7 +308,7 @@
         }
         if(this.operateType===0){
           //删除
-          this.deleteintegralRecordList(ids);
+          this.deleteintegralRecordListCoach(ids);
         }else {
           this.$message({
             message: '请选择批量操作类型',
@@ -319,7 +319,7 @@
       },
       getList() {
         this.listLoading = true;
-        integralRecordList (this.listQuery).then(response => {
+        integralRecordListCoach (this.listQuery).then(response => {
           console.log(response)
           this.listLoading = false;
           this.list = response.data.list;
@@ -329,7 +329,7 @@
 
         })
       },
-      deleteintegralRecordList(ids){
+      deleteintegralRecordListCoach(ids){
         this.$confirm('是否要删除该评论?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -337,7 +337,7 @@
         }).then(() => {
           let params=new URLSearchParams();
           params.append("ids",ids);
-          deleteintegralRecordList(params).then(response=>{
+          deleteintegralRecordListCoach(params).then(response=>{
             this.getList();
             this.$message({
               type: 'success',
@@ -358,7 +358,7 @@
             console.log(this.dialogTitle)
             console.log("=============================================")
             if(this.dialogTitle==="请选择增加数额"){
-              updateIntegration(this.productAttrCate.id,data).then(response=>{
+              updateIntegrationCoach(this.productAttrCate.id,data).then(response=>{
                 this.$message({
                   message: '修改成功',
                   type: 'success',
@@ -368,7 +368,7 @@
                 this.getList();
               });
             }else{
-              updateIntegrationReduce(this.productAttrCate.id,data).then(response=>{
+              updateIntegrationReduceCoach(this.productAttrCate.id,data).then(response=>{
                 this.$message({
                   message: '修改成功',
                   type: 'success',
@@ -392,6 +392,7 @@
     width: 203px;
   }
 </style>
+
 
 
 

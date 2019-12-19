@@ -613,7 +613,13 @@ export const constantRouterMap = [
         path: 'integralRecord',
         name: 'integralRecord',
         component: () => import('@/views/integral/integralRecord/index'),
-        meta: {title: '积分明细管理',icon: "mingxi"},
+        meta: {title: '用户积分明细',icon: "mingxi"},
+      },
+      {
+        path: 'integralRecordCoach',
+        name: 'integralRecordCoach',
+        component: () => import('@/views/integral/integralRecordCoach/index'),
+        meta: {title: '教练积分明细',icon: "mingxi"},
       },
       {
         path: 'updateIntegrationRule',
