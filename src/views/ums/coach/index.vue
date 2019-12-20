@@ -84,8 +84,8 @@
         <el-table-column label="状态" align="center">
           <template slot-scope="scope">{{scope.row.status | statusType}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="300" align="center">
-          <template slot-scope="scope">
+        <el-table-column label="操作" width="300" align="left">
+          <template slot-scope="scope" >
             <el-button
               size="mini"
               @click="handlerUserDetail(scope.$index, scope.row)">详细信息
@@ -99,12 +99,12 @@
               @click="handleFreezeUser(scope.$index, scope.row)"
               v-show="scope.row.status===0">启用用户
             </el-button>
-            <el-button
+            <!--<el-button
               size="mini"
               type="danger"
               @click="handleFreezeUser(scope.$index, scope.row)"
               v-show="scope.row.status===1 || scope.row.status===3">审核中心
-            </el-button>
+            </el-button>-->
             <el-button
               size="mini"
               type="danger"

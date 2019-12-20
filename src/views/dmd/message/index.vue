@@ -76,10 +76,10 @@
         <el-table-column label="编号" width="60" align="center">
           <template slot-scope="scope">{{scope.row.umsNotice.id}}</template>
         </el-table-column>
-        <el-table-column label="标题" width="250" align="center">
+        <el-table-column label="标题" width="150" align="center">
           <template slot-scope="scope">{{scope.row.umsNotice.title}}</template>
         </el-table-column>
-        <el-table-column label="内容" align="center" width="400">
+        <el-table-column label="内容" align="center">
           <template slot-scope="scope">{{scope.row.umsNotice.content}}</template>
         </el-table-column>
         <el-table-column label="消息类型" width="100" align="center">
@@ -103,10 +103,10 @@
         <el-table-column label="是否删除" width="96" align="center">
           <template slot-scope="scope">{{scope.row.umsNotice.isDelete | isDelete}}</template>
         </el-table-column>
-        <el-table-column label="发送人名称" width="100" align="center">
+        <el-table-column label="发送人名称" width="110" align="center">
           <template slot-scope="scope">{{scope.row.umsNotice.creator}}</template>
         </el-table-column>
-        <el-table-column label="发送时间" width="200" align="center">
+        <el-table-column label="发送时间" width="160" align="center">
           <template slot-scope="scope">
             <p>{{scope.row.umsNotice.createdTime | formatTime}}</p>
           </template>

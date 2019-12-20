@@ -23,8 +23,17 @@
         </el-table-column>
         <el-table-column label="图集"  align="center">
           <template slot-scope="scope">
-            <div style="height: 100px; width:100px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.atlas)" :key="i">
-              <img preview="1" style="height: 100px; width: 100px" :src="image">
+
+            <div style="height: 100px; width:100px; border-left: 0px solid #DCDFE6; border-top: 0px solid #DCDFE6; margin-left: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.atlas)" :key="i">
+              <!--<img preview="1" style="height: 100px; width: 100px" :src="image" v-on:error.once="moveErrorImg($event)">-->
+                <el-image style="height: 100px; width: 100px" :src="image" :preview-src-list="getImageList(scope.row.atlas)"></el-image>
+              <div class="block">
+                <el-image>
+                  <div slot="error" class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image>
+              </div>
             </div>
           </template>
         </el-table-column>
@@ -99,6 +108,7 @@
 <script>
   import {fetchList,saveOrUpdate, updateIsDefaultById, deletePlayAddress} from '@/api/playAddress';
   import {formatDate} from '@/utils/date';
+  import image_error from '@/assets/images/image_error.png';
   const defaultListQuery = {
     pageNum: 1,
     pageSize: 5,
@@ -146,6 +156,9 @@
         },
     },
     methods: {
+      moveErrorImg:function (event) {
+          event.currentTarget.src = image_error;
+      },
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
       },

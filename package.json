@@ -1,8 +1,8 @@
 {
-  "name": "mall-admin-web",
+  "name": "eDive",
   "version": "1.0.0",
-  "description": "mall后台管理前端",
-  "author": "macro",
+  "description": "eDive后台管理前端",
+  "author": "YangAnsheng",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -13,7 +13,7 @@
     "@tinymce/tinymce-vue": "^3.0.1",
     "axios": "^0.18.0",
     "echarts": "^4.2.0-rc.2",
-    "element-ui": "^2.3.7",
+    "element-ui": "^2.13.0",
     "js-cookie": "^2.2.0",
     "normalize.css": "^8.0.0",
     "nprogress": "^0.2.0",
