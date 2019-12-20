@@ -22,7 +22,7 @@
             <img preview="2" style="height: 40px; width: 40px" :src="courseProductMessage.dynamicHeadPortrait">
           </el-col>
           <el-col :span="4" class="table-cell">{{courseProductMessage.createTime | formatNull}}</el-col>
-          <el-col :span="4" class="table-cell">{{courseProductMessage.dynamicAddress}}</el-col>
+          <el-col :span="4" class="table-cell2">{{courseProductMessage.dynamicAddress}}</el-col>
           <el-col :span="4" class="table-cell">{{courseProductMessage.userType | formtUserType}}</el-col>
 
         </el-row>
@@ -99,6 +99,7 @@
                 </el-table-column>
               </el-table>
             </div>
+
             <div class="pagination-container">
               <el-pagination
                 background

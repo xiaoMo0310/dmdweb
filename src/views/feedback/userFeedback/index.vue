@@ -86,7 +86,10 @@
           <template slot-scope="scope">{{scope.row.problemDescription}}</template>
         </el-table-column>
         <el-table-column label="描述图片" width="150" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.picture" v-image-preview></template>
+          <template slot-scope="scope">
+            <img style="height: 80px" :src="scope.row.picture" v-image-preview>
+            <!--:preview-src-list=""-->
+          </template>
         </el-table-column>
         <el-table-column label="发布时间" width="220" align="center">
           <template slot-scope="scope">
@@ -168,6 +171,7 @@
         operateType: null,
         problemId : null,
         arr:null,
+        pictureList:null,
         selectTopicType(){
           queryProblemFeedbackByName ().then(response => {
             for (let i = 0; i < response.data.length; i++) {
@@ -253,13 +257,18 @@
       getList() {
         this.listLoading = true;
         queryUserFeedback (this.listQuery).then(response => {
-          console.log(response)
+          /*var pictures = "";
+          for(let i = 0;i < response.data.list.length; i++){
+            pictures += (response.data.list[i].picture)+",";
+
+          }
+          var pictures2 = pictures.substring(0, pictures.length - 1);
+          var pictureList = pictures2.split(",");
+          this.pictureList = pictureList;
+          console.log(pictureList)*/
           this.listLoading = false;
           this.list = response.data.list;
           this.total = response.data.total;
-
-          console.log(response.data.list)
-
         })
       },
       deletequeryUserFeedback(ids){
