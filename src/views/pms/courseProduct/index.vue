@@ -64,6 +64,9 @@
         <el-table-column label="地点"width="150" align="center">
           <template slot-scope="scope">{{scope.row.location}}</template>
         </el-table-column>
+        <el-table-column label="创建时间"width="160" align="center">
+          <template slot-scope="scope">{{scope.row.createdTime}}</template>
+        </el-table-column>
         <el-table-column label="审核状态"width="120" align="center">
           <template slot-scope="scope">{{scope.row.approvalStatus | approvalStatus}}</template>
         </el-table-column>

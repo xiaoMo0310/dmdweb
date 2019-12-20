@@ -171,27 +171,53 @@
           </div>
         </el-col>
         <el-col :span="12">
-          <div class="out-border">
-            <div class="layout-title">用户总览</div>
-            <div style="padding: 40px">
-              <el-row>
-                <el-col :span="4" class="color-danger overview-item-value">{{registerDayUser.today}}</el-col>
-                <el-col :span="4" class="color-danger overview-item-value">{{registerDayUser.yesterday}}</el-col>
-                <el-col :span="4" class="color-danger overview-item-value">{{yesterdayVisitUser}}</el-col>
-                <el-col :span="4" class="color-danger overview-item-value">{{totalUser}}</el-col>
-                <el-col :span="4" class="color-danger overview-item-value">{{RetentionRate.seven}}%</el-col>
-                <el-col :span="4" class="color-danger overview-item-value">{{RetentionRate.thirty}}%</el-col>
-              </el-row>
-              <el-row class="font-medium">
-                <el-col :span="4" class="overview-item-title">今日新增</el-col>
-                <el-col :span="4" class="overview-item-title">昨日新增</el-col>
-                <el-col :span="4" class="overview-item-title">昨日访问量</el-col>
-                <el-col :span="4" class="overview-item-title">累计注册</el-col>
-                <el-col :span="4" class="overview-item-title">七日留存率</el-col>
-                <el-col :span="4" class="overview-item-title">月留存率</el-col>
-              </el-row>
-            </div>
-          </div>
+          <el-carousel height="184px" class="out-border" :interval="10000">
+            <el-carousel-item v-for="item in 2" :key="item">
+              <div  v-if="item === 1">
+                <div class="layout-title">用户总览</div>
+                <div style="padding: 40px">
+                  <el-row>
+                    <el-col :span="4" class="color-danger overview-item-value">{{registerDayUser.today}}</el-col>
+                    <el-col :span="4" class="color-danger overview-item-value">{{registerDayUser.yesterday}}</el-col>
+                    <el-col :span="4" class="color-danger overview-item-value">{{yesterdayVisitUser}}</el-col>
+                    <el-col :span="4" class="color-danger overview-item-value">{{totalUser}}</el-col>
+                    <el-col :span="4" class="color-danger overview-item-value">{{RetentionRate.seven}}%</el-col>
+                    <el-col :span="4" class="color-danger overview-item-value">{{RetentionRate.thirty}}%</el-col>
+                  </el-row>
+                  <el-row class="font-medium">
+                    <el-col :span="4" class="overview-item-title">今日新增</el-col>
+                    <el-col :span="4" class="overview-item-title">昨日新增</el-col>
+                    <el-col :span="4" class="overview-item-title">昨日访问量</el-col>
+                    <el-col :span="4" class="overview-item-title">累计注册</el-col>
+                    <el-col :span="4" class="overview-item-title">七日留存率</el-col>
+                    <el-col :span="4" class="overview-item-title">月留存率</el-col>
+                  </el-row>
+                </div>
+              </div>
+              <div v-if="item === 2">
+                <div class="layout-title">教练总览</div>
+                <div style="padding: 40px">
+                  <el-row>
+                    <el-col :span="4" class="color-danger overview-item-value">{{registerDayCoach.today}}</el-col>
+                    <el-col :span="4" class="color-danger overview-item-value">{{registerDayCoach.yesterday}}</el-col>
+                    <el-col :span="4" class="color-danger overview-item-value">{{yesterdayVisitCoach}}</el-col>
+                    <el-col :span="4" class="color-danger overview-item-value">{{totalCoach}}</el-col>
+                    <el-col :span="4" class="color-danger overview-item-value">{{coachRetentionRate.seven}}%</el-col>
+                    <el-col :span="4" class="color-danger overview-item-value">{{coachRetentionRate.thirty}}%</el-col>
+                  </el-row>
+                  <el-row class="font-medium">
+                    <el-col :span="4" class="overview-item-title">今日新增</el-col>
+                    <el-col :span="4" class="overview-item-title">昨日新增</el-col>
+                    <el-col :span="4" class="overview-item-title">昨日访问量</el-col>
+                    <el-col :span="4" class="overview-item-title">累计注册</el-col>
+                    <el-col :span="4" class="overview-item-title">七日留存率</el-col>
+                    <el-col :span="4" class="overview-item-title">月留存率</el-col>
+                  </el-row>
+                </div>
+              </div>
+            </el-carousel-item>
+          </el-carousel>
+
         </el-col>
       </el-row>
     </div>
@@ -281,6 +307,7 @@
   import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
   import img_total_week from '@/assets/images/total-week.png';
   import {countDayRegisterUser, countYesterdayVisitUser, countTotalUser, countRetentionRate, countThirtyRetentionRate} from '@/api/user';
+  import {countDayRegisterCoach, countYesterdayVisitCoach, countTotalCoach, countCoachRetentionRate, countCoachThirtyRetentionRate} from '@/api/coach';
   import {queryOrderNumtoDay , queryOrderMoneyToDay,queryOrderMoneyToYesterday,queryOrderMoneyToSeven,querySubstitutePayment,queryCompleted,queryReceiptConfirmed,queryShipped,queryAfterSale,queryConfirmReceipt,queryOrderMonthNum,queryOrderPercentage,queryOrderWeek,queryOrderWeekPercentage,querySalesMonth,querySalesLastMonth,querySalesWeek,querySalesLastWeek,setTimeout} from '@/api/order';
   import {queryAudited,queryAuditPass,queryAuditFailed,queryAllMerchandise} from '@/api/courseProduct';
 
@@ -373,6 +400,10 @@
         yesterdayVisitUser: 0,
         totalUser: 0,
         RetentionRate:{"seven":0, "thirty": 0},
+        registerDayCoach: {"today": 0, "yesterday": 0},
+        yesterdayVisitCoach: 0,
+        totalCoach: 0,
+        coachRetentionRate:{"seven":0, "thirty": 0},
         orderNumtoDay:0,
         orderMoneyToDay:null,
         orderMoneyToYesterday:null,
@@ -416,6 +447,10 @@
       this.getYesterdayVisitUser();
       this.getTotalUser();
       this.getRetentionRate();
+      this.getRegisterCoach();
+      this.getYesterdayVisitCoach();
+      this.getTotalCoach();
+      this.getCoachRetentionRate();
       this.getQueryOrderNumtoDay();
       this.getOrderMoneyToDay();
       this.getQueryOrderMoneyToYesterday();
@@ -496,6 +531,29 @@
           });
           countThirtyRetentionRate(30).then(response => {
               this.RetentionRate.thirty = response.result.thirty;
+          });
+      },
+      getRegisterCoach(){
+          countDayRegisterCoach().then(response => {
+              this.registerDayCoach = response.result;
+          });
+      },
+      getYesterdayVisitCoach(){
+          countYesterdayVisitCoach().then(response => {
+              this.yesterdayVisitCoach = response.result;
+          });
+      },
+      getTotalCoach(){
+          countTotalCoach().then(response => {
+              this.totalCoach = response.result;
+          });
+      },
+      getCoachRetentionRate(){
+          countCoachRetentionRate(7).then(response => {
+              this.coachRetentionRate.seven = response.result.seven;
+          });
+          countCoachThirtyRetentionRate(30).then(response => {
+              this.coachRetentionRate.thirty = response.result.thirty;
           });
       },
       getQueryOrderNumtoDay(){
@@ -722,4 +780,13 @@
     padding: 20px;
     font-size: 18px
   }
+
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 18px;
+    opacity: 0.75;
+    line-height: 300px;
+    margin: 0;
+  }
+
 </style>

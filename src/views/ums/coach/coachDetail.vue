@@ -100,7 +100,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="pagination-container">
+      <div class="pagination-container" v-if="coachMessage.status === 0 || coachMessage.status === 2">
         <el-pagination
           background
           @size-change="handleSizeChange"
@@ -216,11 +216,13 @@
                 }
             },
             ellipsis (value) {
-                if (!value) return ''
-                if (value.length > 20) {
-                    return value.slice(0,20) + '....'
+                if(value===undefined||value===null||value===''){
+                    return '暂无';
+                }else if(value.length>20){
+                    return value.substr(0, 20) + '...';
+                }else{
+                    return value;
                 }
-                return value
             }
 
         },

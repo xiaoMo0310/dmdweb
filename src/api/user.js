@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-// //统计当日新注册用户
+//统计当日新注册用户
 export function countDayRegisterUser() {
   return request({
     url:'/ums/registerUser/countDay',

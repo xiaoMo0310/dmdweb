@@ -59,6 +59,14 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
+      <el-button type="warning" size="mini" plain style="margin-left: 100px" @click="findOrderByStatus(0)">待付款</el-button>
+      <el-button type="success" size="mini" plain style="margin-left: 50px" @click="findOrderByStatus(1)">已付款</el-button>
+      <el-button type="info" size="mini" plain style="margin-left: 50px" @click="findOrderByStatus(2)">进行中</el-button>
+      <el-button type="primary" size="mini" plain style="margin-left: 50px" @click="findOrderByStatus(3)">已完成</el-button>
+      <el-button type="success" size="mini" style="margin-left: 50px" @click="findOrderByStatus(4)">已关闭</el-button>
+      <el-button type="info" size="mini" style="margin-left: 50px" @click="findOrderByStatus(6)">已取消</el-button>
+      <el-button type="danger" size="mini" plain style="margin-left: 50px" @click="findOrderByStatus(5)">售后</el-button>
+
     </el-card>
     <div class="table-container">
       <el-table ref="orderTable"
@@ -73,7 +81,7 @@
         <el-table-column label="订单编号" width="180" align="center">
           <template slot-scope="scope">{{scope.row.orderSn}}</template>
         </el-table-column>
-        <el-table-column label="用户账号" align="center">
+        <el-table-column label="用户账号" align="center" width="120">
           <template slot-scope="scope">{{scope.row.memberUsername}}</template>
         </el-table-column>
         <el-table-column label="用户类型" align="center">
@@ -212,7 +220,7 @@
             value: 0
           },
           {
-            label: '已支付',
+            label: '已付款',
             value: 1
           },
           {
@@ -483,6 +491,10 @@
           deliverySn:null
         };
         return listItem;
+      },
+      findOrderByStatus(status){
+          this.listQuery.status = status;
+          this.handleSearchList();
       }
     }
   }

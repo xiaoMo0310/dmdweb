@@ -92,6 +92,15 @@
           <el-col :span="24" style="height: 80px" class="table-cellB">{{courseProductMessage.productDescription | formatNull}}</el-col>
         </el-row>
       </div>
+      <div style="margin-top: 20px" v-if="courseProductMessage.approvalStatus === 3">
+        <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
+        <span class="font-small">审核未通过原因</span>
+      </div>
+      <div class="table-layout" v-if="courseProductMessage.approvalStatus === 3">
+        <el-row>
+          <el-col :span="24" style="height: 80px" class="table-cellB">{{courseProductMessage.failureReason | formatNull}}</el-col>
+        </el-row>
+      </div>
     </el-card>
     <el-dialog
       title="不通过原因说明"
@@ -218,6 +227,7 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
+                }).then(() => {
                 }).then(() => {
                     this.reviewMessage.id = this.courseProductMessage.id;
                     this.reviewMessage.approvalStatus = 3;

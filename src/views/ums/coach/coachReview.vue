@@ -53,7 +53,9 @@
         <el-table-column label="证书图片" align="center">
           <template slot-scope="scope">
             <div style="height: 100px; width:100px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.certificatePic)" :key="i">
-              <img preview="1" style="height: 100px; width: 100px" :src="image">
+              <div class="block">
+                <el-image style="height: 100px; width: 100px" :src="image" :preview-src-list="getImageList(scope.row.certificatePic)"></el-image>
+              </div>
             </div>
           </template>
         </el-table-column>
@@ -108,6 +110,7 @@
 <script>
     import {findByStatus, updateCoachMessageById} from '@/api/coach';
     import {formatDate} from '@/utils/date';
+    import image_error from '@/assets/images/image_error.png';
     const defaultListQuery = {
         pageNum: 1,
         pageSize: 5,
@@ -168,6 +171,9 @@
 
         },
         methods: {
+            moveErrorImg:function (event) {
+                event.currentTarget.src = image_error;
+            },
             handleResetSearch() {
                 this.listQuery = Object.assign({}, defaultListQuery);
                 this.getList();
