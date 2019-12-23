@@ -53,6 +53,15 @@
           <el-form-item label="用户昵称查询：">
             <el-input v-model="listQuery.dynamicAuthor" class="input-width" placeholder="用户昵称查询"></el-input>
           </el-form-item>
+          <el-form-item label="用户类型查询：">
+            <el-select v-model="listQuery.userType" placeholder="全部" clearable class="input-width">
+              <el-option v-for="item in typeOptions"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
@@ -168,12 +177,23 @@
 
   };
 
-
+  const defaultTypeOptions=[
+    {
+      label: '普通用户',
+      value: 1
+    },
+    {
+      label: '教练',
+      value: 2
+    },
+  ];
   export default {
     name: 'searchselectDynamicPage',
     data() {
       return {
         listQuery: Object.assign({}, defaultListQuery),
+        typeOptions:Object.assign({},defaultTypeOptions),
+
         list: null,
         total: null,
         listLoading: false,
@@ -202,6 +222,14 @@
       this.getList();
     },
     filters:{
+      formatType(changeType){
+        for(let i=0;i<defaultTypeOptions.length;i++){
+          if(changeType===defaultTypeOptions[i].value){
+            return defaultTypeOptions[i].label;
+          }
+        }
+        return '';
+      },
         formatTime(time){
             if(time==null){
                 return 'N/A';

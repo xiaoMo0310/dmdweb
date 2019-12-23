@@ -56,7 +56,7 @@
                   <template slot-scope="scope">{{scope.row.forDynamicId}}</template>
                 </el-table-column>-->
                 <el-table-column label="评论人昵称" align="center" width="100">
-                  <template slot-scope="scope">{{scope.row.commentName}}</template>
+                  <template slot-scope="scope">{{scope.row.commentName}}{{scope.row.coachName}}</template>
                 </el-table-column>
                 <!--<el-table-column label="评论人角色" align="center" width="100">
                   <template slot-scope="scope">{{scope.row.userType | formatUserType}}</template>
@@ -84,7 +84,7 @@
                 </el-table-column>-->
 
                 <el-table-column label="回复给谁" align="center" width="200">
-                  <template slot-scope="scope">{{scope.row.forUserTypeName | formatUserTypeName}}</template>
+                  <template slot-scope="scope">{{scope.row.forUserTypeName | formatUserTypeName}}{{scope.row.forUserTypeName2}}</template>
                 </el-table-column>
                 <el-table-column label="操作" width="185" align="center">
                   <template slot-scope="scope">
@@ -152,19 +152,20 @@
 
   const defaultListQuery = {
     pageNum: 1,
-    pageSize: 5
+    pageSize: 5,
   };
   export default {
+    name: 'reviewDetail',
     components: {
       videoPlayer
     },
-    name: 'reviewDetail',
     data() {
 
       return {
         listQuery: Object.assign({}, defaultListQuery),
         list: null,
         total: null,
+        listLoading: false,
         multipleSelection: [],
         operates: [
           {
@@ -180,7 +181,6 @@
         reviewMessage: {"id":null, "approvalStatus":null, "failureReason":null},
         courseProductMessage: {},
         contentArrangement: null,
-        listLoading: false,
         playerOptions : {
           playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
           autoplay: false, //如果true,浏览器准备好时开始回放。
@@ -224,6 +224,7 @@
       });
       this.getList();
     },
+
     filters: {
       formtUserType(value){
         if(value === 1){
@@ -370,14 +371,11 @@
       },
       getList() {
         this.listLoading = true;
-        dynamicCommentsByComment (this.listQuery,this.$route.query.id).then(response => {
+        dynamicCommentsByComment (this.listQuery.pageNum,this.listQuery.pageSize,this.$route.query.id).then(response => {
           console.log(response)
           this.listLoading = false;
           this.list = response.data.list;
           this.total = response.data.total;
-
-          console.log(response.data.list)
-
         })
       },
       deleteDynamicComments(ids){

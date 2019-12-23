@@ -179,18 +179,19 @@
           <template slot-scope="scope">{{scope.row.memberId}}</template>
         </el-table-column>
         <el-table-column label="用户名" align="center" width="130">
-          <template slot-scope="scope">{{scope.row.userName}}</template>
+          <template slot-scope="scope">{{scope.row.userName}}{{scope.row.coachName}}</template>
         </el-table-column>
         <el-table-column label="注册手机号" align="center" width="130">
-          <template slot-scope="scope">{{scope.row.phone}}</template>
+          <template slot-scope="scope">{{scope.row.phone}}{{scope.row.phoneCoach}}</template>
         </el-table-column>
         <el-table-column label="注册时间" width="220" align="center">
           <template slot-scope="scope">
             {{scope.row.userCreateTime | formatTime}}
+            {{scope.row.coachCreateTime | formatTime}}
           </template>
         </el-table-column>
         <el-table-column label="邀请码" align="center" width="130">
-          <template slot-scope="scope">{{scope.row.invitationCode}}</template>
+          <template slot-scope="scope">{{scope.row.invitationCode}}{{scope.row.invitationCodeCoach}}</template>
         </el-table-column>
         <el-table-column label="下单时间" width="220" align="center">
           <template slot-scope="scope">
@@ -407,7 +408,7 @@
       },
       formatTime(time){
         if(time==null){
-          return '暂无';
+          return '';
         }
         let date = new Date(time);
         return formatDate(date, 'yyyy-MM-dd hh:mm:ss')

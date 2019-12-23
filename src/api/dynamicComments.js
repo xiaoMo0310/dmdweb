@@ -21,10 +21,9 @@ export function queryDynamicById(forDynamicId,commentId,userType,params) {
 
   })
 }
-export function dynamicCommentsByComment(data,forDynamicId) {
+export function dynamicCommentsByComment(pageNum,pageSize,id) {
   return request({
-    url:'/comment/selectDynamicByIdComment?forDynamicId='+forDynamicId,
-    method:'post',
-    data:data
+    url:'/comment/selectDynamicByIdComment?pageNum=' +pageNum+ "&pageSize="+pageSize+"&forDynamicId="+id,
+    method:'get',
   })
 }
