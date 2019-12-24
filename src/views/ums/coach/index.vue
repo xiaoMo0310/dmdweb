@@ -57,7 +57,7 @@
       <span>教练列表</span>
     </el-card>
     <div class="table-container">
-      <el-table ref="orderTable"
+      <el-table ref="coachTable"
                 :data="list"
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
@@ -84,7 +84,7 @@
         <el-table-column label="状态" align="center">
           <template slot-scope="scope">{{scope.row.status | statusType}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="300" align="left">
+        <el-table-column label="操作" width="300" align="left" header-align="center">
           <template slot-scope="scope" >
             <el-button
               size="mini"

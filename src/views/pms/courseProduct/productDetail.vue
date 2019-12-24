@@ -5,7 +5,7 @@
         <div class="operate-button-container">
           <el-button size="mini" v-if="courseProductMessage.approvalStatus == 1" @click="handlerExaminationPassed">审核通过</el-button>
           <el-button size="mini" v-if="courseProductMessage.approvalStatus == 1" type="danger" @click="handlerAuditNotPassed">审核不通过</el-button>
-          <el-button type="info" size="small" @click="onReturn()">返回</el-button>
+          <el-button type="info" size="mini" @click="onReturn()">返回</el-button>
         </div>
       </div>
       <div style="margin-top: 20px">

@@ -21,13 +21,13 @@
         <el-table-column label="证书英文名称" width="320 " align="center">
           <template slot-scope="scope">{{scope.row.englishName}}</template>
         </el-table-column>
-        <el-table-column label="证书等级"  align="center">
+        <el-table-column label="证书等级" width="100spx"  align="center">
           <template slot-scope="scope">{{scope.row.certificateLevel}}</template>
         </el-table-column>
         <el-table-column label="简写名称" width="120" align="center">
           <template slot-scope="scope">{{scope.row.englishShorthand}}</template>
         </el-table-column>
-        <el-table-column label="简介" width="455" align="center">
+        <el-table-column label="简介" align="center">
           <template slot-scope="scope">{{scope.row.introduction}}</template>
         </el-table-column>
         <el-table-column label="证书图片" width="150" align="center">

@@ -95,7 +95,7 @@
         <el-table-column label="操作人" align="center">
           <template slot-scope="scope">{{scope.row.operator}}</template>
         </el-table-column>
-        <el-table-column label="未通过原因" align="center">
+        <el-table-column label="未通过原因" width="120" align="center">
           <template slot-scope="scope">{{scope.row.reason}}</template>
         </el-table-column>
         <el-table-column label="操作" width="220" align="center">

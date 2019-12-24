@@ -1,6 +1,6 @@
 <template> 
   <div class="app-container">
-    <el-card class="filter-container" shadow="never" >
+    <el-card class="filter-container" shadow="never">
       <div>
         <i class="el-icon-search"></i>
         <span>筛选搜索</span>
@@ -23,9 +23,9 @@
           <el-form-item label="订单编号：">
             <el-input v-model="listQuery.orderSn" class="input-width" placeholder="订单编号"></el-input>
           </el-form-item>
-          <!--<el-form-item label="收货人：">
-            <el-input v-model="listQuery.receiverKeyword" class="input-width" placeholder="收货人姓名/手机号码"></el-input>
-          </el-form-item>-->
+          <el-form-item label="收货人：">
+            <el-input v-model="listQuery.receiverName" class="input-width" placeholder="收货人姓名/手机号码"></el-input>
+          </el-form-item>
           <el-form-item label="提交时间：">
             <el-date-picker
               class="input-width"
@@ -35,18 +35,9 @@
               placeholder="请选择时间">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="审核状态：">
-            <el-select v-model="listQuery.status" placeholder="全部" clearable class="input-width">
+          <el-form-item label="订单状态：">
+            <el-select v-model="listQuery.status" class="input-width" placeholder="全部" clearable>
               <el-option v-for="item in statusOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="订单分类：">
-            <el-select v-model="listQuery.orderType" class="input-width" placeholder="全部" clearable>
-              <el-option v-for="item in orderTypeOptions"
                          :key="item.value"
                          :label="item.label"
                          :value="item.value">
@@ -69,14 +60,13 @@
       </div>
     </el-card>
     <div class="table-container">
-      <el-table ref="orderTable"
+      <el-table ref="integralOrderTable"
                 :data="list"
-                border
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
-                v-loading="listLoading">
-        <el-table-column type="selection" width="80" align="center"></el-table-column>
-        <el-table-column label="编号" width="70" align="center">
+                v-loading="listLoading" border>
+        <el-table-column type="selection" width="60" align="center"></el-table-column>
+        <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="订单编号" width="180" align="center">
@@ -85,7 +75,7 @@
         <el-table-column label="用户账号" align="center" width="120">
           <template slot-scope="scope">{{scope.row.memberUsername}}</template>
         </el-table-column>
-        <el-table-column label="用户类型" align="center" width="120">
+        <el-table-column label="用户类型" align="center">
         <template slot-scope="scope">{{scope.row.userType | userType}}</template>
         </el-table-column>
         <el-table-column label="订单类型" align="center" width="120">
@@ -94,19 +84,16 @@
         <el-table-column label="订单金额/积分" width="120" align="center">
           <template slot-scope="scope">{{scope.row.totalAmount}}</template>
         </el-table-column>
-        <el-table-column label="获得积分" align="center">
-          <template slot-scope="scope">{{scope.row.integration}}</template>
-        </el-table-column>
-        <el-table-column label="支付方式" width="100px" align="center">
+        <el-table-column label="支付方式" width="120" align="center">
           <template slot-scope="scope">{{scope.row.payType | formatPayType}}</template>
         </el-table-column>
-        <el-table-column label="订单状态" width="100px" align="center">
+        <el-table-column label="订单状态" width="120" align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
         </el-table-column>
         <el-table-column label="提交时间" width="180" align="center">
           <template slot-scope="scope">{{scope.row.createdTime | formatCreateTime}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="220" align="left" header-align="center">
+        <el-table-column label="操作" width="200" align="left" header-align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -119,11 +106,10 @@
             <el-button
               size="mini"
               @click="handleDeliveryOrder(scope.$index, scope.row)"
-              v-show="scope.row.status===1 && scope.row.orderType === 2">订单发货</el-button>
+              v-show="scope.row.status===1">订单发货</el-button>
             <el-button
               size="mini"
               @click="handleViewLogistics(scope.$index, scope.row)"
-              v-if="scope.row.orderType === 2"
               v-show="scope.row.status===2 ||scope.row.status===3">订单跟踪</el-button>
             <!--<el-button
               size="mini"
@@ -186,55 +172,25 @@
   </div>
 </template>
 <script>
-  import {fetchList,closeOrder,deleteOrder} from '@/api/order'
+  import {fetchList,closeOrder,deleteOrder} from '@/api/integralOrder'
   import {formatDate} from '@/utils/date';
   import LogisticsDialog from '@/views/oms/order/components/logisticsDialog';
   const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
     orderSn: null,
-    receiverKeyword: null,
+    receiverName: null,
+    status: null,
     orderType: null,
     sourceType: null,
     createdTime: null,
   };
-  const defaultStatusOptions = [
-      {
-          label: '待付款',
-          value: 0
-      },
-      {
-          label: '已付款',
-          value: 1
-      },
-      {
-          label: '进行中',
-          value: 2
-      },
-      {
-          label: '已完成',
-          value: 3
-      },
-      {
-          label: '已关闭',
-          value: 4
-      },
-      {
-          label: '售后',
-          value: 5
-      },
-      {
-          label: '取消',
-          value: 6
-      }
-  ];
   export default {
-    name: "orderList",
+    name: "integralOrderList",
     components:{LogisticsDialog},
     data() {
       return {
         listQuery: Object.assign({}, defaultListQuery),
-        statusOptions:Object.assign({},defaultStatusOptions),
         listLoading: true,
         list: null,
         total: null,
@@ -245,18 +201,34 @@
           content:null,
           orderIds:[]
         },
-        orderTypeOptions: [
+        statusOptions: [
           {
-            label: '普通商品订单',
+            label: '待付款',
             value: 0
           },
           {
-            label: '潜水学证订单',
+            label: '已付款',
             value: 1
           },
           {
-            label: '积分商品订单',
+            label: '待发货',
             value: 2
+          },
+          {
+            label: '已完成',
+            value: 3
+          },
+          {
+            label: '已关闭',
+            value: 4
+          },
+          {
+            label: '售后',
+            value: 5
+          },
+          {
+            label: '取消',
+            value: 6
           }
         ],
         sourceTypeOptions: [
@@ -320,14 +292,16 @@
         if (value === 1) {
           return '已支付';
         } else if (value === 2) {
-          return '进行中';
+          return '待发货';
         } else if (value === 3) {
           return '已完成';
         } else if (value === 4) {
           return '已关闭';
         } else if (value === 5) {
           return '售后';
-        } else {
+        } else if (value === 6) {
+            return '已取消';
+        }else {
           return '待付款';
         }
       },
@@ -361,7 +335,7 @@
         this.multipleSelection = val;
       },
       handleViewOrder(index, row){
-        this.$router.push({path:'/oms/orderDetail',query:{id:row.id}})
+        this.$router.push({path:'/oms/integralOrderDetail',query:{id:row.id}})
       },
       handleCloseOrder(index, row){
         this.closeOrder.dialogVisible=true;
@@ -493,10 +467,9 @@
         };
         return listItem;
       },
-      findOrderByStatus(value){
-          this.listQuery.status = value;
-          this.listQuery.pageNum = 1;
-          this.getList();
+      findOrderByStatus(status){
+          this.listQuery.status = status;
+          this.handleSearchList();
       }
     }
   }

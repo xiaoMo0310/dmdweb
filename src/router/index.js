@@ -363,6 +363,27 @@ export const constantRouterMap = [
         hidden:true
       },
       {
+        path: 'integralOrder',
+        name: 'integralOrder',
+        component: () => import('@/views/oms/integralOrder/index'),
+        meta: {title: '积分订单', icon: 'product-list'},
+        hidden:true
+      },
+      {
+        path: 'integralOrderDetail',
+        name: 'integralOrderDetail',
+        component: () => import('@/views/oms/integralOrder/integralOrderDetail'),
+        meta: {title: '积分订单详情'},
+        hidden:true
+      },
+      {
+        path: 'deliverIntegralOrderList',
+        name: 'deliverIntegralOrderList',
+        component: () => import('@/views/oms/integralOrder/deliverOrderList'),
+        meta: {title: '积分订单发货列表'},
+        hidden:true
+      },
+      {
         path: 'deliverOrderList',
         name: 'deliverOrderList',
         component: () => import('@/views/oms/order/deliverOrderList'),

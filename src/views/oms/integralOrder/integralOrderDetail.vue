@@ -4,11 +4,8 @@
       <el-steps :active="formatStepStatus(order.status)" finish-status="success" align-center>
         <el-step title="提交订单" :description="formatTime(order.createdTime)"></el-step>
         <el-step title="支付订单" :description="formatTime(order.paymentTime)"></el-step>
-        <el-step title="进行中" :description="formatTime(order.paymentTime)" v-if="order.orderType != 2"></el-step>
         <el-step title="平台发货" :description="formatTime(order.deliveryTime)" v-if="order.orderType === 2"></el-step>
         <el-step title="确认收货" :description="formatTime(order.receiveTime)"  v-if="order.orderType === 2"></el-step>
-        <el-step title="已完成" :description="formatTime(order.commentTime)" v-if="order.orderType != 2"></el-step>
-        <el-step title="完成评价" :description="formatTime(order.commentTime)" v-if="order.orderType != 2"></el-step>
       </el-steps>
     </div>
     <el-card shadow="never" style="margin-top: 15px">
@@ -19,32 +16,32 @@
           <el-button size="mini" type="info" @click="onReturn">返回</el-button>
         </div>
         <div class="operate-button-container" v-show="order.status===0">
-          <el-button size="mini" @click="showUpdateReceiverDialog" v-if="order.orderType === 2">修改收货人信息</el-button>
+          <el-button size="mini" @click="showUpdateReceiverDialog">修改收货人信息</el-button>
           <el-button size="mini">修改商品信息</el-button>
-          <el-button size="mini" @click="showUpdateMoneyDialog">修改费用信息</el-button>
           <el-button size="mini" @click="showMessageDialog">发送站内信</el-button>
           <el-button size="mini" @click="showCloseOrderDialog">关闭订单</el-button>
           <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order.status===1">
-          <el-button size="mini" @click="showUpdateReceiverDialog" v-if="order.orderType === 2">修改收货人信息</el-button>
+          <el-button size="mini" @click="showUpdateReceiverDialog">修改收货人信息</el-button>
           <el-button
             size="mini"
-            @click="handleDeliveryOrder"
-            v-show="order.orderType === 2">订单发货</el-button>
+            @click="handleDeliveryOrder">订单发货
+          </el-button>
           <el-button size="mini" @click="showMessageDialog">发送站内信</el-button>
           <!--<el-button size="mini">取消订单</el-button>-->
           <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order.status===2||order.status===3">
-          <el-button size="mini" @click="showLogisticsDialog" v-if="order.orderType === 2">订单跟踪</el-button>
+          <el-button size="mini" @click="showLogisticsDialog" >订单跟踪</el-button>
           <el-button size="mini" @click="showMessageDialog">发送站内信</el-button>
           <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order.status===4">
-          <!--<el-button size="mini" @click="handleDeleteOrder">删除订单</el-button>-->
+          <el-button size="mini" @click="handleDeleteOrder">删除订单</el-button>
           <el-button size="mini" @click="showMarkOrderDialog">备注订单</el-button>
         </div>
+
       </div>
       <div style="margin-top: 20px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
@@ -57,7 +54,7 @@
           <el-col :span="4" class="table-cell-title">用户类型</el-col>
           <el-col :span="4" class="table-cell-title">支付方式</el-col>
           <el-col :span="4" class="table-cell-title">订单类型</el-col>
-          <el-col :span="4" class="table-cell-title">订单可得积分</el-col>
+          <el-col :span="4" class="table-cell-title">配送方式</el-col>
         </el-row>
         <el-row>
           <el-col :span="4" class="table-cell">{{order.orderSn}}</el-col>
@@ -65,22 +62,20 @@
           <el-col :span="4" class="table-cell">{{order.userType | userType}}</el-col>
           <el-col :span="4" class="table-cell">{{order.payType | formatPayType}}</el-col>
           <el-col :span="4" class="table-cell">{{order.orderType | formatOrderType}}</el-col>
-          <el-col :span="4" class="table-cell">{{order.integration}}</el-col>
+          <el-col :span="4" class="table-cell">{{order.deliveryCompany | formatNull}}</el-col>
         </el-row>
-        <el-row v-if="order.orderType === 2">
-          <el-col :span="4" class="table-cell-title">配送方式</el-col>
+        <el-row>
           <el-col :span="4" class="table-cell-title">物流单号</el-col>
         </el-row>
-        <el-row v-if="order.orderType === 2">
-          <el-col :span="4" class="table-cell">{{order.deliveryCompany | formatNull}}</el-col>
+        <el-row>
           <el-col :span="4" class="table-cell">{{order.deliverySn | formatNull}}</el-col>
         </el-row>
       </div>
-      <div style="margin-top: 20px" v-if="order.orderType === 2">
+      <div style="margin-top: 20px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">收货人信息</span>
       </div>
-      <div class="table-layout" v-if="order.orderType === 2">
+      <div class="table-layout">
         <el-row>
           <el-col :span="6" class="table-cell-title">收货人</el-col>
           <el-col :span="6" class="table-cell-title">手机号码</el-col>
@@ -100,7 +95,7 @@
       </div>
       <el-table
         ref="orderItemTable"
-        :data="order.orderItemList"
+        :data="orderItemList"
         style="width: 100%;margin-top: 20px" border>
         <el-table-column label="商品图片" width="120" align="center">
           <template slot-scope="scope">
@@ -120,7 +115,7 @@
         </el-table-column>
         <el-table-column label="属性" width="300" align="center">
           <template slot-scope="scope">
-              <p  v-for="item in parseProductAttr(scope.row.productAttr)">{{item.key}}:{{item.value}}</p>
+            <p  v-for="item in parseProductAttr(scope.row.productAttr)">{{item.key}}:{{item.value}}</p>
           </template>
         </el-table-column>
         <el-table-column label="数量" width="120" align="center">
@@ -130,14 +125,12 @@
         </el-table-column>
         <el-table-column label="小计" width="120" align="center">
           <template slot-scope="scope" >
-            <p v-if="order.orderType != 2">￥{{scope.row.productPrice*scope.row.productQuantity}}</p>
-            <p v-if="order.orderType === 2">{{scope.row.productPrice*scope.row.productQuantity}}</p>
+            <p v-if="order.orderType === 2">{{scope.row.productPrice*scope.row.productQuantity}}&nbsp积分</p>
           </template>
         </el-table-column>
       </el-table>
       <div style="float: right;margin: 20px">
-        合计：<span class="color-danger" v-if="order.orderType != 2">￥{{order.totalAmount}}</span>
-              <span class="color-danger" v-if="order.orderType === 2">{{order.totalAmount}} 积分</span>
+        合计：<span class="color-danger">{{order.totalAmount}} 积分</span>
       </div>
       <div style="margin-top: 60px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
@@ -146,19 +139,15 @@
       <div class="table-layout">
         <el-row>
           <el-col :span="6" class="table-cell-title" >商品合计</el-col>
-          <el-col :span="6" class="table-cell-title">订单总金额/总积分</el-col>
-          <el-col :span="6" class="table-cell-title">应付款金额/积分</el-col>
+          <el-col :span="6" class="table-cell-title">订单总积分</el-col>
+          <el-col :span="6" class="table-cell-title">应付款积分</el-col>
           <el-col :span="6" class="table-cell-title">积分抵扣</el-col>
         </el-row>
         <el-row>
-          <el-col :span="6" class="table-cell" v-if="order.orderType  != 2">￥{{order.totalAmount}}</el-col>
-          <el-col :span="6" class="table-cell" v-if="order.orderType  === 2">{{order.totalAmount}}</el-col>
-          <el-col :span="6" class="table-cell" v-if="order.orderType  != 2"><span class="color-danger">￥{{order.totalAmount+order.freightAmount}}</span></el-col>
-          <el-col :span="6" class="table-cell" v-if="order.orderType  === 2"><span class="color-danger">{{order.totalAmount+order.freightAmount}}</span></el-col>
-          <el-col :span="6" class="table-cell" v-if="order.orderType  != 2"><span class="color-danger">￥{{order.payAmount+order.freightAmount-order.discountAmount}}</span></el-col>
-          <el-col :span="6" class="table-cell" v-if="order.orderType  === 2"><span class="color-danger">{{order.payAmount+order.freightAmount-order.discountAmount}}</span></el-col>
-          <el-col :span="6" class="table-cell" v-if="order.orderType  != 2">-￥{{order.integrationAmount}}</el-col>
-          <el-col :span="6" class="table-cell" v-if="order.orderType  === 2">{{order.totalAmount}}</el-col>
+          <el-col :span="6" class="table-cell">{{order.totalAmount}}</el-col>
+          <el-col :span="6" class="table-cell"><span class="color-danger">{{order.totalAmount+order.freightAmount}}</span></el-col>
+          <el-col :span="6" class="table-cell"><span class="color-danger">{{order.payAmount}}</span></el-col>
+          <el-col :span="6" class="table-cell">{{order.totalAmount}}</el-col>
         </el-row>
       </div>
       <div style="margin-top: 20px">
@@ -309,7 +298,7 @@
   </div>
 </template>
 <script>
-  import {getOrderDetail,updateReceiverInfo,updateMoneyInfo,closeOrder,updateOrderNote,deleteOrder} from '@/api/order';
+  import {getOrderDetail,updateReceiverInfo,closeOrder,updateOrderNote,deleteOrder} from '@/api/integralOrder';
   import LogisticsDialog from '@/views/oms/order/components/logisticsDialog';
   import {formatDate} from '@/utils/date';
   import VDistpicker from 'v-distpicker';
@@ -325,12 +314,13 @@
     status:null
   };
   export default {
-    name: 'orderDetail',
+    name: 'integralOrderDetail',
     components: { VDistpicker, LogisticsDialog},
     data() {
       return {
         id: null,
         order: {},
+        orderItemList: [],
         receiverDialogVisible:false,
         receiverInfo:Object.assign({},defaultReceiverInfo),
         moneyDialogVisible:false,
@@ -345,6 +335,7 @@
     created() {
       this.id = this.list = this.$route.query.id;
       getOrderDetail(this.id).then(response => {
+        this.orderItemList.push(response.data);
         this.order = response.data;
       });
     },
@@ -403,9 +394,9 @@
       },
       formatStatus(value) {
         if (value === 1) {
-          return '已支付';
+          return '待发货';
         } else if (value === 2) {
-          return '进行中';
+          return '已发货';
         } else if (value === 3) {
           return '已完成';
         } else if (value === 4) {
@@ -459,9 +450,9 @@
     },
     methods: {
       onSelectRegion(data){
-          this.receiverInfo.provinceName=data.province.value;
-          this.receiverInfo.cityName=data.city.value;
-          this.receiverInfo.districtName=data.area.value;
+        this.receiverInfo.provinceName=data.province.value;
+        this.receiverInfo.cityName=data.city.value;
+        this.receiverInfo.districtName=data.area.value;
       },
         formatTime(time){
             if(time==null){
@@ -536,7 +527,7 @@
       },
       handleDeliveryOrder(){
             let listItem = this.covertOrder(this.order);
-            this.$router.push({path:'/oms/deliverOrderList',query:{list:[listItem]}})
+            this.$router.push({path:'/oms/deliverIntegralOrderList',query:{list:[listItem]}})
         },
       handleUpdateMoneyInfo(){
         this.$confirm('是否要修改费用信息?', '提示', {
