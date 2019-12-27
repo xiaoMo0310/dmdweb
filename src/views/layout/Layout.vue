@@ -6,6 +6,7 @@
       <app-main></app-main>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -35,6 +36,7 @@ export default {
       }
     }
   }
+
 }
 </script>
 

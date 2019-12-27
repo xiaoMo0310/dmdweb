@@ -167,16 +167,16 @@
         <el-table-column label="编号" width="60" align="center">
           <template slot-scope="scope">{{scope.$index + 1}}</template>
         </el-table-column>
-        <el-table-column label="用户ID" width="80" align="center">
+        <el-table-column label="用户ID" align="center">
           <template slot-scope="scope">{{scope.row.userId}}</template>
         </el-table-column>
-        <el-table-column label="用户名称" width="150" align="center">
+        <el-table-column label="用户名称" align="center">
           <template slot-scope="scope">{{scope.row.userName}}</template>
         </el-table-column>
-        <el-table-column label="是否阅读" width="80" align="center">
+        <el-table-column label="是否阅读" align="center">
           <template slot-scope="scope">{{scope.row.isRead | isRead}}</template>
         </el-table-column>
-        <el-table-column label="阅读时间(分钟)" width="120" align="center">
+        <el-table-column label="阅读时间(分钟)" align="center">
           <template slot-scope="scope">{{scope.row.readTime}}</template>
         </el-table-column>
       </el-table>

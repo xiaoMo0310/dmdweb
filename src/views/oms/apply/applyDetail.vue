@@ -159,7 +159,7 @@
           <el-col class="form-border font-small" :span="18">{{orderReturnApply.handleNote | formatNull}}</el-col>
         </el-row>
       </div>
-      <div class="form-container-border" v-show="orderReturnApply.status===2">
+      <!--<div class="form-container-border" v-show="orderReturnApply.status===2 && ">
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6">收货人员</el-col>
           <el-col class="form-border font-small" :span="18">{{orderReturnApply.receiveMan}}</el-col>
@@ -172,7 +172,7 @@
           <el-col class="form-border form-left-bg font-small" :span="6">收货备注</el-col>
           <el-col class="form-border font-small" :span="18">{{orderReturnApply.receiveNote | formatNull}}</el-col>
         </el-row>
-      </div>
+      </div>-->
       <div class="form-container-border" v-show="orderReturnApply.status===0">
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">处理备注</el-col>
@@ -181,14 +181,14 @@
           </el-col>
         </el-row>
       </div>
-      <div class="form-container-border" v-show="orderReturnApply.status===1">
+      <!--<div class="form-container-border" v-show="orderReturnApply.status===1">
         <el-row>
           <el-col class="form-border form-left-bg font-small" :span="6" style="height:52px;line-height:32px">收货备注</el-col>
           <el-col class="form-border font-small" :span="18">
             <el-input  size="small" v-model="updateStatusParam.receiveNote" style="width:200px;margin-left: 10px"></el-input>
           </el-col>
         </el-row>
-      </div>
+      </div>-->
       <div style="margin-top:15px;text-align: center" v-show="orderReturnApply.status===0">
         <el-button type="primary" size="small" @click="handleUpdateStatus(1)">确认退货</el-button>
         <el-button type="danger" size="small" @click="handleUpdateStatus(3)">拒绝退货</el-button>
