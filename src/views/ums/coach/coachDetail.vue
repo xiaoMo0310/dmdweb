@@ -125,14 +125,20 @@
     <el-dialog
       title="审核原因"
       :visible.sync="reviewCoach.dialogVisible" width="30%">
-      <span style="vertical-align: top">未通过原因：</span>
-      <el-input
-        style="width: 80%"
-        type="textarea"
-        :rows="5"
-        placeholder="请输入内容"
-        v-model="reviewCoach.failureReason">
-      </el-input>
+      <el-form :model="reviewCoach"
+               ref="reviewCoachForm"
+               :rules="rules"
+               label-width="150px">
+        <el-form-item label="未通过原因：" prop="failureReason">
+          <el-input
+            style="width: 80%"
+            type="textarea"
+            :rows="5"
+            placeholder="请输入内容"
+            v-model="reviewCoach.failureReason">
+          </el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel">取 消</el-button>
         <el-button type="primary" @click="updateNoReviewDetail">确 定</el-button>
@@ -168,7 +174,13 @@
                 reviewCoach: Object.assign({}, defaultReviewCoach),
                 listQuery: Object.assign({}, defaultListQuery),
                 list: null,
-                total: null
+                total: null,
+                rules: {
+                    failureReason: [
+                        {required: true, message: '请输入未通过原因', trigger: 'blur'},
+                        {min: 2, max: 30, message: '长度在 2 到 500 个字符', trigger: 'blur'}
+                    ]
+                },
             }
         },
         created: function () {
