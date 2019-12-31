@@ -135,7 +135,8 @@
         dialogTitle:'',
         productAttrCate:{
           name:'',
-          id:null
+          id:null,
+          questionName:"",
         },
         rules: {
           name: [

@@ -20,8 +20,8 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="文章内容：">
-            <el-input v-model="listQuery.content" class="input-width" placeholder="文章内容"></el-input>
+          <el-form-item label="评论内容：">
+            <el-input v-model="listQuery.content" class="input-width" placeholder="评论内容"></el-input>
           </el-form-item>
           <el-form-item label="按照动态ID查询：">
             <el-input v-model="listQuery.forDynamicId" class="input-width" placeholder="动态ID"></el-input>
