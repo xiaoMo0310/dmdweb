@@ -83,7 +83,10 @@
         dialogTitle:'',
         productAttrCate:{
           name:'',
-          id:null
+          id:null,
+          size:"",
+          color:"",
+          specStock:null
         },
         rules: {
           name: [

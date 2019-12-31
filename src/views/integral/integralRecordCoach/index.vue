@@ -201,7 +201,10 @@
         dialogTitle:'',
         productAttrCate:{
           name:'',
-          id:null
+          id:null,
+          changeCount:null,
+          operateMan:"",
+          operateNote:"",
         },
         rules: {
           name: [

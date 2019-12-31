@@ -64,16 +64,19 @@
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="80" align="center"></el-table-column>
-        <el-table-column label="编号" width="120" align="center">
+        <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="用户ID" align="center">
           <template slot-scope="scope">{{scope.row.userId}}</template>
         </el-table-column>
+        <el-table-column label="用户昵称" align="center" width="100">
+          <template slot-scope="scope">{{scope.row.userName}}</template>
+        </el-table-column>
         <el-table-column label="证书图片" width="140" align="center">
           <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pictures"  preview="1"></template>
         </el-table-column>
-        <el-table-column label="审核状态" align="center">
+        <el-table-column label="审核状态" align="center"width="100">
           <template slot-scope="scope">{{scope.row.status | formatType}}</template>
         </el-table-column>
         <el-table-column label="证书ID" align="center">
@@ -82,23 +85,23 @@
         <el-table-column label="证书名称" align="center">
           <template slot-scope="scope">{{scope.row.certificateName}}</template>
         </el-table-column>
-        <el-table-column label="上传时间" width="220" align="center">
+        <el-table-column label="上传时间" width="180" align="center">
           <template slot-scope="scope">
             {{scope.row.createTime | formatTime}}
           </template>
         </el-table-column>
-        <el-table-column label="审核通过时间" width="220" align="center">
+        <el-table-column label="审核通过时间" width="180" align="center">
           <template slot-scope="scope">
             {{scope.row.adopTime | formatTime}}
           </template>
         </el-table-column>
         <el-table-column label="操作人" align="center">
-          <template slot-scope="scope">{{scope.row.operator}}</template>
+          <template slot-scope="scope">{{scope.row.operator | operator}}</template>
         </el-table-column>
         <el-table-column label="未通过原因" width="120" align="center">
-          <template slot-scope="scope">{{scope.row.reason}}</template>
+          <template slot-scope="scope">{{scope.row.reason | operator}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="220" align="center">
+        <el-table-column label="操作" width="210" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
                        @click="handUpdate(scope.$index, scope.row)"
@@ -164,7 +167,7 @@
         <el-form-item label="用户上传时间" prop="createTime" v-if="productAttrCate.createTime === null">
           <el-input v-if="productAttrCate.createTime === null" v-model="productAttrCate.createTime" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="请填写未通过原因" prop="reason">
+        <el-form-item label="填写未通过原因" prop="reason">
           <el-input  v-model="productAttrCate.reason" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="操作人" prop="operator">
@@ -222,7 +225,9 @@
         dialogTitle:'',
         productAttrCate:{
           name:'',
-          id:null
+          id:null,
+          reason:"",
+          operator:""
         },
         rules: {
           name: [
@@ -245,6 +250,13 @@
           return '审核未通过';
         }
       },
+      operator(value){
+          if (value===""||value===null){
+              return "暂无"
+          }else{
+              return value
+          }
+      },
         formatTime(time){
             if(time==null){
                 return '暂无';
@@ -257,7 +269,7 @@
     methods: {
       handUpdate2(index, row) {
         this.dialogVisible = true;
-        this.dialogTitle = "请填写审核未通过的原因";
+        this.dialogTitle = "填写审核未通过的原因";
         this.productAttrCate.pictures = row.pictures;
         this.productAttrCate.userId = row.userId;
         this.productAttrCate.id = row.id;
@@ -276,7 +288,7 @@
             data.append("createTime",this.productAttrCate.createTime);
             data.append("operator",this.productAttrCate.operator);
             data.append("reason",this.productAttrCate.reason);
-            if(this.dialogTitle==="请填写审核未通过的原因"){
+            if(this.dialogTitle==="填写审核未通过的原因"){
               updateCertificateStatusNoPass(this.productAttrCate.id,data).then(response=>{
                 this.$message({
                   message: '修改成功',
