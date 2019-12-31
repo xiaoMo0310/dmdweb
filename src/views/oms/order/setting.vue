@@ -1,5 +1,6 @@
 <template> 
-  <el-card class="form-container" shadow="never">
+
+  <el-card class="form-container" >
     <el-form :model="orderSetting"
              ref="orderSettingForm"
              :rules="rules"

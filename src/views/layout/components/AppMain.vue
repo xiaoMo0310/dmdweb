@@ -4,7 +4,7 @@
     <div>
       <el-tabs
         v-model="activeIndex"
-        type="border-card"
+        type="card"
         closable
         v-if="openTab.length"
         @tab-click='tabClick'

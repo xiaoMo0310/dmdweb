@@ -685,7 +685,7 @@
 
 <style scoped>
   .app-container {
-    margin-top: 40px;
+    margin-top: 0px;
     margin-left: 120px;
     margin-right: 120px;
   }

@@ -1,6 +1,5 @@
 <template> 
   <div class="app-container">
-
     <el-card class="filter-container" shadow="never">
       <div style="margin-top: 15px" >
         <el-button
@@ -30,7 +29,6 @@
             </el-select>
           </el-form-item>
         </el-form>
-
       </div>
     </el-card>
     <el-card class="operate-container" shadow="never">
@@ -215,6 +213,10 @@
 <style scoped>
   .input-width {
     width: 203px;
+  }
+  .app-container {
+    width: 100%;
+    margin-bottom: 15px;
   }
 </style>
 
