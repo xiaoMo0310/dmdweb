@@ -6,7 +6,7 @@
       <el-button size="mini" class="btn-add" @click="handleAdd()">添加证书</el-button>
     </el-card>
     <div class="table-container">
-      <el-table ref="homeAdvertiseTable"
+      <el-table ref="certificateTable"
                 :data="list"
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
@@ -64,7 +64,7 @@
         @current-change="handleCurrentChange"
         layout="total, sizes,prev, pager, next,jumper"
         :page-size="listQuery.pageSize"
-        :page-sizes="[6,12,18]"
+        :page-sizes="[4,8,12]"
         :current-page.sync="listQuery.pageNum"
         :total="total">
       </el-pagination>
@@ -76,7 +76,7 @@
   import {formatDate} from '@/utils/date';
   const defaultListQuery = {
     pageNum: 1,
-    pageSize: 6,
+    pageSize: 4,
     id: null,
     status: null,
   };
@@ -203,6 +203,10 @@
 <style scoped>
   .input-width {
     width: 203px;
+  }
+  .app-container {
+    width: 100%;
+    margin-bottom: 15px;
   }
 </style>
 
