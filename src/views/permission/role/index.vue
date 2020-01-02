@@ -79,18 +79,17 @@
         :total="total">
       </el-pagination>
     </div>
-    <el-card class="form-container" shadow="never" v-show="allocationStatus" style="position: absolute;top: 150px;background-color: white;z-index: 99999;">
-      <div>
-        <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择权限</div>
-        <div v-for="item in items"  v-bind:key="item.message" style="float: left;width: 150px;margin-bottom: 15px;">
-          <el-checkbox v-model="item.beCheck" style="margin-left: 10px;width: 140px;"  border>{{item.name}}</el-checkbox>
+    <el-card class="form-container" shadow="never" v-show="allocationStatus" style="position: fixed;top: 150px;background-color: white;z-index: 99999; height: 500px; width: 650px; overflow: auto">
+        <div>
+          <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择权限</div>
+          <div v-for="item in items"  v-bind:key="item.message" style="float: left;width: 170px;margin-bottom: 15px;">
+            <el-checkbox v-model="item.beCheck" style="margin-left: 10px;width: 150px;"  border>{{item.name}}</el-checkbox>
+          </div>
+          <div style="float: left; align-content: center; padding-left: 200px">
+            <el-button size="mini" @click="submitPermission()">确认</el-button>
+            <el-button type="info" size="mini" @click="closePermission()">返回</el-button>
+          </div>
         </div>
-      </div>
-      <div>
-        <el-button style="margin-left: 226px;" @click="submitPermission()">确认</el-button>
-        <el-button @click="closePermission()">返回</el-button>
-      </div>
-
     </el-card>
   </div>
 

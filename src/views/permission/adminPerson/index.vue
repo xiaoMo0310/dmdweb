@@ -80,7 +80,7 @@
         :total="total">
       </el-pagination>
     </div>
-    <el-card class="form-container" shadow="never" v-show="allocationRoleStatus" style="position: absolute;top: 150px;background-color: white;z-index: 99999;">
+    <el-card class="form-container" shadow="never" v-show="allocationRoleStatus" style="position: fixed;top: 150px;background-color: white;z-index: 99999;">
       <div>
         <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择角色</div>
         <div v-for="item in items"  v-bind:key="item.message" style="float: left;width: 150px;margin-bottom: 15px;">
@@ -88,13 +88,13 @@
         </div>
       </div>
       <div>
-        <el-button style="margin-left: 226px;" @click="submitAdminForRole">确认</el-button>
-        <el-button @click="closePermission()">返回</el-button>
+        <el-button size="mini" style="margin-left: 226px;" @click="submitAdminForRole">确认</el-button>
+        <el-button type="info" size="mini"  @click="closePermission()">返回</el-button>
       </div>
     </el-card>
 
     <!--修改页面-->
-    <el-card class="form-container" shadow="never" v-show="updateAdminStatus" style="position: absolute;top: 150px;background-color: white;z-index: 99999;">
+    <el-card class="form-container" shadow="never" v-show="updateAdminStatus" style="position: fixed;top: 150px;background-color: white;z-index: 99999;">
       <el-form :model="userInfo"
                label-width="150px"
                size="small">
@@ -113,10 +113,9 @@
         <el-form-item label="备注：">
           <el-input v-model="userInfo.note" class="input-width" style="width: 100%;"></el-input>
         </el-form-item>
-        <el-button style="margin-left: 30%;" type="primary" @click="updateInfo(null,null)">提交</el-button>
-        <el-button @click="resetForm()">重置</el-button>
-        <el-button type="primary" @click="closeUpdate()">返回</el-button>
-        </el-form-item>
+        <el-button size="mini" style="margin-left: 30%;" type="primary" @click="updateInfo(null,null)">提交</el-button>
+        <el-button size="mini" @click="resetForm()">重置</el-button>
+        <el-button size="mini" type="info" @click="closeUpdate()">返回</el-button>
       </el-form>
     </el-card>
   </div>
