@@ -50,11 +50,34 @@
             :value="type.value">
           </el-option>
         </el-select>
-        <el-select style="width: 61%" v-if="linkType != 3" v-model="homeAdvertise.url">
+        <el-select style="width: 61%" v-if="linkType != 3 && linkType != 4" v-model="homeAdvertise.url">
           <el-option
             v-for="type in list"
             :key="type.id"
-            :label="type.topicName || type.title || type.englishShorthand"
+            :label="type.topicName || type.title  || type.englishShorthand"
+            :value="type.id">
+          </el-option>
+          <div style="bottom: 0;width: 100%;background: #fff">
+            <div class="pagination-container">
+              <el-pagination
+                small
+                background
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                layout="total, sizes,prev, pager, next,jumper"
+                :page-size="listQuery.pageSize"
+                :page-sizes="[2,5,10]"
+                :current-page.sync="listQuery.pageNum"
+                :total="total">
+              </el-pagination>
+            </div>
+          </div>
+        </el-select>
+        <el-select style="width: 61%" v-if="linkType != 3 && linkType == 4" v-model="homeAdvertise.url">
+          <el-option
+            v-for="type in list"
+            :key="type.id"
+            :label="type.title + '('+ resolveStatusType(type.status) +')'"
             :value="type.id">
           </el-option>
           <div style="bottom: 0;width: 100%;background: #fff">
@@ -102,7 +125,7 @@
   </el-card>
 </template>
 <script>
-    import {findCourseProductList,findCourseProductById} from '@/api/courseProduct'
+    import {findCourseProductList,findProductAndPageNumById} from '@/api/courseProduct'
     import {fetchList, findCertificateById} from '@/api/certificate'
     import {topicList, getTopicById} from '@/api/topicManagement';
     import SingleUpload from '@/components/Upload/singleUpload'
@@ -129,6 +152,8 @@
             pageNum: 1,
             pageSize: 5,
             productType: null,
+            orderBy: null,
+            productId: null,
         };
     const defaultHomeAdvertise = {
         name: null,
@@ -230,6 +255,15 @@
             }
         },
         methods: {
+            resolveStatusType(type){
+                if(type === 1){
+                    return "在售"
+                }else if(type === 2){
+                    return "下架"
+                }else {
+                    return "删除"
+                }
+            },
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
@@ -309,6 +343,7 @@
             },
             getDivingProductList() {
                 this.listQuery.productType = 2
+                this.listQuery.orderBy = "status, id asc"
                 findCourseProductList (this.listQuery).then(response => {
                     this.list = response.result.list;
                     this.total = response.result.total;
@@ -330,8 +365,10 @@
                 })
             },
             findCourseProductById(id){
-                findCourseProductById(id).then(response => {
+                this.listQuery.productId = id;
+                findProductAndPageNumById(this.listQuery).then(response => {
                     this.id = response.result.id
+                    this.listQuery.pageNum = response.result.pageNum;
                 });
             },
             getTopicById(id){

@@ -12,6 +12,13 @@ export function findCourseProductById(data) {
     method:'get',
   })
 }
+export function findProductAndPageNumById(data) {
+  return request({
+    url:'pms/productAndPageNum/find',
+    method:'post',
+    data: data
+  })
+}
 export function updateApprovalStatus(data) {
   return request({
     url:'pms/approvalStatus/update',
