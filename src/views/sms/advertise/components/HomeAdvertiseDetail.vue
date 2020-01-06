@@ -126,10 +126,11 @@
 </template>
 <script>
     import {findCourseProductList,findProductAndPageNumById} from '@/api/courseProduct'
-    import {fetchList, findCertificateById} from '@/api/certificate'
+    import {fetchList, findCertificateAndPageById} from '@/api/certificate'
     import {topicList, getTopicById} from '@/api/topicManagement';
     import SingleUpload from '@/components/Upload/singleUpload'
     import {createHomeAdvertise, getHomeAdvertise, updateHomeAdvertise} from '@/api/homeAdvertise'
+    let countNum = 0;
     const defaultTypeOptions = [
             {
                 label: '首页轮播',
@@ -154,6 +155,7 @@
             productType: null,
             orderBy: null,
             productId: null,
+            status: null
         };
     const defaultHomeAdvertise = {
         name: null,
@@ -245,9 +247,10 @@
                     }else if(response.data.linkType === 1){
                         this.findCertificateById(this.homeAdvertise.url);
                     }
-                    this.sleep(1000).then(()=>{
-                        this.linkType = response.data.linkType
-                    })
+                    this.createLinkType(response.data.linkType)
+                    /*this.sleep(2000).then(()=>{
+                        this.linkType =
+                    })*/
 
                 });
             }else{
@@ -255,6 +258,24 @@
             }
         },
         methods: {
+            createLinkType(linkType){
+                if(countNum >= 10){
+                    this.linkType = linkType
+                    return;
+                }
+                if(this.id != null){
+                    this.linkType = linkType
+                }else {
+                    this.sleep(1000).then(()=>{
+                        if(this.id != null){
+                            this.linkType = linkType
+                        }else {
+                            countNum = countNum + 1;
+                            this.createLinkType(linkType)
+                        }
+                    })
+                }
+            },
             resolveStatusType(type){
                 if(type === 1){
                     return "在售"
@@ -350,6 +371,8 @@
                 })
             },
             getCertificateList(){
+                this.listQuery.orderBy = "CONVERT(certificate_level,SIGNED) asc"
+                this.listQuery.status = 1
                 fetchList(this.listQuery).then(response => {
                     this.list = response.result.list;
                     for (let i = 0; i < this.list.length; i++) {
@@ -377,8 +400,9 @@
                 });
             },
             findCertificateById(id){
-                findCertificateById(id).then(response => {
+                findCertificateAndPageById(id, this.listQuery.pageSize).then(response => {
                     this.id = response.result.id
+                    this.listQuery.pageNum = response.result.pageNum;
                 });
             }
 
@@ -405,6 +429,9 @@
             linkType(val, oldval){
                 this.homeAdvertise.url = null;
                 this.list = null;
+                if(this.id === null){
+                    this.listQuery.pageNum = 1;
+                }
                 if (val === 2) {
                     this.getTopicList();
                 }else if(val === 1){

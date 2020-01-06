@@ -26,3 +26,9 @@ export function deletePmsCertificate(data) {
     data: data
   })
 }
+export function findCertificateAndPageById(data, pageSize) {
+  return request({
+    url:'/pms/certificateAndPage/findById/' + data + "/" + pageSize,
+    method:'get',
+  })
+}

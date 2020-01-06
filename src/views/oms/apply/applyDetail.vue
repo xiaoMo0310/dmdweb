@@ -358,7 +358,7 @@
 </script>
 <style scoped>
   .detail-container {
-    position: absolute;
+    position: sticky;
     left: 0;
     right: 0;
     width: 1080px;
