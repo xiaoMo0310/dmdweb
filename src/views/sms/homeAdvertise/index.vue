@@ -55,18 +55,18 @@
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
-        <el-table-column type="selection" width="60" align="center"></el-table-column>
+        <el-table-column type="selection" width="50" align="center"></el-table-column>
         <el-table-column label="编号" width="120" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="广告名称" align="center">
+        <el-table-column label="广告名称" align="center" width="230">
           <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
         <el-table-column label="广告位置" width="120" align="center">
           <template slot-scope="scope">{{scope.row.type | formatType}}</template>
         </el-table-column>
-        <el-table-column label="广告图片" width="150" align="center">
-          <template slot-scope="scope"><img preview style="height: 80px" :src="scope.row.pic"></template>
+        <el-table-column label="广告图片" width="120" align="center">
+          <template slot-scope="scope"><img preview style="height: 80px; width: 100px" :src="scope.row.pic"></template>
         </el-table-column>
         <el-table-column label="时间" width="250" align="center">
           <template slot-scope="scope">
@@ -74,7 +74,7 @@
             <p>到期时间：{{scope.row.endTime | formatTime}}</p>
           </template>
         </el-table-column>
-        <el-table-column label="上线/下线" width="120" align="center">
+        <el-table-column label="上线/下线" width="100" align="center">
           <template slot-scope="scope">
             <el-switch
               @change="handleUpdateStatus(scope.$index, scope.row)"
@@ -84,20 +84,19 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="点击次数" width="100" align="center">
+        <el-table-column label="点击次数" align="center">
           <template slot-scope="scope">{{scope.row.clickCount}}</template>
         </el-table-column>
-        <el-table-column label="生成订单" width="100" align="center">
+        <el-table-column label="生成订单" align="center">
           <template slot-scope="scope">{{scope.row.orderCount}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="120" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       type="text"
                        @click="handleUpdate(scope.$index, scope.row)">编辑
             </el-button>
             <el-button size="mini"
-                       type="text"
+                       type="danger"
                        @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>

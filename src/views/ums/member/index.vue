@@ -66,19 +66,19 @@
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="用户名" align="center">
+        <!--<el-table-column label="用户名" align="center" width="110">
           <template slot-scope="scope">{{scope.row.username}}</template>
-        </el-table-column>
-        <el-table-column label="用户昵称" align="center">
+        </el-table-column>-->
+        <el-table-column label="用户昵称" align="center" >
           <template slot-scope="scope">{{scope.row.nickname}}</template>
         </el-table-column>
-        <el-table-column label="手机号码" align="center">
+        <el-table-column label="手机号码" align="center" >
           <template slot-scope="scope">{{scope.row.phone}}</template>
         </el-table-column>
-        <el-table-column label="个人简介" width="350" align="center" style="overflow: hidden; white-space: nowrap;text-overflow:ellipsis;">
+        <el-table-column label="个人简介" width="300" align="center" style="overflow: hidden; white-space: nowrap;text-overflow:ellipsis;">
           <template slot-scope="scope">{{scope.row.personalizedSignature | ellipsis | formatNull}}</template>
         </el-table-column>
-        <el-table-column label="注册时间" align="center">
+        <el-table-column label="注册时间" align="center" width="160">
           <template slot-scope="scope">{{scope.row.createTime}}</template>
         </el-table-column>
         <el-table-column label="操作" width="300" align="center">
@@ -192,8 +192,8 @@
         filters: {
             ellipsis (value) {
                 if (!value) return ''
-                if (value.length > 20) {
-                    return value.slice(0,20) + '....'
+                if (value.length > 15) {
+                    return value.slice(0,15) + '....'
                 }
                 return value
             },

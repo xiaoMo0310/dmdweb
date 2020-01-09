@@ -80,7 +80,7 @@
         :total="total">
       </el-pagination>
     </div>
-    <el-card class="form-container" shadow="never" v-show="allocationRoleStatus" style="position: fixed;top: 150px;background-color: white;z-index: 99999;">
+    <el-card class="form-container" shadow="never" v-show="allocationRoleStatus" style="position: fixed;top: 150px;background-color: white;z-index: 99999; height: 400px; overflow: auto">
       <div>
         <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择角色</div>
         <div v-for="item in items"  v-bind:key="item.message" style="float: left;width: 150px;margin-bottom: 15px;">

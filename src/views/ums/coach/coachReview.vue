@@ -37,17 +37,17 @@
         <el-table-column label="ID" width="60" align="center">
           <template slot-scope="scope">{{scope.$index + 1}}</template>
         </el-table-column>
-        <el-table-column label="教练名称" width="200" align="center">
+        <!--<el-table-column label="教练名称" width="200" align="center">
           <template slot-scope="scope">{{scope.row.coachName}}</template>
-        </el-table-column>
-        <el-table-column label="教练昵称" width="200" align="center">
+        </el-table-column>-->
+        <el-table-column label="教练昵称" width="120" align="center">
           <template slot-scope="scope">{{scope.row.nickName}}</template>
         </el-table-column>
 
-        <el-table-column label="手机号"width="150" align="center">
+        <el-table-column label="手机号"width="110" align="center">
           <template slot-scope="scope">{{scope.row.phone}}</template>
         </el-table-column>
-        <el-table-column label="邀请码"width="100" align="center">
+        <el-table-column label="邀请码"width="90" align="center">
           <template slot-scope="scope">{{scope.row.invitationCode }}</template>
         </el-table-column>
         <el-table-column label="证书图片" align="center">

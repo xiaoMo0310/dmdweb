@@ -79,7 +79,7 @@
         <el-table-column label="标题" width="150" align="center">
           <template slot-scope="scope">{{scope.row.umsNotice.title}}</template>
         </el-table-column>
-        <el-table-column label="内容" align="center">
+        <el-table-column label="内容" align="center" width="400">
           <template slot-scope="scope">{{scope.row.umsNotice.content}}</template>
         </el-table-column>
         <el-table-column label="消息类型" width="100" align="center">

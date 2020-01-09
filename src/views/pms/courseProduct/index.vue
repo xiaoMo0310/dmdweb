@@ -47,13 +47,13 @@
         <el-table-column label="卖家id" align="center" width="80">
           <template slot-scope="scope">{{scope.row.userId}}</template>
         </el-table-column>
-        <el-table-column label="商品名称" width="200" align="center">
+        <!--<el-table-column label="商品名称" width="200" align="center">
           <template slot-scope="scope">{{scope.row.productName}}</template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="商品标题" align="center">
-          <template slot-scope="scope">{{scope.row.title}}</template>
+          <template slot-scope="scope">{{scope.row.title | ellipsis}}</template>
         </el-table-column>
-        <el-table-column label="商品价格"width="100" align="center">
+        <el-table-column label="商品价格(元)" width="120" align="center">
           <template slot-scope="scope">{{scope.row.price}}</template>
         </el-table-column>
         <el-table-column label="商品类型"width="100" align="center">
@@ -149,6 +149,13 @@
             this.getList();
         },
         filters:{
+            ellipsis (value) {
+                if (!value) return ''
+                if (value.length > 30) {
+                    return value.slice(0,30) + '....'
+                }
+                return value
+            },
             formatTime(time){
                 if(time==null){
                     return 'N/A';
@@ -216,7 +223,7 @@
   }
   .app-container {
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 50px;
   }
 </style>
 

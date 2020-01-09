@@ -54,10 +54,10 @@
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="操作用户" align="center">
+        <el-table-column label="操作用户" width="100" align="center">
           <template slot-scope="scope">{{scope.row.loginUser}}</template>
         </el-table-column>
-        <el-table-column label="终端ip" align="center">
+        <el-table-column label="终端ip" width="180" align="center">
           <template slot-scope="scope">{{scope.row.ip}}</template>
         </el-table-column>
         <el-table-column label="接口" align="center">

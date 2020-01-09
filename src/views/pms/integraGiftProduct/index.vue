@@ -66,7 +66,7 @@
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="80" align="center"></el-table-column>
-        <el-table-column label="编号" width="100" align="center">
+        <el-table-column label="编号" width="70" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="礼品名称" align="center">
@@ -79,7 +79,7 @@
             </div>
           </template>
         </el-table-column>-->
-        <el-table-column label="礼品图片"  align="center" width="500">
+        <el-table-column label="礼品图片"  align="center" width="450">
           <template slot-scope="scope">
             <div style="height: 100px; width:100px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.picture)" :key="i">
               <img preview="1" style="height: 100px; width: 100px" :src="image">
@@ -89,8 +89,8 @@
         <el-table-column label="所需积分"  align="center">
           <template slot-scope="scope">{{scope.row.integral}}</template>
         </el-table-column>
-        <el-table-column label="介绍图片"  align="center">
-          <template slot-scope="scope"><img style="height: 80px" preview="1" :src="scope.row.introduce"></template>
+        <el-table-column label="介绍图片"  align="center" width="100">
+          <template slot-scope="scope"><img style="height: 80px; width: 80px" preview="1" :src="scope.row.introduce"></template>
         </el-table-column>
 
         <el-table-column label="时间" width="220" align="center">

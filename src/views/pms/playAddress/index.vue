@@ -15,7 +15,7 @@
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="地址" width="200"  align="center">
+        <el-table-column label="地址" width="150"  align="center">
           <template slot-scope="scope">{{scope.row.address}}</template>
         </el-table-column>
         <el-table-column label="地址简介" width="320 " align="center">
@@ -24,7 +24,7 @@
         <el-table-column label="图集"  align="center">
           <template slot-scope="scope">
 
-            <div style="height: 100px; width:100px; border-left: 0px solid #DCDFE6; border-top: 0px solid #DCDFE6; margin-left: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.atlas)" :key="i">
+            <div style="height: 100px; width:100px; border-left: 0px solid #DCDFE6; border-top: 0px solid #DCDFE6; margin: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.atlas)" :key="i">
               <!--<img preview="1" style="height: 100px; width: 100px" :src="image" v-on:error.once="moveErrorImg($event)">-->
                 <el-image style="height: 100px; width: 100px" :src="image" :preview-src-list="getImageList(scope.row.atlas)"></el-image>
               <div class="block">
@@ -57,14 +57,13 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="120" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       type="text"
                        @click="handleUpdate(scope.$index, scope.row)">编辑
             </el-button>
             <el-button size="mini"
-                       type="text"
+                       type="danger"
                        @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>

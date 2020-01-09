@@ -75,7 +75,7 @@
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading">
-        <el-table-column type="selection" width="80" align="center"></el-table-column>
+        <el-table-column type="selection" width="50" align="center"></el-table-column>
         <el-table-column label="编号" width="70" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>

@@ -45,7 +45,7 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="意见反馈类别：">
-            <el-select v-model="listQuery.problemId" value-key="id" @click.native="selectTopicType()">
+            <el-select class="input-width" v-model="listQuery.problemId" value-key="id" @click.native="selectTopicType()">
               <el-option v-for="item in arr" :label="item.questionName" :key="item.id" :value="item.id">
               </el-option>
             </el-select>

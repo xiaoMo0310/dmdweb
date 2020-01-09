@@ -45,7 +45,7 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="话题类型：">
-            <el-select v-model="listQuery.topicId" value-key="id" @click.native="selectTopicType()">
+            <el-select class="input-width" v-model="listQuery.topicId" value-key="id" @click.native="selectTopicType()">
               <el-option v-for="item in arr" :label="item.topicName" :key="item.id" :value="item.id">
               </el-option>
             </el-select>
@@ -75,8 +75,8 @@
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
-        <el-table-column type="selection" width="80" align="center"></el-table-column>
-        <el-table-column label="编号" width="120" align="center">
+        <el-table-column type="selection" width="50" align="center"></el-table-column>
+        <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="作者" align="center">
@@ -118,11 +118,11 @@
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       type="danger"
-                       @click="handleDelete(scope.$index, scope.row)">删除
+                       @click="handleSelect(scope.$index, scope.row)">查看详情
             </el-button>
             <el-button size="mini"
-                       @click="handleSelect(scope.$index, scope.row)">查看详情
+                       type="danger"
+                       @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
         </el-table-column>

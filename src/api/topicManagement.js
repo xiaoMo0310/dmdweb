@@ -26,6 +26,12 @@ export function getTopicById(id) {
     method:'get',
   })
 }
+export function getTopicAndPageById(id, pageSize) {
+  return request({
+    url:'/topic/topicAndPage/findById/'+id + "/" + pageSize,
+    method:'get',
+  })
+}
 export function addTopicList(data) {
   return request({
     url:'/topic/addTopic',

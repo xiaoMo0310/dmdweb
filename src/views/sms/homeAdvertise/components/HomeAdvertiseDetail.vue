@@ -127,7 +127,7 @@
 <script>
     import {findCourseProductList,findProductAndPageNumById} from '@/api/courseProduct'
     import {fetchList, findCertificateAndPageById} from '@/api/certificate'
-    import {topicList, getTopicById} from '@/api/topicManagement';
+    import {topicList, getTopicAndPageById} from '@/api/topicManagement';
     import SingleUpload from '@/components/Upload/singleUpload'
     import {createHomeAdvertise, getHomeAdvertise, updateHomeAdvertise} from '@/api/homeAdvertise'
     let countNum = 0;
@@ -248,10 +248,6 @@
                         this.findCertificateById(this.homeAdvertise.url);
                     }
                     this.createLinkType(response.data.linkType)
-                    /*this.sleep(2000).then(()=>{
-                        this.linkType =
-                    })*/
-
                 });
             }else{
                 this.homeAdvertise = Object.assign({},defaultHomeAdvertise);
@@ -281,8 +277,12 @@
                     return "在售"
                 }else if(type === 2){
                     return "下架"
-                }else {
+                }else if(type === 3){
                     return "删除"
+                }else if(type === 4){
+                    return "停止销售"
+                }else if(type === 5){
+                    return "已售完"
                 }
             },
             onSubmit(formName) {
@@ -364,7 +364,7 @@
             },
             getDivingProductList() {
                 this.listQuery.productType = 2
-                this.listQuery.orderBy = "status, id asc"
+                this.listQuery.orderBy = "status asc, id asc"
                 findCourseProductList (this.listQuery).then(response => {
                     this.list = response.result.list;
                     this.total = response.result.total;
@@ -395,8 +395,9 @@
                 });
             },
             getTopicById(id){
-                getTopicById(id).then(response => {
+                getTopicAndPageById(id, this.listQuery.pageSize).then(response => {
                     this.id = response.data.id;
+                    this.listQuery.pageNum = response.data.pageNum
                 });
             },
             findCertificateById(id){

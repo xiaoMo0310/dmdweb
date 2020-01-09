@@ -21,13 +21,13 @@
         <el-table-column label="证书英文名称" width="320 " align="center">
           <template slot-scope="scope">{{scope.row.englishName}}</template>
         </el-table-column>
-        <el-table-column label="证书等级" width="100spx"  align="center">
+        <el-table-column label="证书等级" align="center">
           <template slot-scope="scope">{{scope.row.certificateLevel}}</template>
         </el-table-column>
-        <el-table-column label="简写名称" width="120" align="center">
+        <el-table-column label="简写名称" align="center">
           <template slot-scope="scope">{{scope.row.englishShorthand}}</template>
         </el-table-column>
-        <el-table-column label="简介" align="center">
+        <el-table-column label="简介" align="center" width="370">
           <template slot-scope="scope">{{scope.row.introduction}}</template>
         </el-table-column>
         <el-table-column label="证书图片" width="150" align="center">
@@ -43,14 +43,13 @@
             </el-switch>
           </template>
         </el-table-column>-->
-        <el-table-column label="操作" width="120" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       type="text"
                        @click="handleUpdate(scope.$index, scope.row)">编辑
             </el-button>
             <el-button size="mini"
-                       type="text"
+                       type="danger"
                        @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
@@ -206,7 +205,7 @@
   }
   .app-container {
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 50px;
   }
 </style>
 

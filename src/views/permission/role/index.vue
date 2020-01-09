@@ -1,5 +1,5 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml"> 
-  <div class="app-container" style="position: relative;">
+  <div class="app-container">
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>角色列表</span>
@@ -79,7 +79,7 @@
         :total="total">
       </el-pagination>
     </div>
-    <el-card class="form-container" shadow="never" v-show="allocationStatus" style="position: fixed;top: 10%;left:10%;background-color: white;z-index: 99999;height: 666px; width: 80%; overflow: auto">
+    <el-card class="form-container" shadow="never" v-show="allocationStatus" style="position: fixed;top: 150px;background-color: white;z-index: 99999; height: 400px; width: 650px; overflow: auto">
         <div>
           <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择权限</div>
           <div v-for="(item,index) in items"  v-bind:key="item.message" style="margin-bottom: 15px;">

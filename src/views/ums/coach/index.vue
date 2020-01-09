@@ -66,22 +66,22 @@
         <el-table-column label="编号" width="80" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="教练名称" align="center">
+        <!--<el-table-column label="教练名称" align="center">
           <template slot-scope="scope">{{scope.row.coachName}}</template>
-        </el-table-column>
-        <el-table-column label="教练昵称" align="center">
+        </el-table-column>-->
+        <el-table-column label="教练昵称" align="center" >
           <template slot-scope="scope">{{scope.row.nickName}}</template>
         </el-table-column>
-        <el-table-column label="手机号码" align="center">
+        <el-table-column label="手机号码" align="center" >
           <template slot-scope="scope">{{scope.row.phone}}</template>
         </el-table-column>
-        <el-table-column label="个人简介" width="350" align="center" style="overflow: hidden; white-space: nowrap;text-overflow:ellipsis;">
+        <el-table-column label="个人简介" width="200" align="center" style="overflow: hidden; white-space: nowrap;text-overflow:ellipsis;">
           <template slot-scope="scope">{{scope.row.personalizedSignature | ellipsis | formatNull}}</template>
         </el-table-column>
-        <el-table-column label="注册时间" align="center">
+        <el-table-column label="注册时间" align="center" width="160">
           <template slot-scope="scope">{{scope.row.createdTime}}</template>
         </el-table-column>
-        <el-table-column label="状态" align="center">
+        <el-table-column label="状态" width="100" align="center">
           <template slot-scope="scope">{{scope.row.status | statusType}}</template>
         </el-table-column>
         <el-table-column label="操作" width="300" align="left" header-align="center">
@@ -196,8 +196,8 @@
         filters: {
             ellipsis (value) {
                 if (!value) return ''
-                if (value.length > 20) {
-                    return value.slice(0,20) + '....'
+                if (value.length > 10) {
+                    return value.slice(0,10) + '....'
                 }
                 return value
             },

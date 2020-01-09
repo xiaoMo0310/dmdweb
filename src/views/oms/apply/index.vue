@@ -70,19 +70,19 @@
         <el-table-column label="服务单号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="申请时间" width="180" align="center">
+        <el-table-column label="申请时间" align="center">
           <template slot-scope="scope">{{scope.row.createdTime | formatTime}}</template>
         </el-table-column>
         <el-table-column label="用户账号" align="center">
           <template slot-scope="scope">{{scope.row.memberUsername}}</template>
         </el-table-column>
-        <el-table-column label="退款金额" width="120" align="center">
+        <el-table-column label="退款金额"  align="center">
           <template slot-scope="scope">￥{{scope.row | formatReturnAmount}}</template>
         </el-table-column>
-        <el-table-column label="申请状态" width="120" align="center">
+        <el-table-column label="申请状态" align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
         </el-table-column>
-        <el-table-column label="处理时间" width="180" align="center">
+        <el-table-column label="处理时间" align="center">
           <template slot-scope="scope">{{scope.row.handleTime | formatTime}}</template>
         </el-table-column>
         <el-table-column label="操作" width="180" align="center">

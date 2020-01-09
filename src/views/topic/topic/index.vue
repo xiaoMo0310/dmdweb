@@ -66,7 +66,7 @@
           <template slot-scope="scope">{{scope.row.operationName}}</template>
         </el-table-column>
         <el-table-column label="展示图片" width="120" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.topicPicture" preview="1"></template>
+          <template slot-scope="scope"><img style="height: 80px; width: 100px" :src="scope.row.topicPicture" preview="1"></template>
         </el-table-column>
         <el-table-column label="时间" width="220" align="center">
           <template slot-scope="scope">
@@ -74,14 +74,13 @@
             修改时间:{{scope.row.updateTime | formatTime}}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="120" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       type="text"
                        @click="handUpdate(scope.$index, scope.row)">编辑
             </el-button>
             <el-button size="mini"
-                       type="text"
+                       type="danger"
                        @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>

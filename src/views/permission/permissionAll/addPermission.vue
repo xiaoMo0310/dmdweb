@@ -32,7 +32,7 @@
       <el-form-item>
       <el-button type="primary" @click="onSubmit('permissionFrom')">提交</el-button>
       <el-button v-if="!isEdit" @click="resetForm('permissionFrom')">重置</el-button>
-      <el-button type="primary" @click="goBack()">返回</el-button>
+      <el-button type="info" @click="goBack()">返回</el-button>
       </el-form-item>
     </el-form>
   </el-card>
