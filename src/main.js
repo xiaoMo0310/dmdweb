@@ -23,11 +23,11 @@ import 'tinymce/skins/ui/oxide/skin.css'
 Vue.use(preview)
 Vue.use(ElementUI, { locale })
 Vue.use(VCharts)
+
 import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
 import 'vue-directive-image-previewer/dist/assets/style.css'
 Vue.use(VueDirectiveImagePreviewer)
 Vue.config.productionTip = false
-
 new Vue({
   el: '#app',
   router,//
@@ -35,3 +35,4 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
+

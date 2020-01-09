@@ -1,5 +1,5 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml"> 
-  <div class="app-container">
+  <div class="app-container" style="position: relative;">
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>角色列表</span>
@@ -79,11 +79,16 @@
         :total="total">
       </el-pagination>
     </div>
-    <el-card class="form-container" shadow="never" v-show="allocationStatus" style="position: fixed;top: 150px;background-color: white;z-index: 99999; height: 500px; width: 650px; overflow: auto">
+    <el-card class="form-container" shadow="never" v-show="allocationStatus" style="position: fixed;top: 10%;left:10%;background-color: white;z-index: 99999;height: 666px; width: 80%; overflow: auto">
         <div>
           <div style="border:1px solid #f5f6f8;padding: 15px 0;margin-top: -50px;margin-bottom: 30px;text-align: center;font-size: 20px;">请选择权限</div>
-          <div v-for="item in items"  v-bind:key="item.message" style="float: left;width: 170px;margin-bottom: 15px;">
-            <el-checkbox v-model="item.beCheck" style="margin-left: 10px;width: 150px;"  border>{{item.name}}</el-checkbox>
+          <div v-for="(item,index) in items"  v-bind:key="item.message" style="margin-bottom: 15px;">
+            <div>
+              <el-checkbox v-model="item.beCheck" style="margin-left: 10px;width: 150px;" @change="beCheck(index,item.beCheck)">{{item.name}}</el-checkbox>
+            </div>
+            <div style="margin-left: 50px;">
+              <el-checkbox v-for="itemChild in item.children"  v-bind:key="itemChild.message" v-model="itemChild.beCheck" style="margin-left: 10px;width: 150px;">{{itemChild.name}}</el-checkbox>
+            </div>
           </div>
           <div style="float: left; align-content: center; padding-left: 200px">
             <el-button size="mini" @click="submitPermission()">确认</el-button>
@@ -95,7 +100,8 @@
 
 </template>
 <script>
-    import {permissionAll,roleList,addPermissionForRole,deleteRoles} from '@/api/admin'
+
+import {permissionAll,roleList,addPermissionForRole,deleteRoles} from '@/api/admin'
     import {isEnableRole} from "../../../api/admin";
     const defaultListQuery = {
         pageNum: 1,
@@ -131,6 +137,9 @@
             //     this.listQuery.pageNum = 1;
             //     this.getList();
             // },
+            beCheck(index,beCheck) {
+              console.log(this.items[index].children.forEach(item=>item.beCheck=beCheck))
+            },
             handleSelectionChange(val){
                 this.multipleSelection = val;
             },
@@ -146,7 +155,7 @@
             //角色列表
             getList() {
                 this.listLoading = true;
-                roleList(this.listQuery).then(response => {
+                roleList(this.listQuery,0).then(response => {
                     this.listLoading = false;
                     this.list = response.result.list;
                     this.total = response.result.total;
@@ -155,9 +164,9 @@
             //获取角色拥有的权限
             getListForPermission(roleId){
                 let query =this.listQuery;
-                query.pageSize=50;
+                query.pageSize=150;
                 query.roleId=roleId;
-                permissionAll(this.listQuery).then(response => {
+                permissionAll(this.listQuery,1).then(response => {
                     this.items=response.result.list;
                 });
             },
@@ -176,6 +185,17 @@
                         let permissionRelation={roleId:this.roleIdForPermission,permissionId:items[i].id};
                         permissionRelations.push(permissionRelation);
                     }
+
+                    if (items[i].children!=null){
+                        var itemsChild=items[i].children
+                        for(var j=0;j<itemsChild.length;j++){
+                            if(itemsChild[j].beCheck){
+                                let permissionRelation={roleId:this.roleIdForPermission,permissionId:itemsChild[j].id};
+                                permissionRelations.push(permissionRelation);
+                            }
+                        }
+                    }
+
                 }
                 if(permissionRelations.length===0){
                     permissionRelations.push({roleId:this.userIdForRole,permissionId:null})

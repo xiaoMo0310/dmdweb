@@ -116,7 +116,7 @@
             },
             getList() {
                 this.listLoading = true;
-                permissionAll(this.listQuery).then(response => {
+                permissionAll(this.listQuery,0).then(response => {
                     this.listLoading = false;
                     this.list=response.result.list;
                     this.total = response.result.total;

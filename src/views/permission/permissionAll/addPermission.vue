@@ -90,8 +90,6 @@
                         }).then(() => {
                             addPermission(this.permission).then(response => {
                                 if (response.data!=null){
-                                    console.log(response.data);
-                                    console.log("=============================");
                                     this.$message({
                                         message: '提交成功',
                                         type: 'success',

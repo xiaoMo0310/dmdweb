@@ -228,9 +228,7 @@
                 let query =this.listQuery;
                 query.pageSize=50;
                 query.adminId=adminId;
-                roleList(this.listQuery).then(response => {
-                    console.log(response.result.list)
-                    console.log("========================")
+                roleList(this.listQuery,1).then(response => {
                     this.items=response.result.list;
                 });
             },

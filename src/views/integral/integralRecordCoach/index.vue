@@ -358,8 +358,6 @@
             data.append("operateNote",this.productAttrCate.operateNote);
             data.append("integralTrend",this.productAttrCate.integralTrend);
             data.append("memberId",this.productAttrCate.memberId);
-            console.log(this.dialogTitle)
-            console.log("=============================================")
             if(this.dialogTitle==="请选择增加数额"){
               updateIntegrationCoach(this.productAttrCate.id,data).then(response=>{
                 this.$message({

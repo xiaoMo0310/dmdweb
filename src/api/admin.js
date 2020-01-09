@@ -18,9 +18,9 @@ export function addAdmin(param) {
 
 
 //权限列表
-export function permissionAll(param) {
+export function permissionAll(param,type) {
   return request({
-    url:'/admin/allPermission',
+    url:'/admin/allPermission?type='+type,
     method:'post',
     data: param
   })
@@ -51,9 +51,9 @@ export function addPermission(param) {
 //   })
 // }
 //角色列表
-export function roleList(param) {
+export function roleList(param,type) {
   return request({
-    url:'/admin/roleList',
+    url:'/admin/roleList?type='+type,
     method:'post',
     data: param
   })

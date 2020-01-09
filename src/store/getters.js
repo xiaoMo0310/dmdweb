@@ -7,5 +7,6 @@ const getters = {
   roles: state => state.user.roles,
   openTab: state => state.tab.openTab,
   activeIndex: state => state.tab.activeIndex,
+  permission: state => state.user.permissionList,
 }
 export default getters
