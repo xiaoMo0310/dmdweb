@@ -108,7 +108,6 @@ export default {
         },
         //移除tab标签
         tabRemove(targetName){
-            console.log(targetName)
             //首页不删
             if(targetName == '/home'){
                 return
@@ -116,12 +115,8 @@ export default {
             this.$store.commit('delete_tabs', targetName);
             if (this.activeIndex === targetName) {
                 // 设置当前激活的路由
-                console.log(this.openTab)
-                console.log(this.openTab.length)
                 if (this.openTab && this.openTab.length >= 1) {
-                    console.log("qunima ")
                     let path = this.openTab[this.openTab.length-1];
-                    console.log(path)
                     this.$store.commit('set_active_index', path.path);
                     this.$router.push({name:path.name, title:path.title, path:path.path, query:path.query, params:path.params});
                 } else {

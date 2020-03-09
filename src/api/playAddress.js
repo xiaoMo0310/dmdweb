@@ -14,6 +14,14 @@ export function fetchList(data) {
   })
 }
 
+export function findPlayAddressByPage(data) {
+  return request({
+    url:'/pms/playAddress/findByPage',
+    method:'post',
+    data:data
+  })
+}
+
 export function updateIsDefaultById(data) {
   return request({
     url:'/pms/isDefault/update/' + data,

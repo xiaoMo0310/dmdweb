@@ -36,3 +36,20 @@ body .el-table th.gutter{
  display: table-cell!important;
 }
 
+.el-cascader .el-input {
+  width: 250px;
+
+}
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
+  padding: 0px;
+  border: 0px;
+}
+.input-with-select .el-input-group__append {
+  color: #FFF;
+  background-color: #F56C6C;
+}
+.input-with-select .el-input__inner {
+  border-right-width: 0px;
+}
+

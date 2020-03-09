@@ -343,7 +343,7 @@
       }
     },
     created() {
-      this.id = this.list = this.$route.query.id;
+      this.id = this.$route.query.id;
       getOrderDetail(this.id).then(response => {
         this.order = response.data;
       });

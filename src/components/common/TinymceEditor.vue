@@ -1,15 +1,17 @@
 <template>
   <div class="tinymce-editor">
     <editor v-model="myValue"
-            :init="init">
+            ref="editor"
+            :init="init"
+            :disabled="disabled"
+            @onClick="onClick">
     </editor>
     <el-dialog title="图片上传"
                :visible.sync="dialogVisible"
                width="60%"
                :lock-scroll="true"
-               :close-on-click-modal="false">
-      <div>
-        <el-upload
+               :close-on-click-modal="true" :modal="false">
+        <!--<el-upload
           action="#"
           :data="dataObj"
           list-type="picture"
@@ -21,9 +23,8 @@
           :on-preview="handlePreview">
           <el-button size="small" type="primary" >点击上传</el-button>
           <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过10MB</div>
-        </el-upload>
-
-      </div>
+        </el-upload>-->
+        <single-upload v-model="imageList[0]"></single-upload>
       <span slot="footer"
             class="dialog-footer">
         <el-button @click="()=>{this.dialogVisible=false}">取 消</el-button>
@@ -49,7 +50,7 @@
 
   export default {
     components: {
-      Editor
+      Editor,SingleUpload
     },
     props: {
       value: {
@@ -66,8 +67,12 @@
       },
       toolbar: {
         type: [String, Array],
-        default: 'undo redo |  formatselect fontselect fontsizeselect | bold italic forecolor backcolor  |  link imageUpload  table | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent|removeformat preview'
+        default: 'undo redo |  formatselect fontselect fontsizeselect | bold italic forecolor backcolor  |  link imageUpload  table | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent|removeformat preview '
       }
+      /*toolbar: {
+        type: [String, Array],
+        default: 'undo redo |  formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists image media table | removeformat'
+      }*/
     },
     computed: {
       imageUrl() {
@@ -111,15 +116,16 @@
         imageList: [],
         editor: null,
         init: {
-          language_url: '/static/plugin/tinymce/langs/zh_CN.js',
+          language_url: '/static/tinymce/langs/zh_CN.js',
           language: 'zh_CN',
-          skin_url: '/static/plugin/tinymce/skins/ui/oxide',
+          skin_url: '/static/tinymce/skins/ui/oxide/skin.css',
+          content_css: '/static/tinymce/skins/content/default/content.css',
           height: 300,
           fontsize_formats: "12px 14px 16px 18px 20px",
           plugins: this.plugins,
           toolbar: this.toolbar,
           branding: false,
-          menubar: false,
+          menubar: false, /*顶部显示菜单栏*/
           setup: (editor) => {//设置自定义功能的按钮
             editor.ui.registry.addButton("imageUpload", {//单个按钮，此处的uploading是该按钮的名称
               tooltip: "上传图片",//鼠标放上去后现在是内容.
@@ -131,6 +137,10 @@
               }
             });
           },
+          /*images_upload_handler: (blobInfo, success, failure) => {
+            const img = 'data:image/jpeg;base64,' + blobInfo.base64()
+            success(img)
+          }*/
         },
         myValue: this.value
       }
@@ -139,6 +149,9 @@
       tinymce.init({})
     },
     methods: {
+      onClick (e) {
+        this.$emit('onClick', e, tinymce)
+      },
       emitInput(val) {
         this.$emit('input', val)
       },
@@ -205,12 +218,14 @@
       insertImage () {
         this.dialogVisible = false;
         let imageList = this.imageList;
+        console.log(imageList)
         if (imageList.length == 0) {
           return;
         }
         let insertHtml = "";
         (imageList || []).map((item, index) => {
-          insertHtml = insertHtml + "<p><img src=" + item.url + "><p>";
+          console.log(item)
+          insertHtml = insertHtml + "<p><img src=" + item + "><p>";
         });
         this.editor.execCommand('mceInsertContent', false, insertHtml);
       }

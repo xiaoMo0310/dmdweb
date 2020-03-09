@@ -1,5 +1,3 @@
-<script src="../../../../../node_modules/tinymce/themes/silver/theme.min.js"></script>
-<script src="../../../../../node_modules/tinymce/themes/mobile/theme.min.js"></script>
 <template> 
   <el-card class="form-container" shadow="never"  style="width:1200px;">
     <el-form :model="homeAdvertise"
@@ -8,8 +6,7 @@
              label-width="100px"
              size="medium">
       <el-form-item label="规则说明：" prop="operationName">
-        <editor v-model="homeAdvertise.ruledescription"
-                :init="init"
+        <editor v-model="homeAdvertise.ruledescription" ref="editor"
                 :disabled="disabled"
                 @onClick="onClick"
                 style="width:1000px;"
@@ -17,6 +14,7 @@
         </editor>
         <button @click="clear">清空内容</button>
         <button @click="disabled = true">禁用</button>
+        <button @click="disabled = false">启用</button>
       </el-form-item>
       <el-form-item label="图片示例：">
         <single-upload v-model="homeAdvertise.picturesample"></single-upload>
@@ -24,7 +22,6 @@
       <el-form-item label="操作人：" prop="operationName">
         <el-input v-model="homeAdvertise.operationName" class="input-width"></el-input>
       </el-form-item>
-
       <el-form-item>
         <el-button type="primary" @click="onSubmit('homeAdvertiseFrom')">提交</el-button>
         <el-button type="info" size="small" @click="onReturn('homeAdvertiseFrom')">返回</el-button>
@@ -61,37 +58,11 @@
       disabled: {
         type: Boolean,
         default: false
-      },
-      plugins: {
-        type: [String, Array],
-        default: 'lists image media table textcolor wordcount contextmenu'
-      },
-      toolbar: {
-        type: [String, Array],
-        default: 'undo redo |  formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists image media table | removeformat'
       }
     },
-
     data() {
       return {
         //初始化配置
-        init: {
-          language_url: '/static/tinymce/langs/zh_CN.js',
-          language: 'zh_CN',
-          skin_url: '/static/tinymce/skins/ui/oxide',
-          height: 300,
-          plugins: this.plugins,
-          toolbar: this.toolbar,
-          branding: false,
-          menubar: false,
-          //此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
-          //如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
-          images_upload_handler: (blobInfo, success, failure) => {
-            const img = 'data:image/jpeg;base64,' + blobInfo.base64()
-            success(img)
-          }
-        },
-        myValue: this.value,
         homeAdvertise: {},
         rules: {
           name: [
@@ -123,9 +94,7 @@
         this.homeAdvertise = Object.assign({},defaultHomeAdvertise);
       }
     },
-    mounted() {
-      tinymce.init({})
-    },
+
     methods: {
       //添加相关的事件，可用的事件参照文档=> https://github.com/tinymce/tinymce-vue => All available events
       //需要什么事件可以自己增加
@@ -174,14 +143,6 @@
       onReturn(){
           this.$router.back();
       },
-    },
-    watch: {
-      value(newValue) {
-        this.myValue = newValue
-      },
-      myValue(newValue) {
-        this.$emit('input', newValue)
-      }
     },
   }
 </script>

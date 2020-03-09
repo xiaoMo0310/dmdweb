@@ -7,7 +7,6 @@ import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
 import VCharts from 'v-charts'
 
 import '@/styles/index.scss' // global css
-//import './utils/flexible.js'
 import App from './App'
 import router from './router'
 import store from './store'
@@ -16,10 +15,10 @@ import '@/icons' // icon
 import '@/permission' // permission control
 import tinymce from 'tinymce/tinymce'
 import Editor from '@tinymce/tinymce-vue'
-import 'tinymce/themes/mobile/theme.js'
+import 'tinymce/themes/silver'
+import 'tinymce/skins/ui/oxide/skin.css'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
-import 'tinymce/skins/ui/oxide/skin.css'
 Vue.use(preview)
 Vue.use(ElementUI, { locale })
 Vue.use(VCharts)
