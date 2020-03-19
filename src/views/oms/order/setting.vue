@@ -59,8 +59,8 @@
     if (!value) {
       return callback(new Error('时间不能为空'));
     }
-    let intValue = parseInt(value);
-    if (!Number.isInteger(intValue)) {
+    //let intValue = parseInt(value);
+    if (!Number.isInteger(value)) {
       return callback(new Error('请输入数字值'));
     }
     callback();

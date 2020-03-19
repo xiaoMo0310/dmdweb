@@ -23,7 +23,6 @@
         </el-table-column>
         <el-table-column label="图集"  align="center">
           <template slot-scope="scope">
-
             <div style="height: 100px; width:100px; border-left: 0px solid #DCDFE6; border-top: 0px solid #DCDFE6; margin: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.atlas)" :key="i">
               <!--<img preview="1" style="height: 100px; width: 100px" :src="image" v-on:error.once="moveErrorImg($event)">-->
                 <el-image style="height: 100px; width: 100px" :src="image" :preview-src-list="getImageList(scope.row.atlas)"></el-image>

@@ -68,13 +68,26 @@
           <el-col :span="8" class="table-cell">￥{{productTem.totalPrice}}</el-col>
         </el-row>
       </div>
+      <div style="margin-top: 20px">
+        <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
+        <span class="font-small">商品图片</span>
+      </div>
+      <div style="margin-top: 20px">
+        <el-row>
+          <el-col :span="3" style="height: 150px; width:150px; border-left: 1px solid #DCDFE6; border-top: 1px solid #DCDFE6; margin-left: 6px; padding: 0px"
+                  class="table-cell"
+                  v-for="(image, i) in imageList" :key="i">
+            <img preview="1" style="height: 150px; width: 150px" :src="image">
+          </el-col>
+        </el-row>
+      </div>
       <div style="margin-top: 20px" >
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">潜点介绍</span>
       </div>
       <div class="table-layout">
         <el-row>
-          <el-col :span="24" style="height: 80px" class="table-cellB" v-html="productTem.divingDescription"></el-col>
+          <el-col :span="24" style="overflow: auto; height: 500px" class="table-cellB" v-html="productTem.divingDescription"></el-col>
         </el-row>
       </div>
     </el-card>
@@ -85,7 +98,6 @@
   import LogisticsDialog from '@/views/oms/order/components/logisticsDialog';
   export default {
     name: 'orderDetail',
-    components: { Tinymce},
     data() {
       return {
         id: null,
@@ -99,11 +111,11 @@
       getProductTemplateById(this.id).then(response => {
         this.productTem = response.result;
         let relateProduct = this.productTem.relatedProduct
+        if(this.productTem.divingImage != null){
+          this.imageList = this.productTem.divingImage.split(',');
+        }
         if(relateProduct !== null){
           this.relateProductList = JSON.parse(relateProduct);
-        }
-        if(this.productTem.divingImage !== null){
-          this.imageList = this.productTem.divingImage.split(",");
         }
       });
     },
@@ -191,5 +203,16 @@
     text-align: center;
     font-size: 14px;
     color: #303133;
+  }
+  .table-cellB {
+    height: 180px;
+    line-height: 25px;
+    border-right: 1px solid #DCDFE6;
+    border-bottom: 1px solid #DCDFE6;
+    padding: 10px;
+    font-size: 14px;
+    color: #606266;
+    text-align: left;
+    overflow: hidden;
   }
 </style>

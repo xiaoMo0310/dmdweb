@@ -6,10 +6,11 @@ export function fetchList(params) {
     data:params
   })
 }
-export function deleteProductTem(id) {
+export function deleteProductTem(data) {
   return request({
-    url:'/pms/courseProduct/template/delete/'+id,
-    method:'post'
+    url:'/pms/courseProduct/template/delete',
+    method:'post',
+    data:data
   })
 }
 

@@ -2,13 +2,21 @@ import request from '@/utils/request'
 //文件上传
 export function uploadFile(data, config) {
   return request({
-    url:'/upload/file',
+    url:'/upload/image',
     method:'post',
     data: data,
     config: config
   })
 }
-//多文件上传
+export function uploadImage(data, config) {
+  return request({
+    url:'/upload/image',
+    method:'post',
+    data: data,
+    config: config
+  })
+}
+/*//多文件上传
 export function uploadFileAll(data, config) {
   return request({
     url:'/upload/file',
@@ -17,3 +25,4 @@ export function uploadFileAll(data, config) {
     config: config
   })
 }
+*/

@@ -91,7 +91,7 @@
         <el-table-column label="订单类型" align="center" width="120">
           <template slot-scope="scope">{{scope.row.orderType | orderType}}</template>
         </el-table-column>
-        <el-table-column label="订单金额/积分" width="120" align="center">
+        <el-table-column label="订单金额" width="120" align="center">
           <template slot-scope="scope">{{scope.row.totalAmount}}</template>
         </el-table-column>
         <el-table-column label="获得积分" align="center">

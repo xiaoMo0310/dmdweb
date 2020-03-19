@@ -88,7 +88,6 @@
       },
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
-          console.log(valid)
           if (valid) {
             this.$confirm('是否提交数据', '提示', {
               confirmButtonText: '确定',
@@ -104,7 +103,7 @@
                 });
                 this.$router.back();
               });
-            });
+            }).catch(()=>{});
           }else {
             this.$message({
               message: '验证失败',

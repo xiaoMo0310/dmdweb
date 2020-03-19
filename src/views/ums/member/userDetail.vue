@@ -47,7 +47,7 @@
       </div>
       <div class="table-layout">
         <el-row>
-          <el-col :span="24" style="height: 80px" class="table-cellB">{{userMessage.personalizedSignature | formatNull}}</el-col>
+          <el-col :span="24" style="height: 100px" class="table-cellB">{{userMessage.personalizedSignature | formatNull}}</el-col>
         </el-row>
       </div>
     </el-card>

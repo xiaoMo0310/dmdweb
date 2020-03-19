@@ -14,32 +14,30 @@
       </div>
       <div class="table-layout">
         <el-row>
-          <el-col :span="4" class="table-cell-title">商品名称</el-col>
-          <el-col :span="4" class="table-cell-title">商品价格</el-col>
-          <el-col :span="4" class="table-cell-title">商品状态</el-col>
-          <el-col :span="4" class="table-cell-title">商品类型</el-col>
-          <el-col :span="4" class="table-cell-title">地点</el-col>
+          <el-col :span="5" class="table-cell-title">产品名称</el-col>
+          <el-col :span="5" class="table-cell-title">产品状态</el-col>
+          <el-col :span="5" class="table-cell-title">产品类型</el-col>
+          <el-col :span="5" class="table-cell-title">地点</el-col>
           <el-col :span="4" class="table-cell-title">游玩时长</el-col>
         </el-row>
         <el-row>
-          <el-col :span="4" class="table-cell">{{courseProductMessage.productName}}</el-col>
-          <el-col :span="4" class="table-cell">{{courseProductMessage.price}}</el-col>
-          <el-col :span="4" class="table-cell">{{courseProductMessage.status | statusType}}</el-col>
-          <el-col :span="4" class="table-cell">{{courseProductMessage.productType | productType}}</el-col>
-          <el-col :span="4" class="table-cell">{{courseProductMessage.location}}</el-col>
+          <el-col :span="5" class="table-cell">{{courseProductMessage.productName}}</el-col>
+          <el-col :span="5" class="table-cell">{{courseProductMessage.status | statusType}}</el-col>
+          <el-col :span="5" class="table-cell">{{courseProductMessage.productType | productType}}</el-col>
+          <el-col :span="5" class="table-cell">{{courseProductMessage.location}}</el-col>
           <el-col :span="4" class="table-cell">{{courseProductMessage.lengthPlay}}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="12" class="table-cell-title">商品标题</el-col>
-          <el-col :span="4" class="table-cell-title">人数限制</el-col>
-          <el-col :span="4" class="table-cell-title">开始时间</el-col>
-          <el-col :span="4" class="table-cell-title">结束时间</el-col>
+          <el-col :span="10" class="table-cell-title">商品标题</el-col>
+          <el-col :span="5" class="table-cell-title" v-show="courseProductMessage.productType === 3">人数限制</el-col>
+          <el-col :span="5" class="table-cell-title" v-show="courseProductMessage.productType === 3">开始时间</el-col>
+          <el-col :span="4" class="table-cell-title" v-show="courseProductMessage.productType === 3">结束时间</el-col>
         </el-row>
         <el-row>
-          <el-col :span="12" class="table-cell">{{courseProductMessage.title}}</el-col>
-          <el-col :span="4" class="table-cell">{{courseProductMessage.numberLimit}}</el-col>
-          <el-col :span="4" class="table-cell">{{courseProductMessage.startTime | formatTime}}</el-col>
-          <el-col :span="4" class="table-cell">{{courseProductMessage.endTime | formatTime}}</el-col>
+          <el-col :span="10" class="table-cell">{{courseProductMessage.title}}</el-col>
+          <el-col :span="5" class="table-cell" v-show="courseProductMessage.productType === 3">{{courseProductMessage.numberLimit}}</el-col>
+          <el-col :span="5" class="table-cell" v-show="courseProductMessage.productType === 3">{{courseProductMessage.startTime | formatTime}}</el-col>
+          <el-col :span="4" class="table-cell" v-show="courseProductMessage.productType === 3">{{courseProductMessage.endTime | formatTime}}</el-col>
         </el-row>
       </div>
       <div style="margin-top: 20px">
@@ -57,39 +55,54 @@
       </div>
       <div style="margin-top: 20px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
-        <span class="font-small">商品内容</span>
+        <span class="font-small">其它装备信息</span>
+      </div>
+      <el-table
+        ref="relateProductTable"
+        :data="relateProductList"
+        style="width: 100%;margin-top: 20px" border>
+        <el-table-column label="类别ID" width="120" align="center">
+          <template slot-scope="scope">
+            {{scope.row.id}}
+          </template>
+        </el-table-column>
+        <el-table-column label="其他装备名称" align="center">
+          <template slot-scope="scope">
+            {{scope.row.text}}
+          </template>
+        </el-table-column>
+        <el-table-column label="价格" align="center">
+          <template slot-scope="scope">
+            <p>￥{{scope.row.price}}</p>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div style="float: right;margin: 20px">
+        合计：<span class="color-danger">￥{{courseProductMessage.equipmentPrice}}</span>
+      </div>
+      <div style="margin-top: 60px">
+        <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
+        <span class="font-small">费用信息</span>
       </div>
       <div class="table-layout">
         <el-row>
-          <el-col :span="12" class="table-cell-title">费用包含</el-col>
-          <el-col :span="12" class="table-cell-title">费用不含</el-col>
+          <el-col :span="8" class="table-cell-title">产品基础价</el-col>
+          <el-col :span="8" class="table-cell-title">其它装备总价格</el-col>
+          <el-col :span="8" class="table-cell-title">产品总的价格</el-col>
         </el-row>
         <el-row>
-          <el-col :span="12" class="table-cellB">{{courseProductMessage.costIncludes | formatNull}}</el-col>
-          <el-col :span="12" class="table-cellB">{{courseProductMessage.costNotIncludes | formatNull}}</el-col>
+          <el-col :span="8" class="table-cell">￥{{courseProductMessage.price}}</el-col>
+          <el-col :span="8" class="table-cell">￥{{courseProductMessage.equipmentPrice}}</el-col>
+          <el-col :span="8" class="table-cell">￥{{courseProductMessage.totalPrice}}</el-col>
         </el-row>
-
+      </div>
+      <div style="margin-top: 20px" >
+        <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
+        <span class="font-small">产品介绍</span>
+      </div>
+      <div class="table-layout">
         <el-row>
-          <el-col :span="12" class="table-cell-title">购买须知</el-col>
-          <el-col :span="12" class="table-cell-title">内容安排</el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12" class="table-cellB">{{courseProductMessage.purchaseNotes | formatNull}}</el-col>
-          <el-col :span="12" class="table-cellB">
-            <div v-if="contentArrangement != null" v-for="(item, i) in contentArrangement" :key="i">
-              <span style="text-align: left" v-if="contentArrangement != null" > {{item.date}}: {{item.message}}</span>
-            </div>
-            <div v-if="contentArrangement === null" >
-              <span style="text-align: left" v-if="contentArrangement === null">{{contentArrangement | formatNull}}</span>
-            </div><br>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="24" style="text-align: left" class="table-cell-title">产品介绍</el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24" style="height: 80px" class="table-cellB">{{courseProductMessage.productDescription | formatNull}}</el-col>
+          <el-col :span="24" style="overflow: auto; height: 500px" class="table-cellB" v-html="courseProductMessage.productDescription"></el-col>
         </el-row>
       </div>
       <div style="margin-top: 20px" v-if="courseProductMessage.approvalStatus === 3">
@@ -134,7 +147,6 @@
                 order: {},
                 reviewMessage: {"id":null, "approvalStatus":null, "failureReason":null},
                 courseProductMessage: {},
-                contentArrangement: null,
                 listLoading: false,
                 dialogVisible:false,
             }
@@ -144,9 +156,6 @@
                 this.courseProductMessage = response.result
                 if(this.courseProductMessage.image != null){
                   this.imageList = this.courseProductMessage.image.split(',');
-                }
-                if(response.result.contentArrangement != null || response.result.contentArrangement != ''){
-                    this.contentArrangement = JSON.parse(this.courseProductMessage.contentArrangement)
                 }
             });
         },

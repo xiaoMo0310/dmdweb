@@ -44,6 +44,9 @@
       <el-form-item>
         <el-button size="small" type="primary" @click="handleAddFilterAttr()">新增</el-button>
       </el-form-item>
+      <el-form-item label="潜水动图片：" prop="divingImage">
+        <multi-upload v-model="imageList"/>
+      </el-form-item>
       <el-form-item label="潜点介绍：">
         <tinymce :width="500" :height="400" v-model="productTem.divingDescription"></tinymce>
       </el-form-item>
@@ -68,7 +71,8 @@
   import {fetchList, createOrUpdateProductTem, getProductTemplateById} from '@/api/courseProductTem';
   import {findCateByParentId, findProductCateIds} from '@/api/courseProductCate';
   import {findPlayAddressByPage} from '@/api/playAddress';
-  import Tinymce from '@/components/common/Tinymce'
+  import Tinymce from '@/components/common/Tinymce';
+  import MultiUpload from '@/components/Upload/multiUpload'
 
   const defaultProductCate = {
     productName: '',
@@ -76,10 +80,11 @@
     divingTime: '',
     showStatus: 1,
     sort: 0,
+    divingDescription: null
   };
   export default {
-    name: "ProductCateDetail",
-    components: {Tinymce},
+    name: "ProductTemDetail",
+    components: {Tinymce, MultiUpload},
     props: {
       isEdit: {
         type: Boolean,
@@ -90,6 +95,7 @@
       return {
         productTem: Object.assign({}, defaultProductCate),
         selectPlayAddressList: [],
+        imageList: [],
         rules: {
           productName: [
             {required: true, message: '请输入模板名称', trigger: 'blur'},
@@ -103,7 +109,10 @@
           ],
           divingTime: [
             {required: true, message: '请输入潜水时间', trigger: 'blur'},
-          ]
+          ],
+          divingImage: [
+            {required: true, message: '请输入潜水图片', trigger: 'blur'},
+          ],
         },
         filterCates: [],
         filterProductTemList: [{
@@ -116,39 +125,41 @@
       if (this.isEdit) {
         getProductTemplateById(this.$route.query.id).then(response => {
           this.productTem = response.result;
+          if(this.productTem.divingImage != null){
+            this.imageList = this.productTem.divingImage.split(",")
+          }
           let relatedProductArray = JSON.parse(this.productTem.relatedProduct);
-          let sonIds = relatedProductArray.map(val => val.id)
-          let data = new URLSearchParams();
-          data.append('ids',sonIds);
-          findProductCateIds(data).then(response => {
-            if (response.result != null && response.result.length > 0) {
-              this.filterProductTemList = [];
-              for (let i = 0; i < response.result.length; i++) {
-                for (let j = 0; j < relatedProductArray.length; j++) {
-                  if(relatedProductArray[j].id === response.result[i].sonId){
-                    this.filterProductTemList.push({
-                      key: Date.now() + i,
-                      value: [response.result[i].parentId, response.result[i].sonId],
-                      price: relatedProductArray[j].price
-                    })
+          let filterRelatedProduct = [];
+          if(relatedProductArray.length !== 0){
+            for (let j = 0; j < relatedProductArray.length; j++) {
+              filterRelatedProduct.push({
+                key: Date.now() + j,
+                value: [relatedProductArray[j].parentId, relatedProductArray[j].id],
+                price: relatedProductArray[j].price
+              })
+            }
+            this.filterProductTemList = filterRelatedProduct;
+            /*let sonIds = relatedProductArray.map(val => val.id)
+            let data = new URLSearchParams();
+            data.append('ids',sonIds);
+            findProductCateIds(data).then(response => {
+              if (response.result != null && response.result.length > 0) {
+                this.filterProductTemList = [];
+                for (let i = 0; i < response.result.length; i++) {
+                  for (let j = 0; j < relatedProductArray.length; j++) {
+                    if(relatedProductArray[j].id === response.result[i].sonId){
+                      this.filterProductTemList.push({
+                        key: Date.now() + i,
+                        value: [response.result[i].parentId, response.result[i].sonId],
+                        price: relatedProductArray[j].price
+                      })
+                    }
                   }
                 }
               }
-            }
-          });
-          console.log(this.filterProductTemList)
-        });
-       /*getProductAttrInfo(this.$route.query.id).then(response => {
-          if (response.data != null && response.data.length > 0) {
-            this.filterProductTemList = [];
-            for (let i = 0; i < response.data.length; i++) {
-              this.filterProductTemList.push({
-                key: Date.now() + i,
-                value: [response.data[i].attributeCategoryId, response.data[i].attributeId]
-              })
-            }
+            });*/
           }
-        });*/
+        });
       } else {
         this.productTem = Object.assign({}, defaultProductCate);
       }
@@ -170,7 +181,7 @@
         if(playAddress.atlas != null){
           let imageList = playAddress.atlas.split(",");
           for (var i = 0; i < imageList.length; i++) {
-            imageHtml += `<p><img class="wscnph" src="${imageList[i]}}" /></p>`
+            imageHtml += `<p><img class="wscnph" src="${imageList[i]}" /></p>`
           }
         }
         this.productTem.divingDescription = '<p>'+playAddress.addressIntroduction+'</p>' + imageHtml
@@ -202,7 +213,8 @@
         for (let i = 0; i < this.filterProductTemList.length; i++) {
           let item = this.filterProductTemList[i];
           if (item.value !== null && item.value.length === 2) {
-            let productCateAndPrice = {"id":null, "text":null, "price":null};
+            let productCateAndPrice = {"parentId":null, "id":null, "text":null, "price":null};
+            productCateAndPrice.parentId = item.value[0]
             productCateAndPrice.id = item.value[1];
             productCateAndPrice.price = item.price;
             let productCate = null;
@@ -221,6 +233,15 @@
         return JSON.stringify(productCateAndPriceList);
       },
       onSubmit(formName) {
+        let atlas = ''
+        for (let i = 0; i < this.imageList.length; i++) {
+          if(i === 0){
+            atlas = this.imageList[i]
+          }else {
+            atlas = atlas + "," + this.imageList[i]
+          }
+        }
+        this.productTem.divingImage = atlas;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$confirm('是否提交数据', '提示', {
@@ -228,17 +249,7 @@
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              let atlas = ''
-              for (let i = 0; i < this.imageList.length; i++) {
-                if(i === 0){
-                  atlas = this.imageList[i]
-                }else {
-                  atlas = atlas + "," + this.imageList[i]
-                }
-              }
-              this.productTem.divingImage = atlas;
               if (this.isEdit) {
-                console.log(this.getProductCateAndPriceList())
                 this.productTem.relatedProduct = this.getProductCateAndPriceList();
                 this.productTem.id = this.$route.query.id;
                 createOrUpdateProductTem(this.productTem).then(response => {
@@ -282,7 +293,6 @@
           price: null,
           value: []
         }];
-        this.imageList = null;
       },
       removeFilterAttr(productAttributeId) {
         if (this.filterProductTemList.length === 1) {

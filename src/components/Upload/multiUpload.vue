@@ -20,7 +20,7 @@
 </template>
 <script>
   import {policy} from '@/api/oss'
-  import {uploadFile} from '@/api/upload'
+  import {uploadImage} from '@/api/upload'
 
   export default {
     name: 'multiUpload',
@@ -90,7 +90,7 @@
           let config = {
               headers:{'Content-Type':'multipart/form-data'}
           };
-          uploadFile(formData, config).then(response => {
+          uploadImage(formData, config).then(response => {
               this.dataObj = response.result
               this.fileList.push({name: file.name,url:this.dataObj.serverPath});
               this.emitInput(this.fileList);

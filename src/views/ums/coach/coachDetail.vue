@@ -413,7 +413,7 @@
     font-size: 14px;
     color: #606266;
     text-align: left;
-    overflow: hidden;
+    overflow: auto;
   }
 
   .table-cell-title {

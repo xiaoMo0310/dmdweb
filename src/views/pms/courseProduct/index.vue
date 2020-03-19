@@ -47,15 +47,22 @@
         <el-table-column label="卖家id" align="center" width="80">
           <template slot-scope="scope">{{scope.row.userId}}</template>
         </el-table-column>
-        <!--<el-table-column label="商品名称" width="200" align="center">
+        <!--<el-table-column label="产品名称" align="center">
           <template slot-scope="scope">{{scope.row.productName}}</template>
         </el-table-column>-->
         <el-table-column label="商品标题" align="center">
           <template slot-scope="scope">{{scope.row.title | ellipsis}}</template>
         </el-table-column>
-        <el-table-column label="商品价格(元)" width="120" align="center">
+        <el-table-column label="产品价格(元)" width="110" align="center">
           <template slot-scope="scope">{{scope.row.price}}</template>
         </el-table-column>
+        <el-table-column label="其它产品价格(元)" width="130" align="center">
+          <template slot-scope="scope">{{scope.row.equipmentPrice}}</template>
+        </el-table-column>
+        <el-table-column label="总价格(元)" width="100" align="center">
+          <template slot-scope="scope">{{scope.row.totalPrice}}</template>
+        </el-table-column>
+
         <el-table-column label="商品类型"width="100" align="center">
           <template slot-scope="scope">{{scope.row.productType | productType}}</template>
         </el-table-column>
@@ -65,7 +72,7 @@
         <el-table-column label="创建时间"width="160" align="center">
           <template slot-scope="scope">{{scope.row.createdTime}}</template>
         </el-table-column>
-        <el-table-column label="审核状态"width="120" align="center">
+        <el-table-column label="审核状态"width="100" align="center">
           <template slot-scope="scope">{{scope.row.approvalStatus | approvalStatus}}</template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="120">

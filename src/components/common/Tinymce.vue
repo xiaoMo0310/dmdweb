@@ -57,9 +57,9 @@
     },
     data () {
       return {
-        hasChange: false,
+        hasChange: true,
         hasInit: false,
-        tinymceId: this.id || 'vue-tinymce-' + +new Date(),
+        tinymceId: this.id || 'vue-tinymce-' + +new Date().getTime(),
         tinymceHtml:'',
         DefaultInit: {
           selector: `#${this.tinymceId}`,
@@ -81,13 +81,17 @@
 
             'bullist numlist toc pastetext|codesample charmap  hr insertdatetime |lists image media table link unlink |code searchreplace fullscreen help '],
           plugins: 'lists image media table wordcount code fullscreen help codesample toc insertdatetime  searchreplace  link charmap paste hr' ,
-
         }
-
       }
-
     },
-
+    watch: {
+      value(val) {
+        if (this.hasChange) {
+          this.$nextTick(() => window.tinymce.get(this.tinymceId).setContent(val))
+        }
+        this.hasChange = true;
+      }
+    },
     mounted () {
       this.init()
     },
@@ -130,6 +134,7 @@
             uploadFile(formData, config).then(response => {
               if(response.code==200){
                 success(response.result.serverPath)
+                _this.hasChange = true
               }else{
                 failure('上传失败！')
               }
@@ -141,7 +146,7 @@
             }
             _this.hasInit = true
             editor.on('NodeChange Change KeyUp SetContent', () => {
-              this.hasChange = true
+              this.hasChange = false
               this.$emit('input', editor.getContent())
             })
           },
@@ -159,15 +164,8 @@
       },
       getContent() {
         window.tinymce.get(this.tinymceId).getContent()
-      },
-    },
-    watch: {
-      value(val) {
-        if (!this.hasChange && this.hasInit) {
-          this.$nextTick(() => window.tinymce.get(this.tinymceId).setContent(val))
-        }
       }
-    },
+    }
   }
 
 </script>

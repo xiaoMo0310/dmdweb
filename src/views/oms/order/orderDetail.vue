@@ -112,15 +112,10 @@
             <p>{{scope.row.productName}}</p>
           </template>
         </el-table-column>
-        <el-table-column label="价格/积分" width="120" align="center">
+        <el-table-column label="价格" width="120" align="center">
           <template slot-scope="scope">
             <p v-if="order.orderType != 2">价格：￥{{scope.row.productPrice}}</p>
             <p v-if="order.orderType === 2">积分：{{scope.row.productPrice}}</p>
-          </template>
-        </el-table-column>
-        <el-table-column label="属性" width="300" align="center">
-          <template slot-scope="scope">
-              <p  v-for="item in parseProductAttr(scope.row.productAttr)">{{item.key}}:{{item.value}}</p>
           </template>
         </el-table-column>
         <el-table-column label="数量" width="120" align="center">
@@ -141,13 +136,40 @@
       </div>
       <div style="margin-top: 60px">
         <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
+        <span class="font-small">其它装备信息</span>
+      </div>
+      <el-table
+        ref="relateProductTable"
+        :data="JSON.parse(order.orderItemList[0].productCategoryPrice)"
+        style="width: 100%;margin-top: 20px" border>
+        <el-table-column label="类别ID" width="120" align="center">
+          <template slot-scope="scope">
+            {{scope.row.id}}
+          </template>
+        </el-table-column>
+        <el-table-column label="其他装备名称" align="center">
+          <template slot-scope="scope">
+            {{scope.row.text}}
+          </template>
+        </el-table-column>
+        <el-table-column label="价格" align="center">
+          <template slot-scope="scope">
+            <p>￥{{scope.row.price}}</p>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div style="float: right;margin: 20px">
+        合计：<span class="color-danger">￥{{order.orderItemList[0].equipmentPrice}}</span>
+      </div>
+      <div style="margin-top: 60px">
+        <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
         <span class="font-small">费用信息</span>
       </div>
       <div class="table-layout">
         <el-row>
           <el-col :span="6" class="table-cell-title" >商品合计</el-col>
-          <el-col :span="6" class="table-cell-title">订单总金额/总积分</el-col>
-          <el-col :span="6" class="table-cell-title">应付款金额/积分</el-col>
+          <el-col :span="6" class="table-cell-title">订单总金额</el-col>
+          <el-col :span="6" class="table-cell-title">应付款金额</el-col>
           <el-col :span="6" class="table-cell-title">积分抵扣</el-col>
         </el-row>
         <el-row>
@@ -331,15 +353,15 @@
       return {
         id: null,
         order: {},
-        receiverDialogVisible:false,
-        receiverInfo:Object.assign({},defaultReceiverInfo),
-        moneyDialogVisible:false,
-        moneyInfo:{orderId:null, freightAmount:0, discountAmount:0,status:null},
-        closeDialogVisible:false,
-        closeInfo:{remark:null,id:null},
-        markOrderDialogVisible:false,
-        markInfo:{remark: null},
-        logisticsDialogVisible:false
+        receiverDialogVisible: false,
+        receiverInfo: Object.assign({}, defaultReceiverInfo),
+        moneyDialogVisible: false,
+        moneyInfo: {orderId: null, freightAmount: 0, discountAmount: 0, status: null},
+        closeDialogVisible: false,
+        closeInfo: {remark: null, id: null},
+        markOrderDialogVisible: false,
+        markInfo: {remark: null},
+        logisticsDialogVisible: false,
       }
     },
     created() {
@@ -434,21 +456,6 @@
           return '已发货';
         }
       },
-      formatProductAttr(value){
-        if(value==null){
-          return '';
-        }else{
-          let attr = JSON.parse(value);
-          /*let result='';
-          for(let i=0;i<attr.length;i++){
-            result+=attr[i].key;
-            result+=":";
-            result+=attr[i].value;
-            result+=";";
-          }*/
-          return attr;
-        }
-      },
       userType(type){
           if(type === 'member'){
               return '普通用户'
@@ -523,9 +530,6 @@
             });
           });
         });
-      },
-      parseProductAttr(attr){
-          return JSON.parse(attr);
       },
       showUpdateMoneyDialog(){
         this.moneyDialogVisible=true;

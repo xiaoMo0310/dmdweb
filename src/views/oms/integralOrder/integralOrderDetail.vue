@@ -376,11 +376,7 @@
       },
       formatOrderType(value) {
         if (value === 1) {
-          return '潜水学证订单';
-        }else if(value === 2){
-            return '积分商品订单';
-        } else {
-          return '普通商品订单';
+          return '积分商品订单';
         }
       },
       formatAddress(order) {

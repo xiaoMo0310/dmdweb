@@ -16,29 +16,7 @@
       </el-form-item>-->
 
       <el-form-item label="上传礼品图片：">
-      <div>
-        <el-input v-model="homeAdvertise.picture" class="input-width" v-if="homeAdvertise.picture === null"></el-input>
-
-        <el-upload
-          :multiple="multiple"
-          action="/uploadPics"
-          list-type="picture-card"
-          :auto-upload="false"
-          :http-request="uploadFile"
-          ref="uploadPic"
-          :file-list="fileList"
-        >
-          <i class="el-icon-plus"></i>
-        </el-upload>
-      </div>
-      <div>
-        <center>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisibleAddSomePicsInfo = false">取 消</el-button>
-                <el-button type="primary" @click="addSomePeoplePicsForm">上传图片</el-button>
-            </span>
-        </center>
-      </div>
+        <multi-upload v-model="homeAdvertise.picture"/>
       </el-form-item>
 
 
@@ -61,7 +39,7 @@
   import SingleUpload from '@/components/Upload/singleUpload'
   import MultiUpload from '@/components/Upload/multiUpload'
   import {updateIntegralGifts, findIntegralGiftsInfoById , addIntegralGifts} from '@/api/integralGifts'
-  import {uploadFileAll} from '@/api/uploadAll'
+  import {uploadFileAll} from '@/api/upload'
 
   const defaultHomeAdvertise = {
     topicName: null,
@@ -123,35 +101,6 @@
     },
 
     methods: {
-
-      uploadFile(myfiles) {
-        this.formPicsData.append('files', myfiles.file);
-      },
-      addSomePeoplePicsForm: function () {
-        let self = this;
-        this.formPicsData = new FormData();
-        this.$refs.uploadPic.submit();
-        let config = {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-        uploadFileAll( this.formPicsData, config).then(res => {
-          this.homeAdvertise.picture=res.data;
-          this.$message({
-            message: '上传成功',
-            type: 'success',
-            duration:1000
-          });
-        }).catch(res => {
-          this.$message({
-            message: '上传成功',
-            type: 'success',
-            duration:1000
-          });
-        });
-      },
-
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

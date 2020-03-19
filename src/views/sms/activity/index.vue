@@ -41,7 +41,7 @@
       </el-button>
     </el-card>
     <div class="table-container">
-      <el-table ref="productCateTable"
+      <el-table ref="shopActivityTable"
                 style="width: 100%"
                 :data="list"
                 @selection-change="handleSelectionChange"
@@ -50,23 +50,30 @@
         <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="产品名称" align="center">
-          <template slot-scope="scope">{{scope.row.productName}}</template>
+        <el-table-column label="活动标题" align="center">
+          <template slot-scope="scope">{{scope.row.title}}</template>
         </el-table-column>
-        <el-table-column label="产品价格" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.productPrice}}</template>
+        <el-table-column label="活动时间" width="160" align="center">
+          <template slot-scope="scope">{{scope.row.activityTime}}</template>
         </el-table-column>
-        <el-table-column label="其它装备价格" width="150" align="center">
-          <template slot-scope="scope">{{scope.row.equipmentPrice}}</template>
+        <el-table-column label="活动图片" width="250" align="center">
+          <template slot-scope="scope">
+            <div style="height: 100px; width:100px; border-left: 0px solid #DCDFE6; border-top: 0px solid #DCDFE6; margin: 6px; padding: 0px; float: left" v-for="(image, i) in getImageList(scope.row.activityImage)" :key="i">
+              <el-image style="height: 100px; width: 100px" :src="image" :preview-src-list="getImageList(scope.row.activityImage)"></el-image>
+              <div class="block">
+                <el-image>
+                  <div slot="error" class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image>
+              </div>
+            </div>
+          </template>
         </el-table-column>
-        <el-table-column label="产品总价格" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.totalPrice}}</template>
-        </el-table-column>
-        <el-table-column label="潜水时间" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.divingTime }}</template>
-        </el-table-column>
-        <el-table-column label="潜水地址" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.playAddress }}</template>
+        <el-table-column label="活动详情" width="120" align="center">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="shopActivityDetail(scope.$index, scope.row.activityDetail)">点击查看</el-button>
+          </template>
         </el-table-column>
         <el-table-column label="是否显示" width="100" align="center">
           <template slot-scope="scope">
@@ -78,20 +85,12 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="排序" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.sort }}</template>
-        </el-table-column>
-        <el-table-column label="操作" width="300" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
               @click="handleUpdate(scope.$index, scope.row)">编辑
             </el-button>
-            <el-button
-            size="mini"
-            type="info"
-            @click="handleLookDetail(scope.$index, scope.row)">查看详情
-          </el-button>
             <el-button
               size="mini"
               type="danger"
@@ -133,26 +132,40 @@
         :total="total">
       </el-pagination>
     </div>
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogVisible"
+      width="40%" >
+      <el-card shadow="never" style="width: 100%; overflow: auto; max-height: 400px">
+        <div  v-html="activityDetail" style="border: 1px"/>
+      </el-card>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">退 出</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {fetchList,deleteProductTem,updateShowStatus} from '@/api/courseProductTem'
+  import {fetchList,deleteShopActivity,updateShowStatus} from '@/api/shopActivity'
 
   const defaultListQuery = {
     pageNum: 1,
     pageSize: 5,
-    playAddress: null,
-    productName: null
+    title: null,
+    activityTime: null
   };
   export default {
-    name: "productCateList",
+    name: "shopActivityList",
     data() {
       return {
         list: null,
         total: null,
         listLoading: true,
+        dialogVisible: false,
+        dialogTitle: null,
         multipleSelection: [],
+        activityDetail: null,
         listQuery: Object.assign({}, defaultListQuery),
         operates: [
           {
@@ -164,20 +177,16 @@
       }
     },
     created() {
-      this.resetParentId();
       this.getList();
     },
     methods: {
-      resetParentId(){
-        this.listQuery.pageNum = 1;
-        if (this.$route.query.parentId != null) {
-          this.parentId = this.$route.query.parentId;
-        } else {
-          this.parentId = 0;
-        }
+      getImageList(val){
+        return val.split(",");
       },
-      handleAddProductCate() {
-        this.$router.push('/pms/addCourseProductTem');
+      shopActivityDetail(index, val) {
+        this.dialogVisible = true;
+        this.dialogTitle = "活动内容";
+        this.activityDetail = val
       },
       getList() {
         this.listLoading = true;
@@ -218,10 +227,7 @@
         });
       },
       handleUpdate(index, row) {
-        this.$router.push({path:'/pms/updateCourseProductTem',query:{id:row.id}});
-      },
-      handleLookDetail(index, row) {
-        this.$router.push({path:'/pms/courseProductTemDetail',query:{id:row.id}});
+        this.$router.push({path:'/sms/updateShopActivity',query:{id:row.id}});
       },
       handleSelectionChange(val){
         this.multipleSelection = val;
@@ -254,14 +260,14 @@
         this.handleDelete(row.id);
       },
       handleDelete(ids) {
-        this.$confirm('是否要删除该模板?', '提示', {
+        this.$confirm('是否要删除该活动', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           let params=new URLSearchParams();
           params.append("ids",ids);
-          deleteProductTem(params).then(response => {
+          deleteShopActivity(params).then(response => {
             this.$message({
               message: '删除成功',
               type: 'success',
